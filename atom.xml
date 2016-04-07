@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Zweig</title>
+  <title>破而后立</title>
   <subtitle>业精于勤</subtitle>
   <link href="/atom.xml" rel="self"/>
   
@@ -53,7 +53,7 @@
 &lt;p&gt;把 &amp;gt; 写到开头，本质上是生成blockquote标签&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;链接&quot;&gt;&lt;a href=&quot;#链接&quot; class=&quot;headerlink&quot; title=&quot;链接&quot;&gt;&lt;/a&gt;链接&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://jackalope.cn&quot;&gt;jackalope&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;邮件&quot;&gt;&lt;a href=&quot;#邮件&quot; class=&quot;headerlink&quot; title=&quot;邮件&quot;&gt;&lt;/a&gt;邮件&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;&amp;#x6d;&amp;#97;&amp;#x69;&amp;#108;&amp;#x74;&amp;#111;&amp;#58;&amp;#122;&amp;#111;&amp;#119;&amp;#105;&amp;#101;&amp;#95;&amp;#99;&amp;#104;&amp;#101;&amp;#x6e;&amp;#x40;&amp;#x31;&amp;#x36;&amp;#x33;&amp;#46;&amp;#99;&amp;#111;&amp;#109;&quot;&gt;&amp;#122;&amp;#111;&amp;#119;&amp;#105;&amp;#101;&amp;#95;&amp;#99;&amp;#104;&amp;#101;&amp;#x6e;&amp;#x40;&amp;#x31;&amp;#x36;&amp;#x33;&amp;#46;&amp;#99;&amp;#111;&amp;#109;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;邮件&quot;&gt;&lt;a href=&quot;#邮件&quot; class=&quot;headerlink&quot; title=&quot;邮件&quot;&gt;&lt;/a&gt;邮件&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;&amp;#x6d;&amp;#97;&amp;#x69;&amp;#x6c;&amp;#116;&amp;#x6f;&amp;#58;&amp;#122;&amp;#x6f;&amp;#119;&amp;#x69;&amp;#101;&amp;#x5f;&amp;#99;&amp;#104;&amp;#x65;&amp;#110;&amp;#x40;&amp;#x31;&amp;#x36;&amp;#x33;&amp;#x2e;&amp;#99;&amp;#x6f;&amp;#109;&quot;&gt;&amp;#122;&amp;#x6f;&amp;#119;&amp;#x69;&amp;#101;&amp;#x5f;&amp;#99;&amp;#104;&amp;#x65;&amp;#110;&amp;#x40;&amp;#x31;&amp;#x36;&amp;#x33;&amp;#x2e;&amp;#99;&amp;#x6f;&amp;#109;&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;图片&quot;&gt;&lt;a href=&quot;#图片&quot; class=&quot;headerlink&quot; title=&quot;图片&quot;&gt;&lt;/a&gt;图片&lt;/h2&gt;&lt;p&gt;内嵌图片，直接写入具体图片地址&lt;br&gt;&lt;img src=&quot;http://25.io/smaller/favicon.ico&quot; alt=&quot;内嵌图片&quot; title=&quot;Title here&quot;&gt;&lt;/p&gt;
 &lt;p&gt;引用图片，先指定图片名称，之后再将图片名称映射到具体图片地址&lt;br&gt;&lt;img src=&quot;http://resizesafari.com/favicon.ico&quot; alt=&quot;引用图片&quot; title=&quot;Title&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;代码块&quot;&gt;&lt;a href=&quot;#代码块&quot; class=&quot;headerlink&quot; title=&quot;代码块&quot;&gt;&lt;/a&gt;代码块&lt;/h2&gt;&lt;p&gt;使用3个及以上着重符(`)开始并结束：&lt;br&gt;&lt;figure class=&quot;highlight gauss&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;code&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
