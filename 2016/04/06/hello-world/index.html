@@ -1,18 +1,215 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>Hello World | Zweig</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/3.0.3/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Hello World</h1><a id="logo" href="/.">Zweig</a><p class="description">业精于勤</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/history/"><i class="fa fa-book"> 历史</i></a><a href="/guestbook/"><i class="fa fa-comments"> 留言</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Hello World</h1><div class="post-meta">Apr 6, 2016<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-disqus-identifier="2016/04/06/hello-world/" href="/2016/04/06/hello-world/#disqus_thread" class="disqus-comment-count"></a><div class="post-content"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://jackalope.cn/2016/04/06/hello-world/" data-id="cimq0wjox0000e7v0r986z17h" class="article-share-link">分享到</a><div class="tags"></div><div id="disqus_thread"><script>var disqus_shortname = 'hedgehog-zowie';
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>欢迎 | Zweig</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/3.0.3/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">欢迎</h1><a id="logo" href="/.">Zweig</a><p class="description">业精于勤</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/history/"><i class="fa fa-book"> 历史</i></a><a href="/guestbook/"><i class="fa fa-comments"> 留言</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">欢迎</h1><div class="post-meta">Apr 6, 2016<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-disqus-identifier="2016/04/06/hello-world/" href="/2016/04/06/hello-world/#disqus_thread" class="disqus-comment-count"></a><div class="clear"><div id="toc" class="toc-article"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#hexo的安装步骤"><span class="toc-number">1.</span> <span class="toc-text">hexo的安装步骤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注意事项"><span class="toc-number">2.</span> <span class="toc-text">注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Node-js版本"><span class="toc-number">2.1.</span> <span class="toc-text">Node.js版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#disqus集成"><span class="toc-number">2.2.</span> <span class="toc-text">disqus集成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#maupassant主题"><span class="toc-number">2.3.</span> <span class="toc-text">maupassant主题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Mou的使用"><span class="toc-number">3.</span> <span class="toc-text">Mou的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#标题"><span class="toc-number">3.1.</span> <span class="toc-text">标题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加粗"><span class="toc-number">3.2.</span> <span class="toc-text">加粗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#倾斜"><span class="toc-number">3.3.</span> <span class="toc-text">倾斜</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用"><span class="toc-number">3.4.</span> <span class="toc-text">引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#链接"><span class="toc-number">3.5.</span> <span class="toc-text">链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#邮件"><span class="toc-number">3.6.</span> <span class="toc-text">邮件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#图片"><span class="toc-number">3.7.</span> <span class="toc-text">图片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码块"><span class="toc-number">3.8.</span> <span class="toc-text">代码块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有序列表"><span class="toc-number">3.9.</span> <span class="toc-text">有序列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#无序列表"><span class="toc-number">3.10.</span> <span class="toc-text">无序列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#换行符"><span class="toc-number">3.11.</span> <span class="toc-text">换行符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#水平分隔符"><span class="toc-number">3.12.</span> <span class="toc-text">水平分隔符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#脚注"><span class="toc-number">3.13.</span> <span class="toc-text">脚注</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除线"><span class="toc-number">3.14.</span> <span class="toc-text">删除线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#表格"><span class="toc-number">3.15.</span> <span class="toc-text">表格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#快捷链"><span class="toc-number">3.16.</span> <span class="toc-text">快捷链</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#视图"><span class="toc-number">3.16.1.</span> <span class="toc-text">视图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#操作"><span class="toc-number">3.16.2.</span> <span class="toc-text">操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编辑"><span class="toc-number">3.16.3.</span> <span class="toc-text">编辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Post"><span class="toc-number">3.16.4.</span> <span class="toc-text">Post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#导出"><span class="toc-number">3.16.5.</span> <span class="toc-text">导出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#And-more"><span class="toc-number">3.16.6.</span> <span class="toc-text">And more?</span></a></li></ol></li></ol></li></ol></div></div><div class="post-content"><p>基于hexo搭好了个人博客，在这里记录并测试一下。</p>
+<h1 id="hexo的安装步骤"><a href="#hexo的安装步骤" class="headerlink" title="hexo的安装步骤"></a>hexo的安装步骤</h1><p>参考官方文档：<a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="external">hexo.io</a></p>
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><h2 id="Node-js版本"><a href="#Node-js版本" class="headerlink" title="Node.js版本"></a>Node.js版本</h2><ul>
+<li>不使用最新版本的Node.js，使用官方文档建议的v4；</li>
+</ul>
+<h2 id="disqus集成"><a href="#disqus集成" class="headerlink" title="disqus集成"></a>disqus集成</h2><ul>
+<li>注册disqus；</li>
+<li>将short_name添加到_config.yml；</li>
+<li>注意修改disqus设置为中文；</li>
+<li>不使用评论：<br>  在front-matter中添加一行  <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">comments:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="maupassant主题"><a href="#maupassant主题" class="headerlink" title="maupassant主题"></a>maupassant主题</h2><p>使用<a href="https://www.haomwei.com/" target="_blank" rel="external">屠城</a>的主题，感谢！</p>
+<ul>
+<li><p>添加关于(about)，历史（history），留言（guestbook）</p>
+<p>  hexo new page abou<br>  hexo new page history<br>  hexo new page guestbook</p>
+</li>
+<li><p>_config.yml的menu中添加：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- <span class="attribute">page</span>: about</span><br><span class="line">  <span class="attribute">directory</span>: about/</span><br><span class="line">  <span class="attribute">icon</span>: fa-user</span><br><span class="line">- <span class="attribute">page</span>: history</span><br><span class="line">  <span class="attribute">directory</span>: history/</span><br><span class="line">  <span class="attribute">icon</span>: fa-book</span><br><span class="line">- <span class="attribute">page</span>: guestbook</span><br><span class="line">  <span class="attribute">directory</span>: guestbook/</span><br><span class="line">  <span class="attribute">icon</span>: fa-comments</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加时间轴</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">---</span></span><br><span class="line">title: 时间轴</span><br><span class="line"><span class="built_in">date</span>: <span class="number">2016</span><span class="number">-04</span><span class="number">-07</span> <span class="number">15</span>:<span class="number">12</span>:<span class="number">10</span></span><br><span class="line">comments: <span class="literal">false</span></span><br><span class="line"><span class="comment">---</span></span><br><span class="line">&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">"timeline"</span>&gt;</span><br><span class="line">	&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">"timeline-item active"</span>&gt;</span><br><span class="line">		&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">"year"</span>&gt;<span class="number">2014</span>&lt;span <span class="built_in">class</span>=<span class="string">"marker"</span>&gt;&lt;span <span class="built_in">class</span>=<span class="string">"dot"</span>&gt;&lt;/span&gt;&lt;/span&gt;&lt;/<span class="keyword">div</span>&gt;</span><br><span class="line">		&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">"info"</span>&gt;</span><br><span class="line">			注册域名jackalope.cn</span><br><span class="line">		&lt;/<span class="keyword">div</span>&gt;</span><br><span class="line">	&lt;/<span class="keyword">div</span>&gt;</span><br><span class="line">	&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">"timeline-item active"</span>&gt;</span><br><span class="line">		&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">"year"</span>&gt;<span class="number">2016</span>&lt;span <span class="built_in">class</span>=<span class="string">"marker"</span>&gt;&lt;span <span class="built_in">class</span>=<span class="string">"dot"</span>&gt;&lt;/span&gt;&lt;/span&gt;&lt;/<span class="keyword">div</span>&gt;</span><br><span class="line">		&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">"info"</span>&gt;初试个人博客，使用hexo搭建，托管于Github&lt;/<span class="keyword">div</span>&gt;</span><br><span class="line">	&lt;/<span class="keyword">div</span>&gt;</span><br><span class="line">&lt;/<span class="keyword">div</span>&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="Mou的使用"><a href="#Mou的使用" class="headerlink" title="Mou的使用"></a>Mou的使用</h1><h2 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h2><p>将#号写在行首表示标题，标题1 - 标题6，数字对应#号个数</p>
+<h2 id="加粗"><a href="#加粗" class="headerlink" title="加粗"></a>加粗</h2><p>未加粗/<strong>加粗</strong>（aaa/<strong>aaa</strong>）(快捷链：Cmd + B)</p>
+<h2 id="倾斜"><a href="#倾斜" class="headerlink" title="倾斜"></a>倾斜</h2><p>未倾斜/<em>倾斜</em>（aaa/<em>aaa</em>）(快捷键：Cmd + I)</p>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><blockquote>
+<p>把 &gt; 写到开头，本质上是生成blockquote标签</p>
+</blockquote>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><p><a href="http://jackalope.cn">jackalope</a></p>
+<h2 id="邮件"><a href="#邮件" class="headerlink" title="邮件"></a>邮件</h2><p><a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#58;&#122;&#111;&#119;&#105;&#101;&#95;&#99;&#104;&#101;&#x6e;&#x40;&#x31;&#x36;&#x33;&#46;&#99;&#111;&#109;">&#122;&#111;&#119;&#105;&#101;&#95;&#99;&#104;&#101;&#x6e;&#x40;&#x31;&#x36;&#x33;&#46;&#99;&#111;&#109;</a></p>
+<h2 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h2><p>内嵌图片，直接写入具体图片地址<br><img src="http://25.io/smaller/favicon.ico" alt="内嵌图片" title="Title here"></p>
+<p>引用图片，先指定图片名称，之后再将图片名称映射到具体图片地址<br><img src="http://resizesafari.com/favicon.ico" alt="引用图片" title="Title"></p>
+<h2 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h2><p>使用3个及以上着重符(`)开始并结束：<br><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">code</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h2><p>使用”1.” + 空格</p>
+<ol>
+<li>111</li>
+<li>222</li>
+<li>333</li>
+</ol>
+<h2 id="无序列表"><a href="#无序列表" class="headerlink" title="无序列表"></a>无序列表</h2><p>使用”*” + 空格</p>
+<ul>
+<li>111</li>
+<li>222</li>
+<li>333</li>
+</ul>
+<p>或者”-“ + 空格</p>
+<ul>
+<li>111</li>
+<li>222</li>
+<li>333</li>
+</ul>
+<h2 id="换行符"><a href="#换行符" class="headerlink" title="换行符"></a>换行符</h2><p>两个及以上空格即可生成一个换行符<code>&lt;br /&gt;</code></p>
+<h2 id="水平分隔符"><a href="#水平分隔符" class="headerlink" title="水平分隔符"></a>水平分隔符</h2><p>三个及以上 “*” 或 “-“ 或 “- “，每行之前有空行</p>
+<hr>
+<hr>
+<hr>
+<h2 id="脚注"><a href="#脚注" class="headerlink" title="脚注"></a>脚注</h2><p>脚本，跳到标题<a href="#标题">^1</a></p>
+<h2 id="删除线"><a href="#删除线" class="headerlink" title="删除线"></a>删除线</h2><p>使用两个~开始并结束<br><del>ZZZZZZzzzzzz</del></p>
+<h2 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h2><p>列使用|分开，头尾的|可加可不加；<br>列名与行使用多个-分开，:—-表示左对齐，:—-:表示两端对齐，—-:表示右对齐，<code>PS: 表格上方有一空行</code></p>
+<table>
+<thead>
+<tr>
+<th>列1</th>
+<th>列2</th>
+<th>列3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+</tr>
+<tr>
+<td>21</td>
+<td>22</td>
+<td>23</td>
+</tr>
+<tr>
+<td>31</td>
+<td>32</td>
+<td>33</td>
+</tr>
+</tbody>
+</table>
+<p><code>列补齐&quot;|&quot;</code></p>
+<table>
+<thead>
+<tr>
+<th>列1</th>
+<th>列2</th>
+<th>列3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+</tr>
+<tr>
+<td>21</td>
+<td>22</td>
+<td>23</td>
+</tr>
+<tr>
+<td>31</td>
+<td>32</td>
+<td>33</td>
+</tr>
+</tbody>
+</table>
+<p><code>左中右对齐</code></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">列1</th>
+<th style="text-align:center">列2</th>
+<th style="text-align:right">列3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">11</td>
+<td style="text-align:center">12</td>
+<td style="text-align:right">13</td>
+</tr>
+<tr>
+<td style="text-align:left">21</td>
+<td style="text-align:center">22</td>
+<td style="text-align:right">23</td>
+</tr>
+<tr>
+<td style="text-align:left">31</td>
+<td style="text-align:center">32</td>
+<td style="text-align:right">33</td>
+</tr>
+</tbody>
+</table>
+<h2 id="快捷链"><a href="#快捷链" class="headerlink" title="快捷链"></a>快捷链</h2><h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><ul>
+<li>预览: Shift + Cmd + I</li>
+<li>统计字数: Shift + Cmd + W</li>
+<li>透明: Shift + Cmd + T</li>
+<li>悬浮，永在最前: Shift + Cmd + F</li>
+<li>左右窗口大小1/1: Cmd + 0</li>
+<li>左右窗口大小3/1: Cmd + +</li>
+<li>左右窗口大小1/3: Cmd + -</li>
+<li>书写方向: Cmd + L</li>
+<li>全屏/退出全屏: Control + Cmd + F</li>
+</ul>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><ul>
+<li>拷贝html: Option + Cmd + C</li>
+<li>加黑加粗: Select text, Cmd + B</li>
+<li>倾斜: Select text, Cmd + I</li>
+<li>Inline Code: Select text, Cmd + K</li>
+<li>Strikethrough: Select text, Cmd + U</li>
+<li>Link: Select text, Control + Shift + L</li>
+<li>Image: Select text, Control + Shift + I</li>
+<li>Select Word: Control + Option + W</li>
+<li>Select Line: Shift + Cmd + L</li>
+<li>Select All: Cmd + A</li>
+<li>Deselect All: Cmd + D</li>
+<li>Convert to Uppercase: Select text, Control + U</li>
+<li>Convert to Lowercase: Select text, Control + Shift + U</li>
+<li>Convert to Titlecase: Select text, Control + Option + U</li>
+<li>Convert to List: Select lines, Control + L</li>
+<li>Convert to Blockquote: Select lines, Control + Q</li>
+<li>Convert to H1: Cmd + 1</li>
+<li>Convert to H2: Cmd + 2</li>
+<li>Convert to H3: Cmd + 3</li>
+<li>Convert to H4: Cmd + 4</li>
+<li>Convert to H5: Cmd + 5</li>
+<li>Convert to H6: Cmd + 6</li>
+<li>Convert Spaces to Tabs: Control + [</li>
+<li>Convert Tabs to Spaces: Control + ]</li>
+<li>Insert Current Date: Control + Shift + 1</li>
+<li>Insert Current Time: Control + Shift + 2</li>
+<li>Insert entity &lt;: Control + Shift + ,</li>
+<li>Insert entity &gt;: Control + Shift + .</li>
+<li>Insert entity &amp;: Control + Shift + 7</li>
+<li>Insert entity Space: Control + Shift + Space</li>
+<li>Insert Scriptogr.am Header: Control + Shift + G</li>
+<li>Shift Line Left: Select lines, Cmd + [</li>
+<li>Shift Line Right: Select lines, Cmd + ]</li>
+<li>New Line: Cmd + Return</li>
+<li>Comment: Cmd + /</li>
+<li>Hard Linebreak: Control + Return</li>
+</ul>
+<h3 id="编辑"><a href="#编辑" class="headerlink" title="编辑"></a>编辑</h3><ul>
+<li>Auto complete current word: Esc</li>
+<li>Find: Cmd + F</li>
+<li>Close find bar: Esc</li>
+</ul>
+<h3 id="Post"><a href="#Post" class="headerlink" title="Post"></a>Post</h3><ul>
+<li>Post on Scriptogr.am: Control + Shift + S</li>
+<li>Post on Tumblr: Control + Shift + T</li>
+</ul>
+<h3 id="导出"><a href="#导出" class="headerlink" title="导出"></a>导出</h3><ul>
+<li>Export HTML: Option + Cmd + E</li>
+<li>Export PDF:  Option + Cmd + P</li>
+</ul>
+<h3 id="And-more"><a href="#And-more" class="headerlink" title="And more?"></a>And more?</h3><p>Don’t forget to check Preferences, lots of useful options are there.</p>
+<p>Follow <a href="https://twitter.com/mou" target="_blank" rel="external">@Mou</a> on Twitter for the latest news.</p>
+<p>For feedback, use the menu <code>Help</code> - <code>Send Feedback</code></p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://jackalope.cn/2016/04/06/hello-world/" data-id="cimq0kx5700007dv005tpz0ac" class="article-share-link">分享到</a><div class="tags"></div><div id="disqus_thread"><script>var disqus_shortname = 'hedgehog-zowie';
 var disqus_identifier = '2016/04/06/hello-world/';
-var disqus_title = 'Hello World';
+var disqus_title = '欢迎';
 var disqus_url = 'http://jackalope.cn/2016/04/06/hello-world/';
 (function() {
   var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
   dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-})();</script><script id="dsq-count-scr" src="//hedgehog-zowie.disqus.com/count.js" async></script></div></div></div></div><div class="pure-u-1-4"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://jackalope.cn"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/hello-world/">Hello World</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//hedgehog-zowie.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Zweig.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+})();</script><script id="dsq-count-scr" src="//hedgehog-zowie.disqus.com/count.js" async></script></div></div></div></div><div class="pure-u-1-4"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://jackalope.cn"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/hello-world/">欢迎</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//hedgehog-zowie.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="https://www.haomwei.com/" title="屠城" target="_blank">屠城</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Zweig.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

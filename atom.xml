@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://jackalope.cn/"/>
-  <updated>2016-04-06T09:49:28.000Z</updated>
+  <updated>2016-04-07T11:15:35.000Z</updated>
   <id>http://jackalope.cn/</id>
   
   <author>
@@ -16,26 +16,224 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hello World</title>
+    <title>欢迎</title>
     <link href="http://jackalope.cn/2016/04/06/hello-world/"/>
     <id>http://jackalope.cn/2016/04/06/hello-world/</id>
     <published>2016-04-06T09:49:28.000Z</published>
-    <updated>2016-04-06T09:49:28.000Z</updated>
+    <updated>2016-04-07T11:15:35.000Z</updated>
     
-    <content type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;Quick-Start&quot;&gt;&lt;a href=&quot;#Quick-Start&quot; class=&quot;headerlink&quot; title=&quot;Quick Start&quot;&gt;&lt;/a&gt;Quick Start&lt;/h2&gt;&lt;h3 id=&quot;Create-a-new-post&quot;&gt;&lt;a href=&quot;#Create-a-new-post&quot; class=&quot;headerlink&quot; title=&quot;Create a new post&quot;&gt;&lt;/a&gt;Create a new post&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo new &lt;span class=&quot;string&quot;&gt;&quot;My New Post&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/writing.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Writing&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Run-server&quot;&gt;&lt;a href=&quot;#Run-server&quot; class=&quot;headerlink&quot; title=&quot;Run server&quot;&gt;&lt;/a&gt;Run server&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo server&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/server.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Server&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Generate-static-files&quot;&gt;&lt;a href=&quot;#Generate-static-files&quot; class=&quot;headerlink&quot; title=&quot;Generate static files&quot;&gt;&lt;/a&gt;Generate static files&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo generate&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/generating.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Generating&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Deploy-to-remote-sites&quot;&gt;&lt;a href=&quot;#Deploy-to-remote-sites&quot; class=&quot;headerlink&quot; title=&quot;Deploy to remote sites&quot;&gt;&lt;/a&gt;Deploy to remote sites&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo deploy&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/deployment.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Deployment&lt;/a&gt;&lt;/p&gt;
+    <content type="html">&lt;p&gt;基于hexo搭好了个人博客，在这里记录并测试一下。&lt;/p&gt;
+&lt;h1 id=&quot;hexo的安装步骤&quot;&gt;&lt;a href=&quot;#hexo的安装步骤&quot; class=&quot;headerlink&quot; title=&quot;hexo的安装步骤&quot;&gt;&lt;/a&gt;hexo的安装步骤&lt;/h1&gt;&lt;p&gt;参考官方文档：&lt;a href=&quot;https://hexo.io/zh-cn/docs/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo.io&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;注意事项&quot;&gt;&lt;a href=&quot;#注意事项&quot; class=&quot;headerlink&quot; title=&quot;注意事项&quot;&gt;&lt;/a&gt;注意事项&lt;/h1&gt;&lt;h2 id=&quot;Node-js版本&quot;&gt;&lt;a href=&quot;#Node-js版本&quot; class=&quot;headerlink&quot; title=&quot;Node.js版本&quot;&gt;&lt;/a&gt;Node.js版本&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;不使用最新版本的Node.js，使用官方文档建议的v4；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;disqus集成&quot;&gt;&lt;a href=&quot;#disqus集成&quot; class=&quot;headerlink&quot; title=&quot;disqus集成&quot;&gt;&lt;/a&gt;disqus集成&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;注册disqus；&lt;/li&gt;
+&lt;li&gt;将short_name添加到_config.yml；&lt;/li&gt;
+&lt;li&gt;注意修改disqus设置为中文；&lt;/li&gt;
+&lt;li&gt;不使用评论：&lt;br&gt;  在front-matter中添加一行  &lt;figure class=&quot;highlight groovy&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;comments:&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;maupassant主题&quot;&gt;&lt;a href=&quot;#maupassant主题&quot; class=&quot;headerlink&quot; title=&quot;maupassant主题&quot;&gt;&lt;/a&gt;maupassant主题&lt;/h2&gt;&lt;p&gt;使用&lt;a href=&quot;https://www.haomwei.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;屠城&lt;/a&gt;的主题，感谢！&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;添加关于(about)，历史（history），留言（guestbook）&lt;/p&gt;
+&lt;p&gt;  hexo new page abou&lt;br&gt;  hexo new page history&lt;br&gt;  hexo new page guestbook&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;_config.yml的menu中添加：&lt;/p&gt;
+&lt;figure class=&quot;highlight less&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;- &lt;span class=&quot;attribute&quot;&gt;page&lt;/span&gt;: about&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;directory&lt;/span&gt;: about/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;icon&lt;/span&gt;: fa-user&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;- &lt;span class=&quot;attribute&quot;&gt;page&lt;/span&gt;: history&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;directory&lt;/span&gt;: history/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;icon&lt;/span&gt;: fa-book&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;- &lt;span class=&quot;attribute&quot;&gt;page&lt;/span&gt;: guestbook&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;directory&lt;/span&gt;: guestbook/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;icon&lt;/span&gt;: fa-comments&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;添加时间轴&lt;/p&gt;
+&lt;figure class=&quot;highlight applescript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;---&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;title: 时间轴&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;date&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;2016&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;-04&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;-07&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;15&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;12&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;comments: &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;---&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;timeline&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;timeline-item active&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;year&quot;&lt;/span&gt;&amp;gt;&lt;span class=&quot;number&quot;&gt;2014&lt;/span&gt;&amp;lt;span &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;marker&quot;&lt;/span&gt;&amp;gt;&amp;lt;span &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;dot&quot;&lt;/span&gt;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;info&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			注册域名jackalope.cn&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;timeline-item active&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;year&quot;&lt;/span&gt;&amp;gt;&lt;span class=&quot;number&quot;&gt;2016&lt;/span&gt;&amp;lt;span &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;marker&quot;&lt;/span&gt;&amp;gt;&amp;lt;span &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;dot&quot;&lt;/span&gt;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;info&quot;&lt;/span&gt;&amp;gt;初试个人博客，使用hexo搭建，托管于Github&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;Mou的使用&quot;&gt;&lt;a href=&quot;#Mou的使用&quot; class=&quot;headerlink&quot; title=&quot;Mou的使用&quot;&gt;&lt;/a&gt;Mou的使用&lt;/h1&gt;&lt;h2 id=&quot;标题&quot;&gt;&lt;a href=&quot;#标题&quot; class=&quot;headerlink&quot; title=&quot;标题&quot;&gt;&lt;/a&gt;标题&lt;/h2&gt;&lt;p&gt;将#号写在行首表示标题，标题1 - 标题6，数字对应#号个数&lt;/p&gt;
+&lt;h2 id=&quot;加粗&quot;&gt;&lt;a href=&quot;#加粗&quot; class=&quot;headerlink&quot; title=&quot;加粗&quot;&gt;&lt;/a&gt;加粗&lt;/h2&gt;&lt;p&gt;未加粗/&lt;strong&gt;加粗&lt;/strong&gt;（aaa/&lt;strong&gt;aaa&lt;/strong&gt;）(快捷链：Cmd + B)&lt;/p&gt;
+&lt;h2 id=&quot;倾斜&quot;&gt;&lt;a href=&quot;#倾斜&quot; class=&quot;headerlink&quot; title=&quot;倾斜&quot;&gt;&lt;/a&gt;倾斜&lt;/h2&gt;&lt;p&gt;未倾斜/&lt;em&gt;倾斜&lt;/em&gt;（aaa/&lt;em&gt;aaa&lt;/em&gt;）(快捷键：Cmd + I)&lt;/p&gt;
+&lt;h2 id=&quot;引用&quot;&gt;&lt;a href=&quot;#引用&quot; class=&quot;headerlink&quot; title=&quot;引用&quot;&gt;&lt;/a&gt;引用&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;把 &amp;gt; 写到开头，本质上是生成blockquote标签&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;链接&quot;&gt;&lt;a href=&quot;#链接&quot; class=&quot;headerlink&quot; title=&quot;链接&quot;&gt;&lt;/a&gt;链接&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://jackalope.cn&quot;&gt;jackalope&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;邮件&quot;&gt;&lt;a href=&quot;#邮件&quot; class=&quot;headerlink&quot; title=&quot;邮件&quot;&gt;&lt;/a&gt;邮件&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;&amp;#x6d;&amp;#97;&amp;#x69;&amp;#108;&amp;#x74;&amp;#111;&amp;#58;&amp;#122;&amp;#111;&amp;#119;&amp;#105;&amp;#101;&amp;#95;&amp;#99;&amp;#104;&amp;#101;&amp;#x6e;&amp;#x40;&amp;#x31;&amp;#x36;&amp;#x33;&amp;#46;&amp;#99;&amp;#111;&amp;#109;&quot;&gt;&amp;#122;&amp;#111;&amp;#119;&amp;#105;&amp;#101;&amp;#95;&amp;#99;&amp;#104;&amp;#101;&amp;#x6e;&amp;#x40;&amp;#x31;&amp;#x36;&amp;#x33;&amp;#46;&amp;#99;&amp;#111;&amp;#109;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;图片&quot;&gt;&lt;a href=&quot;#图片&quot; class=&quot;headerlink&quot; title=&quot;图片&quot;&gt;&lt;/a&gt;图片&lt;/h2&gt;&lt;p&gt;内嵌图片，直接写入具体图片地址&lt;br&gt;&lt;img src=&quot;http://25.io/smaller/favicon.ico&quot; alt=&quot;内嵌图片&quot; title=&quot;Title here&quot;&gt;&lt;/p&gt;
+&lt;p&gt;引用图片，先指定图片名称，之后再将图片名称映射到具体图片地址&lt;br&gt;&lt;img src=&quot;http://resizesafari.com/favicon.ico&quot; alt=&quot;引用图片&quot; title=&quot;Title&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;代码块&quot;&gt;&lt;a href=&quot;#代码块&quot; class=&quot;headerlink&quot; title=&quot;代码块&quot;&gt;&lt;/a&gt;代码块&lt;/h2&gt;&lt;p&gt;使用3个及以上着重符(`)开始并结束：&lt;br&gt;&lt;figure class=&quot;highlight gauss&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;code&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&quot;有序列表&quot;&gt;&lt;a href=&quot;#有序列表&quot; class=&quot;headerlink&quot; title=&quot;有序列表&quot;&gt;&lt;/a&gt;有序列表&lt;/h2&gt;&lt;p&gt;使用”1.” + 空格&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;111&lt;/li&gt;
+&lt;li&gt;222&lt;/li&gt;
+&lt;li&gt;333&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;无序列表&quot;&gt;&lt;a href=&quot;#无序列表&quot; class=&quot;headerlink&quot; title=&quot;无序列表&quot;&gt;&lt;/a&gt;无序列表&lt;/h2&gt;&lt;p&gt;使用”*” + 空格&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;111&lt;/li&gt;
+&lt;li&gt;222&lt;/li&gt;
+&lt;li&gt;333&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;或者”-“ + 空格&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;111&lt;/li&gt;
+&lt;li&gt;222&lt;/li&gt;
+&lt;li&gt;333&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;换行符&quot;&gt;&lt;a href=&quot;#换行符&quot; class=&quot;headerlink&quot; title=&quot;换行符&quot;&gt;&lt;/a&gt;换行符&lt;/h2&gt;&lt;p&gt;两个及以上空格即可生成一个换行符&lt;code&gt;&amp;lt;br /&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&quot;水平分隔符&quot;&gt;&lt;a href=&quot;#水平分隔符&quot; class=&quot;headerlink&quot; title=&quot;水平分隔符&quot;&gt;&lt;/a&gt;水平分隔符&lt;/h2&gt;&lt;p&gt;三个及以上 “*” 或 “-“ 或 “- “，每行之前有空行&lt;/p&gt;
+&lt;hr&gt;
+&lt;hr&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;脚注&quot;&gt;&lt;a href=&quot;#脚注&quot; class=&quot;headerlink&quot; title=&quot;脚注&quot;&gt;&lt;/a&gt;脚注&lt;/h2&gt;&lt;p&gt;脚本，跳到标题&lt;a href=&quot;#标题&quot;&gt;^1&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;删除线&quot;&gt;&lt;a href=&quot;#删除线&quot; class=&quot;headerlink&quot; title=&quot;删除线&quot;&gt;&lt;/a&gt;删除线&lt;/h2&gt;&lt;p&gt;使用两个~开始并结束&lt;br&gt;&lt;del&gt;ZZZZZZzzzzzz&lt;/del&gt;&lt;/p&gt;
+&lt;h2 id=&quot;表格&quot;&gt;&lt;a href=&quot;#表格&quot; class=&quot;headerlink&quot; title=&quot;表格&quot;&gt;&lt;/a&gt;表格&lt;/h2&gt;&lt;p&gt;列使用|分开，头尾的|可加可不加；&lt;br&gt;列名与行使用多个-分开，:—-表示左对齐，:—-:表示两端对齐，—-:表示右对齐，&lt;code&gt;PS: 表格上方有一空行&lt;/code&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;列1&lt;/th&gt;
+&lt;th&gt;列2&lt;/th&gt;
+&lt;th&gt;列3&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;11&lt;/td&gt;
+&lt;td&gt;12&lt;/td&gt;
+&lt;td&gt;13&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;21&lt;/td&gt;
+&lt;td&gt;22&lt;/td&gt;
+&lt;td&gt;23&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;31&lt;/td&gt;
+&lt;td&gt;32&lt;/td&gt;
+&lt;td&gt;33&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;code&gt;列补齐&amp;quot;|&amp;quot;&lt;/code&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;列1&lt;/th&gt;
+&lt;th&gt;列2&lt;/th&gt;
+&lt;th&gt;列3&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;11&lt;/td&gt;
+&lt;td&gt;12&lt;/td&gt;
+&lt;td&gt;13&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;21&lt;/td&gt;
+&lt;td&gt;22&lt;/td&gt;
+&lt;td&gt;23&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;31&lt;/td&gt;
+&lt;td&gt;32&lt;/td&gt;
+&lt;td&gt;33&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;code&gt;左中右对齐&lt;/code&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;列1&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;列2&lt;/th&gt;
+&lt;th style=&quot;text-align:right&quot;&gt;列3&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;11&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;12&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;13&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;21&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;22&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;23&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;31&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;32&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;33&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&quot;快捷链&quot;&gt;&lt;a href=&quot;#快捷链&quot; class=&quot;headerlink&quot; title=&quot;快捷链&quot;&gt;&lt;/a&gt;快捷链&lt;/h2&gt;&lt;h3 id=&quot;视图&quot;&gt;&lt;a href=&quot;#视图&quot; class=&quot;headerlink&quot; title=&quot;视图&quot;&gt;&lt;/a&gt;视图&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;预览: Shift + Cmd + I&lt;/li&gt;
+&lt;li&gt;统计字数: Shift + Cmd + W&lt;/li&gt;
+&lt;li&gt;透明: Shift + Cmd + T&lt;/li&gt;
+&lt;li&gt;悬浮，永在最前: Shift + Cmd + F&lt;/li&gt;
+&lt;li&gt;左右窗口大小1/1: Cmd + 0&lt;/li&gt;
+&lt;li&gt;左右窗口大小3/1: Cmd + +&lt;/li&gt;
+&lt;li&gt;左右窗口大小1/3: Cmd + -&lt;/li&gt;
+&lt;li&gt;书写方向: Cmd + L&lt;/li&gt;
+&lt;li&gt;全屏/退出全屏: Control + Cmd + F&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;操作&quot;&gt;&lt;a href=&quot;#操作&quot; class=&quot;headerlink&quot; title=&quot;操作&quot;&gt;&lt;/a&gt;操作&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;拷贝html: Option + Cmd + C&lt;/li&gt;
+&lt;li&gt;加黑加粗: Select text, Cmd + B&lt;/li&gt;
+&lt;li&gt;倾斜: Select text, Cmd + I&lt;/li&gt;
+&lt;li&gt;Inline Code: Select text, Cmd + K&lt;/li&gt;
+&lt;li&gt;Strikethrough: Select text, Cmd + U&lt;/li&gt;
+&lt;li&gt;Link: Select text, Control + Shift + L&lt;/li&gt;
+&lt;li&gt;Image: Select text, Control + Shift + I&lt;/li&gt;
+&lt;li&gt;Select Word: Control + Option + W&lt;/li&gt;
+&lt;li&gt;Select Line: Shift + Cmd + L&lt;/li&gt;
+&lt;li&gt;Select All: Cmd + A&lt;/li&gt;
+&lt;li&gt;Deselect All: Cmd + D&lt;/li&gt;
+&lt;li&gt;Convert to Uppercase: Select text, Control + U&lt;/li&gt;
+&lt;li&gt;Convert to Lowercase: Select text, Control + Shift + U&lt;/li&gt;
+&lt;li&gt;Convert to Titlecase: Select text, Control + Option + U&lt;/li&gt;
+&lt;li&gt;Convert to List: Select lines, Control + L&lt;/li&gt;
+&lt;li&gt;Convert to Blockquote: Select lines, Control + Q&lt;/li&gt;
+&lt;li&gt;Convert to H1: Cmd + 1&lt;/li&gt;
+&lt;li&gt;Convert to H2: Cmd + 2&lt;/li&gt;
+&lt;li&gt;Convert to H3: Cmd + 3&lt;/li&gt;
+&lt;li&gt;Convert to H4: Cmd + 4&lt;/li&gt;
+&lt;li&gt;Convert to H5: Cmd + 5&lt;/li&gt;
+&lt;li&gt;Convert to H6: Cmd + 6&lt;/li&gt;
+&lt;li&gt;Convert Spaces to Tabs: Control + [&lt;/li&gt;
+&lt;li&gt;Convert Tabs to Spaces: Control + ]&lt;/li&gt;
+&lt;li&gt;Insert Current Date: Control + Shift + 1&lt;/li&gt;
+&lt;li&gt;Insert Current Time: Control + Shift + 2&lt;/li&gt;
+&lt;li&gt;Insert entity &amp;lt;: Control + Shift + ,&lt;/li&gt;
+&lt;li&gt;Insert entity &amp;gt;: Control + Shift + .&lt;/li&gt;
+&lt;li&gt;Insert entity &amp;amp;: Control + Shift + 7&lt;/li&gt;
+&lt;li&gt;Insert entity Space: Control + Shift + Space&lt;/li&gt;
+&lt;li&gt;Insert Scriptogr.am Header: Control + Shift + G&lt;/li&gt;
+&lt;li&gt;Shift Line Left: Select lines, Cmd + [&lt;/li&gt;
+&lt;li&gt;Shift Line Right: Select lines, Cmd + ]&lt;/li&gt;
+&lt;li&gt;New Line: Cmd + Return&lt;/li&gt;
+&lt;li&gt;Comment: Cmd + /&lt;/li&gt;
+&lt;li&gt;Hard Linebreak: Control + Return&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;编辑&quot;&gt;&lt;a href=&quot;#编辑&quot; class=&quot;headerlink&quot; title=&quot;编辑&quot;&gt;&lt;/a&gt;编辑&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Auto complete current word: Esc&lt;/li&gt;
+&lt;li&gt;Find: Cmd + F&lt;/li&gt;
+&lt;li&gt;Close find bar: Esc&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;Post&quot;&gt;&lt;a href=&quot;#Post&quot; class=&quot;headerlink&quot; title=&quot;Post&quot;&gt;&lt;/a&gt;Post&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Post on Scriptogr.am: Control + Shift + S&lt;/li&gt;
+&lt;li&gt;Post on Tumblr: Control + Shift + T&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;导出&quot;&gt;&lt;a href=&quot;#导出&quot; class=&quot;headerlink&quot; title=&quot;导出&quot;&gt;&lt;/a&gt;导出&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Export HTML: Option + Cmd + E&lt;/li&gt;
+&lt;li&gt;Export PDF:  Option + Cmd + P&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;And-more&quot;&gt;&lt;a href=&quot;#And-more&quot; class=&quot;headerlink&quot; title=&quot;And more?&quot;&gt;&lt;/a&gt;And more?&lt;/h3&gt;&lt;p&gt;Don’t forget to check Preferences, lots of useful options are there.&lt;/p&gt;
+&lt;p&gt;Follow &lt;a href=&quot;https://twitter.com/mou&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;@Mou&lt;/a&gt; on Twitter for the latest news.&lt;/p&gt;
+&lt;p&gt;For feedback, use the menu &lt;code&gt;Help&lt;/code&gt; - &lt;code&gt;Send Feedback&lt;/code&gt;&lt;/p&gt;
 </content>
     
     <summary type="html">
     
-      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+      &lt;p&gt;基于hexo搭好了个人博客，在这里记录并测试一下。&lt;/p&gt;
+&lt;h1 id=&quot;hexo的安装步骤&quot;&gt;&lt;a href=&quot;#hexo的安装步骤&quot; class=&quot;headerlink&quot; title=&quot;hexo的安装步骤&quot;&gt;&lt;/a&gt;hexo的安装步骤&lt;/h1&gt;&lt;p&gt;参考官方文档：&lt;a
     
     </summary>
     
