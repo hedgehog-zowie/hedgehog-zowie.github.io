@@ -601,33 +601,516 @@ DESCRIBE FUNCTION EXTENDED <function_name>;
 
 ###### 关系运算符
 
+以下操作符比较输入的操作数并且依据操作数之前的比较生成TRUE或FALSE值。
+
+操作符|操作数类型|描述
+--|--|--
+A = B|所有基本类型|如果表达式A与表达式B相等，则为TRUE，否则为FALSE。
+A == B|所有基本类型|同 = 
+A <=> B|所有基本类型|若操作数非空（non-none），则返回与=相同的结果；若存存空操作数，当两个都为空操作符时，返回TRUE，仅一个为空时，返回FALSE（截至版本[0.9.0](https://issues.apache.org/jira/browse/HIVE-2810)）；
+A <> B|所有基本类型|如果A或B为NULL，返回NULL；如果A不等于B，返回TRUE，否则返回FALSE
+A != B|所有基本类型|同 <> 
+A < B|所有基本类型|如果A或B为NULL，返回NULL；如果A小于B，返回TRUE，否则返回FALSE
+A <= B|所有基本类型|如果A或B为NULL，返回NULL；如果A小于等于B，返回TRUE，否则返回FALSE
+A > B|所有基本类型|如果A或B为NULL，返回NULL；如果A大于B，返回TRUE，否则返回FALSE
+A >= B|所有基本类型|如果A或B为NULL，返回NULL；如果A大于等于B，返回TRUE，否则返回FALSE
+A [NOT] BETWEEN B AND C|所有基本类型|如果A、B或C为NULL，返回NULL；如果A大于等于B并且A小于等于C，返回TRUE，否则返回FALSE。可以使用NOT关键字（（截至版本[0.9.0](https://issues.apache.org/jira/browse/HIVE-2810)。）
+A IS NULL|所有类型|如果表达式A计算为NULL，则返回TRUE，否则返回FALSE。
+A IS NOT NULL|所有类型|如果表达式A计算不为NULL，则返回TRUE，否则返回FALSE。
+A [NOT] LIKE B|strings|如果A或B为NULL，返回NULL；如果字符串A正则匹配表达式B（SQL正则），则返回TRUE，否则返回FALSE。挨个字符进行比较，表达式B中的_字符表示匹配任意字符（类型posix正则表达式的.），%字符表示匹配A中的一串字符（类似posix正则表达式中的.*）。例如：'foobar' like 'foo'为FALSE，则'foobar' like 'foo_\_\_'和'foobar' like 'foo%'为TRUE。
+A RLIKE B|strings|如果A或B为NULL，返回NULL；如果A中的任意子字符串正则匹配B（JAVA正则），则返回TRUE，否则返回FALSE。例如：'foobar' RLIKE 'foo'为TRUE，'foobar' RLIKE '^f.\*r$'
+A REGEXP B|strings|同 RLIKE
+
 ###### 算术运算符
+
+以下操作符支持操作数间常见的运算，返回值均为数值型，如果存在任意值为NULL，则返回值也为NULL。
+
+操作符|操作数类型|描述
+-|-|-
+A + B|
+A - B|
+A * B|
+A / B|
+A % B|
+A & B|
+A ^ B|
+~A|
 
 ###### 逻辑运算符
 
+以下操作符支持创建逻辑表达式。所有的返回值均为TRUE，FALSE或NULL，取闷在于操作数的boolean值。NULL标识为"unknown"，因此如果结果取决于"unknown"状态，那么结果本身是"unknown"。
+
+操作符|操作数类型|描述
+-|-|-
+A AND B|boolean|
+A && B|boolean|
+A OR B|boolean|
+A || B|boolean|
+NOT A|boolean|
+!A|boolean|
+A IN (val1, val2, ...)|boolean|
+A NOT IN (val1, val2, ...)|boolean|
+[NOT] EXISTS(subquery)||
+
 ###### 复杂类型的运算符
+
+以下函数构造复杂对象的实例。
+
+操作符|操作数类型|描述
+-|-|-
+map|
+struct|
+named_struct|
+array|
+create_union|
+
+###### 复杂类型操作
+
+以下函数提供访问复杂对象的机制。
+
+操作符|操作数类型|描述
+-|-|-
+A[n]|
+M[key]|
+S.x|
 
 ##### 内置函数
 
-###### 
+###### 数学函数
 
-###### 
+Hive支持以下内置数学函数，当参数为NULL时大部分返回NULL。
 
-###### 
+返回类型|名称|描述
+-|-|-
+DOUBLE|round(DOUBLE a)|
+DOUBLE|round(DOUBLE a, INT d)|
+DOUBLE|bround(DOUBLE a)|
+DOUBLE|bround(DOUBLE a, INT d)|
+BIGINT|floor(DOUBLE a)|
+BIGINT|ceil(DOUBLE a), ceiling(DOUBLE a)|
+DOUBLE|rand(), rand(INT seed)|
+DOUBLE|exp(DOUBLE a), exp(DECIMAL a)|
+DOUBLE|ln(DOUBLE a), ln(DECIMAL a)|
+DOUBLE|log10(DOUBLE a), log10(DECIMAL a)|
+DOUBLE|log2(DOUBLE a), log2(DECIMAL a)|
+DOUBLE|log(DOUBLE base, DOUBLE a)  log(DECIMAL base, DECIMAL a)|
+DOUBLE|pow(DOUBLE a, DOUBLE p)  power(DOUBLE a, DOUBLE p)|
+DOUBLE|sqrt(DOUBLE a)  sqrt(DECIMAL a)|
+STRING|bin(BIGINT a)|
+STRING|hex(BIGINT a)  hex(STRING a)  hex(BINARY a)|
+BINARAY|unhex(STRING a)|
+STRING|conv(BIGINT num, INT from_base, INT to_base)  conv(STRING num, INT from_base, INT to_base)  DOUBLE|abs(DOUBLE a)|
+INT OR DOUBLE|pmod(INT a, INT b)  pmod(DOUBLE a, DOUBLE b)|
+DOUBLE|sin(DOUBLE a), sin(DECIMAL a)|
+DOUBLE|asin(DOUBLE a), asin(DECIMAL a)|
+DOUBLE|cos(DOUBLE a), cos(DECIMAL a)|
+DOUBLE|acos(DOUBLE a), acos(DECIMAL a)|
+DOUBLE|tan(DOUBLE a), tan(DECIMAL a)|
+DOUBLE|atan(DOUBLE a), atan(DECIMAL a)|
+DOUBLE|degrees(DOUBLE a), degrees(DECIMAL a)|
+DOUBLE|radians(DOUBLE a), radians(DOUBLE a)|
+INT OR DOUBLE|positive(INT a)  positive(DOUBLE a)|
+INT OR DOUBLE|negative(INT a)  negative(DOUBLE a)|
+DOUBLE or INT|sign(DOUBLE a)  sign(DECIMAL a)|
+DOUBLE|e()|
+DOUBLE|pi()|
+BIGINT|factorial(INT a)|
+DOUBLT|cbrt(DOUBLE a)|
+INT OR BIGINT|shiftleft(TINYINT|SMALLINT|INT a, INT b)  shiftleft(BIGINT a, INT b)|
+INT OR BIGINT|shiftright(TINYINT|SMALLINT|INT a, INT b)  shiftright(BIGINT a, INT b)|
+INT OR BIGINT|shiftrightunsigned(TINYINT|SMALLINT|INT a, INT b)  shiftrightunsigned(BIGINT a, INT b)|
+T|greatest(T v1, T v2, ...)|
+T|least(T v1, T v2, ...)|
 
-###### 
+###### Decimal类型的数学函数和操作符
 
-###### 
+```
+版本：
+decimal类型在Hive 0.11.0中引入（[HIVE-2693](https://issues.apache.org/jira/browse/HIVE-2693)）
+```
+所有常规算术运算符（如+，-，*，/）及相关的算术UDF(Floor, Ceil, Round等)都已更新为处理小数值类型。关于支持的UDF列表，请参考[Mathematical UDFs](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Types#LanguageManualTypes)中的[Hive Data Types](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Types#LanguageManualTypes-MathematicalUDFs)
 
-##### 内置聚合函数
+###### 集合函数
 
-##### 内置生成表函数
+HIVE支持以下内置集合函数
+
+返回类型|名称|描述
+-|-|-
+int|size(Map<K.V>)
+int|size(Array<T>)
+array<K>|map_keys(Map<K.V>)
+array<V>|map_values(Map<K.V>)
+boolean|array_contains(Array<T>, value)
+array<t>|sort_array(Array<T>)
+
+###### 类型转换函数
+
+HIVE支持以下类型转换函数
+
+返回类型|名称|描述
+-|-|-
+binary|binary(string|binary)|
+Expected "=" to follow "type"|cast(expr as <type>)|
+
+###### 日期函数
+
+HIVE支持以下日期函数
+
+返回类型|名称|描述
+-|-|-
+string|from_unixtime(bigint unixtime[, string format])|
+bigint|unix_timestamp()|
+bigint|unix_timestamp(string date)|
+bigint|unix_timestamp(string date, string pattern)|
+pre 2.1.0: string  2.1.0 on: date|to_date(string timestamp)|
+int|year(string date)|
+int|quarter(date/timestamp/string)|
+int|month(string date)|
+int|day(string date) dayofmonth(date)|
+int|hour(string date)|
+int|minute(string date)|
+int|second(string date)|
+int|weekofyear(string date)|
+int|datediff(string enddate, string startdate)|
+pre 2.1.0: string  2.1.0 on: date|date_add(string startdate, int days)|
+pre 2.1.0: string  2.1.0 on: date|date_sub(string startdate, int days)|
+timestamp|from_utc_timestamp(timestamp, string timezone)|
+timestamp|to_utc_timestamp(timestamp, string timezone)|
+date|current_date|
+timestamp|current_timestamp|
+string|add_months(string start_date, int num_months)|
+string|last_day(string date)|
+string|next_day(string start_date, string day_of_week)|
+string|trunc(string date, string format)
+double|months_between(date1, date2)|
+string|date_format(date/timestamp/string ts, string fmt)|
+
+###### 条件函数
+
+HIVE支持以下条件函数
+
+返回类型|名称|描述
+-|-|-
+T|if(boolean testCondition, T valueTrue, T valueFalseOrNull)|
+boolean|isnull( a )|
+boolean|isnotnull ( a )|
+T|nvl(T value, T default_value)|
+T|COALESCE(T v1, T v2, ...)|
+T|CASE a WHEN b THEN c [WHEN d THEN e]* [ELSE f] END|
+T|CASE WHEN a THEN b [WHEN c THEN d]* [ELSE e] END|
+
+###### String函数
+
+HIVE支持以下内置String函数
+
+返回类型|名称|描述
+-|-|-
+int|ascii(string str)
+string|base64(binary bin)
+string|concat(string|binary A, string|binary B...)
+array<struct<string,double>>|context_ngrams(array<array<string>>, array<string>, int K, int pf)
+string|concat_ws(string SEP, string A, string B...)
+string|concat_ws(string SEP, array<string>)
+string|decode(binary bin, string charset)
+binary|encode(string src, string charset)
+int|find_in_set(string str, string strList)
+string|format_number(number x, int d)
+string|get_json_object(string json_string, string path)
+boolean|in_file(string str, string filename)
+int|instr(string str, string substr)
+int|length(string A)
+int|locate(string substr, string str[, int pos])
+string|lower(string A) lcase(string A)
+string|lpad(string str, int len, string pad)
+string|ltrim(string A)
+array<struct<string,double>>|ngrams(array<array<string>>, int N, int K, int pf)
+string|parse_url(string urlString, string partToExtract [, string keyToExtract])
+string|printf(String format, Obj... args)
+string|regexp_extract(string subject, string pattern, int index)
+string|regexp_replace(string INITIAL_STRING, string PATTERN, string REPLACEMENT)
+string|repeat(string str, int n)
+string|reverse(string A)
+string|rpad(string str, int len, string pad)
+string|rtrim(string A)
+array<array<string>>|sentences(string str, string lang, string locale)
+string|space(int n)
+array|split(string str, string pat)
+map<string,string>|str_to_map(text[, delimiter1, delimiter2])
+string|substr(string|binary A, int start)  substring(string|binary A, int start)
+string|substr(string|binary A, int start, int len) substring(string|binary A, int start, int len)
+string|substring_index(string A, string delim, int count)
+string|translate(string|char|varchar input, string|char|varchar from, string|char|varchar to)
+string|trim(string A)
+binary|unbase64(string str)
+string|upper(string A) ucase(string A)
+string|initcap(string A)
+int|levenshtein(string A, string B)
+string|soundex(string A)
+
+###### 其他函数
+
+返回类型|名称|描述
+-|-|-
+varies|java_method(class, method[, arg1[, arg2..]])
+varies|reflect(class, method[, arg1[, arg2..]])
+int|hash(a1[, a2...])
+string|current_user()
+string|current_database()
+string|md5(string/binary)
+string|sha1(string/binary) sha(string/binary)
+bigint|crc32(string/binary)	
+string|sha2(string/binary, int)
+binary|aes_encrypt(input string/binary, key string/binary)
+string|aes_decrypt(input binary, key string/binary)
+
+###### xpath
+
+下列函数在[XPathUDF](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+XPathUDF)中描述:
+
+* xpath, xpath_short, xpath_int, xpath_long, xpath_float, xpath_double, xpath_number, xpath_string
+
+###### get_json_object
+
+JSONPath支持限制：
+
+* $: 
+* .:
+* []:
+* *:
+
+值得注意的是以下语法不支持：
+
+* :
+* ..:
+* @:
+* ():
+* ?():
+* [,]:
+* [start:end.step]:
+
+例如：src_json表仅有一行一列：
+
+```
++----+
+                               json
++----+
+{"store":
+  {"fruit":\[{"weight":8,"type":"apple"},{"weight":9,"type":"pear"}],
+   "bicycle":{"price":19.95,"color":"red"}
+  },
+ "email":"amy@only_for_json_udf_test.net",
+ "owner":"amy"
+}
++----+
+```
+可以使用以下查询抽取json对象：
+
+```
+hive> SELECT get_json_object(src_json.json, '$.owner') FROM src_json;
+amy
+ 
+hive> SELECT get_json_object(src_json.json, '$.store.fruit\[0]') FROM src_json;
+{"weight":8,"type":"apple"}
+ 
+hive> SELECT get_json_object(src_json.json, '$.non_exist_key') FROM src_json;
+NULL
+```
+
+##### 内置聚合函数(UDAF)
+
+Hive支持下内置聚合函数
+
+返回类型|名称|描述
+-|-|-
+BIGINT|count(*), count(expr), count(DISTINCT expr[, expr...])|
+DOUBLE|sum(col), sum(DISTINCT col)|
+DOUBLE|avg(col), avg(DISTINCT col)|
+DOUBLE|min(col)|
+DOUBLE|max(col)
+DOUBLE|variance(col), var_pop(col)
+DOUBLE|var_samp(col)
+DOUBLE|stddev_pop(col)
+DOUBLE|stddev_samp(col)
+DOUBLE|covar_pop(col1, col2)
+DOUBLE|covar_samp(col1, col2)
+DOUBLE|corr(col1, col2)
+DOUBLE|percentile(BIGINT col, p)
+array<double>|percentile(BIGINT col, array(p1 [, p2]...))
+DOUBLE|percentile_approx(DOUBLE col, p [, B])
+DOUBLE|percentile_approx(DOUBLE col, array(p1 [, p2]...) [, B])
+array<struct {'x','y'}>|histogram_numeric(col, b)
+array|collect_set(col)
+array|collect_list(col)
+INTEGER|ntile(INTEGER x)
+
+##### 内置表生成函数(UDTF)
+
+普通的用户自定义函数，如concat()，输入一行输出一行，与此相反，表生成函数将一行转换成多行。
+
+返回类型|名称|描述
+-|-|-
+N rows|explode(ARRAY)|
+N rows|explode(MAP)|
+|inline(ARRAY<STRUCT[,STRUCT]>)|
+Array Type|explode(array<TYPE> a)|
+tuple|json_tuple(jsonStr, k1, k2, ...)|
+tuple|parse_url_tuple(url, p1, p2, ...)|
+N rows|posexplode(ARRAY)|
+N rows|stack(INT n, v_1, v_2, ..., v_k)|
+
+使用语法"SELECT udtf(col) AS colAlias..."有以下限制：
+
+* SELECT子句中不允许其他表达式
+	*  SELECT pageid, explode(adid_list) AS myCol... 不支持
+* UDTF不能嵌套
+	* SELECT explode(explode(adid_list)) AS myCol... 不支持
+* GROUP BY / CLUSTER BY / DISTRIBUTE BY / SORT BY不支持
+	* SELECT explode(adid_list) AS myCol ... GROUP BY myCol i 不支持
+
+参阅[ LanguageManual LateralView ](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+LateralView)查看替代语法。
+
+如果想创建一个字定义的UDTF，请参阅[ Writing UDTFs ](https://cwiki.apache.org/confluence/display/Hive/DeveloperGuide+UDTF)
+
+###### explode
+
+explode()将一个array(或一个map)作为输入，然后将每个元素作为一行输出。UDTF可用于SELECT表达式列表或作为LATERAL视图的一部分。
+
+SELECT中使用explode()表达式列表的例子，有一个表myTable有一个列myCol和两行数据如下：
+
+Array<int> myCol|
+-|
+[100,200,300]|
+[400,500,600]|
+
+执行这条查询：
+
+```
+SELECT explode(myCol) AS myNewCol FROM myTable;
+```
+
+将产生如下结果：
+
+(int) myNewCol|
+-|
+100|
+200|
+300|
+400|
+500|
+600|
+
+使用MAP类似：
+
+```
+SELECT explode(myMap) AS (myMapKey, myMapValue) FROM myMapTable;
+```
+
+###### posexplode
+
+```
+版本：
+Hive 0.13.0可用。查看[HIVE-4943](https://issues.apache.org/jira/browse/HIVE-4943)
+```
+posexplode()与explode类似，但是它不仅仅返回元素，还会返回元素的位置。
+
+SELECT中使用posexplode()表达式列表的例子，有一个表myTable有一个列myCol和两行数据如下：
+
+Array<int> myCol|
+-|
+[100,200,300]|
+[400,500,600]|
+
+执行如下查询：
+
+```
+SELECT posexplode(myCol) AS pos, myNewCol FROM myTable;
+```
+
+将产生如下结果：
+
+(int) pos|(int) myNewCol
+-|-
+1|100
+1|400
+2|200
+2|500
+3|300
+3|600
+
+###### json_tuple
+
+json_tuple() UDTF于Hive 0.7版本引入，它输入一个names(keys)的set集合和一个JSON字符串，返回一个使用函数的元组。从一个JSON字符串中获取一个以上元素时，这个方法比GET_JSON_OBJECT更有效。在任何一个JSON字符串被解析多次的情况下，查询时只解析一次会更有效率，这就是JSON_TRUPLE的目的。JSON_TUPLE作为一个UDTF，你需要使用LATERAL VIEW语法。
+
+例如：
+
+```
+select a.timestamp, get_json_object(a.appevents, '$.eventid'), get_json_object(a.appenvets, '$.eventname') from log a;
+```
+可以转换为：
+
+```
+select a.timestamp, b.*
+from log a lateral view json_tuple(a.appevent, 'eventid', 'eventname') b as f1, f2;
+```
+
+###### parse_url_tuple
+
+parse_url_tuple() UDTF与parse_url()类似，但是可以抽取指定URL的多个部分，返回一个元组。将key添加在QUERY关键字与：后面，例如：`arse_url_tuple('http://facebook.com/path1/p.php?k1=v1&k2=v2#Ref1', 'QUERY:k1', 'QUERY:k2')`返回一个具有v1和v2的元组。这个方法比多次调用parse_url() 更有效率。所有的输入和输出类型均为string。
+
+```
+SELECT b.*
+FROM src LATERAL VIEW parse_url_tuple(fullurl, 'HOST', 'PATH', 'QUERY', 'QUERY:id') b as host, path, query, query_id LIMIT 1;
+```
 
 ##### Grouping and Sorting on
 
+一个典型的OLAP模式：你有一个时间戳列，你想按照daily或者其他更细粒度进行分组。因此你想select concat(year(dt),month(dt)) 然后你想在concat()上做group。但是如果你想要GROUP BY或ORDER BY函数或别名，像这样：
+
+```
+select f(col) as fc, count(*) from table_name group by fc;
+```
+
+将会产生如下错误：
+
+```
+select f(col) as fc, count(*) from table_name group by fc;
+```
+
+因为你不能在应用了函数的列别名上使用GROUP BY或ORDER BY，有两个解决办法：
+1，使用子查询，看起来有点复杂：
+
+```
+select sq.fc,col1,col2,...,colN,count(*) from
+  (select f(col) as fc,col1,col2,...,colN from table_name) sq
+ group by sq.fc,col1,col2,...,colN;
+```
+2，你可以确保不使用列别名，这个比较简单：
+
+```
+select f(col) as fc, count(*) from table_name group by f(col);
+```
+
 ##### UDF内部
 
+UDF的上下文计算方法是一次一行，一个简单的使用UDF的例子如下：
+
+```
+SELECT length(string_col) FROM table_name;
+```
+将会在MAP端计算每一个string_col的值的长度。UDF在MAP端进行计算的影响是，不能控制发送给mapper的行的顺序，它与文件片发送给mapper进行反序列化的顺序 相同。任何reduce端的操作（如sort by, order by，普通的join等），将请求UDF的输出就好像它仅仅是表中的另一个列一样。
+
+如果你想控制每一行发送到相同的UDF中（并且排序），你将需要在reduce端进行udf的运算，可以通过 DISTRIBUTE BY, DISTRIBUTE BY + SORT BY, CLUSTER BY来实现，查询例子如下：
+
+```
+SELECT reducer_udf(my_col, distribute_col, sort_col) FROM
+(SELECT my_col, distribute_col, sort_col FROM table_name DISTRIBUTE BY distribute_col SORT BY distribute_col, sort_col) t
+```
+
+然后，值得争议的是，你的需求是控制将行发送到相同的UDF中做聚合，在这种情况下，使用用户定义聚合函数（UDAF）是更好的选择。可以参考更多的关于[UDAF](https://cwiki.apache.org/confluence/display/Hive/GenericUDAFCaseStudy)的写法。也可以使用自定义的[reducer脚本](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Transform)，两者都可以在reduce端做聚合。
+
 ##### 创建自定义的UDF
+
+参阅 [Hive Plugins](https://cwiki.apache.org/confluence/display/Hive/HivePlugins)和[Create Function](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL#LanguageManualDDL-CreateFunction)查看如何创建自定义的UDF.
 
 #### XPath专用函数
 
