@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>Hive语法手册 | 破而后立</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/3.0.3/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Hive语法手册</h1><a id="logo" href="/.">破而后立</a><p class="description">凡事破必有一立</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/history/"><i class="fa fa-book"> 历史</i></a><a href="/guestbook/"><i class="fa fa-comments"> 留言</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Hive语法手册</h1><div class="post-meta">Apr 6, 2016<span> | </span><span class="category"><a href="/categories/hive/">hive</a></span><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-disqus-identifier="2016/04/06/hive-language-manual/" href="/2016/04/06/hive-language-manual/#disqus_thread" class="disqus-comment-count"></a><div class="clear"><div id="toc" class="toc-article"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#数据操作语句"><span class="toc-number">1.</span> <span class="toc-text">数据操作语句</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#DML：装载，插入，更新，删除"><span class="toc-number">1.1.</span> <span class="toc-text">DML：装载，插入，更新，删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#导入-导出"><span class="toc-number">1.2.</span> <span class="toc-text">导入/导出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据检索：查询"><span class="toc-number">1.3.</span> <span class="toc-text">数据检索：查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#select"><span class="toc-number">1.3.1.</span> <span class="toc-text">select</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#select语法"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">select语法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#where子句"><span class="toc-number">1.3.1.1.1.</span> <span class="toc-text">where子句</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#all和distinct子句"><span class="toc-number">1.3.1.1.2.</span> <span class="toc-text">all和distinct子句</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#基于分区（partition）的查询"><span class="toc-number">1.3.1.1.3.</span> <span class="toc-text">基于分区（partition）的查询</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#having子句"><span class="toc-number">1.3.1.1.4.</span> <span class="toc-text">having子句</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#limit子句"><span class="toc-number">1.3.1.1.5.</span> <span class="toc-text">limit子句</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#正则表达式"><span class="toc-number">1.3.1.1.6.</span> <span class="toc-text">正则表达式</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Group-By"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">Group By</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Group-By语法"><span class="toc-number">1.3.1.2.1.</span> <span class="toc-text">Group By语法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#简单例子"><span class="toc-number">1.3.1.2.2.</span> <span class="toc-text">简单例子</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Select语句和group-by子句"><span class="toc-number">1.3.1.2.3.</span> <span class="toc-text">Select语句和group by子句</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#高级功能"><span class="toc-number">1.3.1.2.4.</span> <span class="toc-text">高级功能</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#多组插入"><span class="toc-number">1.3.1.2.4.1.</span> <span class="toc-text">多组插入</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#map端聚合"><span class="toc-number">1.3.1.2.4.2.</span> <span class="toc-text">map端聚合</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Grouping-Sets-Cubes-Rollups-和GROUPING-ID函数"><span class="toc-number">1.3.1.2.4.3.</span> <span class="toc-text">Grouping Sets, Cubes, Rollups, 和GROUPING__ID函数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sort-Distribute-Cluster-Order-By"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">Sort/Distribute/Cluster/Order By</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Order-By语法"><span class="toc-number">1.3.1.3.1.</span> <span class="toc-text">Order By语法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Sort-By语法"><span class="toc-number">1.3.1.3.2.</span> <span class="toc-text">Sort By语法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Sort-By和Order-By的区别"><span class="toc-number">1.3.1.3.3.</span> <span class="toc-text">Sort By和Order By的区别</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Cluster-By和Distribute-By语法"><span class="toc-number">1.3.1.3.4.</span> <span class="toc-text">Cluster By和Distribute By语法</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Transform和map-reduce脚本"><span class="toc-number">1.3.1.4.</span> <span class="toc-text">Transform和map-reduce脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#缺少schema的map-reduce脚本"><span class="toc-number">1.3.1.4.1.</span> <span class="toc-text">缺少schema的map-reduce脚本</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#TRANSFORM的输出"><span class="toc-number">1.3.1.4.2.</span> <span class="toc-text">TRANSFORM的输出</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#操作符和用户自定义函数-UDFS"><span class="toc-number">1.3.1.5.</span> <span class="toc-text">操作符和用户自定义函数(UDFS)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#内置操作符"><span class="toc-number">1.3.1.5.1.</span> <span class="toc-text">内置操作符</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#关系运算符"><span class="toc-number">1.3.1.5.1.1.</span> <span class="toc-text">关系运算符</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#算术运算符"><span class="toc-number">1.3.1.5.1.2.</span> <span class="toc-text">算术运算符</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#逻辑运算符"><span class="toc-number">1.3.1.5.1.3.</span> <span class="toc-text">逻辑运算符</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#复杂类型的运算符"><span class="toc-number">1.3.1.5.1.4.</span> <span class="toc-text">复杂类型的运算符</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#内置函数"><span class="toc-number">1.3.1.5.2.</span> <span class="toc-text">内置函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#内置聚合函数"><span class="toc-number">1.3.1.5.3.</span> <span class="toc-text">内置聚合函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#内置生成表函数"><span class="toc-number">1.3.1.5.4.</span> <span class="toc-text">内置生成表函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Grouping-and-Sorting-on"><span class="toc-number">1.3.1.5.5.</span> <span class="toc-text">Grouping and Sorting on</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#UDF内部"><span class="toc-number">1.3.1.5.6.</span> <span class="toc-text">UDF内部</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#创建自定义的UDF"><span class="toc-number">1.3.1.5.7.</span> <span class="toc-text">创建自定义的UDF</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#XPath专用函数"><span class="toc-number">1.3.1.6.</span> <span class="toc-text">XPath专用函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Joins"><span class="toc-number">1.3.1.7.</span> <span class="toc-text">Joins</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Join优化"><span class="toc-number">1.3.1.8.</span> <span class="toc-text">Join优化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Union"><span class="toc-number">1.3.1.9.</span> <span class="toc-text">Union</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#横向视图"><span class="toc-number">1.3.1.10.</span> <span class="toc-text">横向视图</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#子查询"><span class="toc-number">1.3.2.</span> <span class="toc-text">子查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#采样"><span class="toc-number">1.3.3.</span> <span class="toc-text">采样</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#虚拟列"><span class="toc-number">1.3.4.</span> <span class="toc-text">虚拟列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#窗口和分析函数"><span class="toc-number">1.3.5.</span> <span class="toc-text">窗口和分析函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#增强聚合、多维数据集、分组和汇总"><span class="toc-number">1.3.6.</span> <span class="toc-text">增强聚合、多维数据集、分组和汇总</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#程序语言：Hive-HPL-SQL"><span class="toc-number">1.4.</span> <span class="toc-text">程序语言：Hive HPL/SQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解释执行计划"><span class="toc-number">1.5.</span> <span class="toc-text">解释执行计划</span></a></li></ol></li></ol></div></div><div class="post-content"><h1 id="数据操作语句"><a href="#数据操作语句" class="headerlink" title="数据操作语句"></a>数据操作语句</h1><h2 id="DML：装载，插入，更新，删除"><a href="#DML：装载，插入，更新，删除" class="headerlink" title="DML：装载，插入，更新，删除"></a>DML：装载，插入，更新，删除</h2><h2 id="导入-导出"><a href="#导入-导出" class="headerlink" title="导入/导出"></a>导入/导出</h2><h2 id="数据检索：查询"><a href="#数据检索：查询" class="headerlink" title="数据检索：查询"></a>数据检索：查询</h2><h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><h4 id="select语法"><a href="#select语法" class="headerlink" title="select语法"></a>select语法</h4><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[<span class="keyword">WITH</span> CommonTableExpression (, CommonTableExpression)*]    (Note: Only available starting <span class="keyword">with</span> Hive <span class="number">0.13</span>.<span class="number">0</span>)</span><br><span class="line"><span class="keyword">SELECT</span> [ALL | <span class="keyword">DISTINCT</span>] select_expr, select_expr, ...</span><br><span class="line">  <span class="keyword">FROM</span> table_reference</span><br><span class="line">  [<span class="keyword">WHERE</span> where_condition]</span><br><span class="line">  [<span class="keyword">GROUP</span> <span class="keyword">BY</span> col_list]</span><br><span class="line">  [<span class="keyword">ORDER</span> <span class="keyword">BY</span> col_list]</span><br><span class="line">  [CLUSTER <span class="keyword">BY</span> col_list</span><br><span class="line">    | [DISTRIBUTE <span class="keyword">BY</span> col_list] [SORT <span class="keyword">BY</span> col_list]</span><br><span class="line">  ]</span><br><span class="line"> [LIMIT number]</span><br></pre></td></tr></table></figure>
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>Hive语法手册 | 破而后立</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/3.0.3/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Hive语法手册</h1><a id="logo" href="/.">破而后立</a><p class="description">凡事破必有一立</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/history/"><i class="fa fa-book"> 历史</i></a><a href="/guestbook/"><i class="fa fa-comments"> 留言</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Hive语法手册</h1><div class="post-meta">Apr 6, 2016<span> | </span><span class="category"><a href="/categories/hive/">hive</a></span><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-disqus-identifier="2016/04/06/hive-language-manual/" href="/2016/04/06/hive-language-manual/#disqus_thread" class="disqus-comment-count"></a><div class="clear"><div id="toc" class="toc-article"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#数据操作语句"><span class="toc-number">1.</span> <span class="toc-text">数据操作语句</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#DML：装载，插入，更新，删除"><span class="toc-number">1.1.</span> <span class="toc-text">DML：装载，插入，更新，删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#导入-导出"><span class="toc-number">1.2.</span> <span class="toc-text">导入/导出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据检索：查询"><span class="toc-number">1.3.</span> <span class="toc-text">数据检索：查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#select"><span class="toc-number">1.3.1.</span> <span class="toc-text">select</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#select语法"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">select语法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#where子句"><span class="toc-number">1.3.1.1.1.</span> <span class="toc-text">where子句</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#all和distinct子句"><span class="toc-number">1.3.1.1.2.</span> <span class="toc-text">all和distinct子句</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#基于分区（partition）的查询"><span class="toc-number">1.3.1.1.3.</span> <span class="toc-text">基于分区（partition）的查询</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#having子句"><span class="toc-number">1.3.1.1.4.</span> <span class="toc-text">having子句</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#limit子句"><span class="toc-number">1.3.1.1.5.</span> <span class="toc-text">limit子句</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#正则表达式"><span class="toc-number">1.3.1.1.6.</span> <span class="toc-text">正则表达式</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Group-By"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">Group By</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Group-By语法"><span class="toc-number">1.3.1.2.1.</span> <span class="toc-text">Group By语法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#简单例子"><span class="toc-number">1.3.1.2.2.</span> <span class="toc-text">简单例子</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Select语句和group-by子句"><span class="toc-number">1.3.1.2.3.</span> <span class="toc-text">Select语句和group by子句</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#高级功能"><span class="toc-number">1.3.1.2.4.</span> <span class="toc-text">高级功能</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#多组插入"><span class="toc-number">1.3.1.2.4.1.</span> <span class="toc-text">多组插入</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#map端聚合"><span class="toc-number">1.3.1.2.4.2.</span> <span class="toc-text">map端聚合</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Grouping-Sets-Cubes-Rollups-和GROUPING-ID函数"><span class="toc-number">1.3.1.2.4.3.</span> <span class="toc-text">Grouping Sets, Cubes, Rollups, 和GROUPING__ID函数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sort-Distribute-Cluster-Order-By"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">Sort/Distribute/Cluster/Order By</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Order-By语法"><span class="toc-number">1.3.1.3.1.</span> <span class="toc-text">Order By语法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Sort-By语法"><span class="toc-number">1.3.1.3.2.</span> <span class="toc-text">Sort By语法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Sort-By和Order-By的区别"><span class="toc-number">1.3.1.3.3.</span> <span class="toc-text">Sort By和Order By的区别</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Cluster-By和Distribute-By语法"><span class="toc-number">1.3.1.3.4.</span> <span class="toc-text">Cluster By和Distribute By语法</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Transform和map-reduce脚本"><span class="toc-number">1.3.1.4.</span> <span class="toc-text">Transform和map-reduce脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#缺少schema的map-reduce脚本"><span class="toc-number">1.3.1.4.1.</span> <span class="toc-text">缺少schema的map-reduce脚本</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#TRANSFORM的输出"><span class="toc-number">1.3.1.4.2.</span> <span class="toc-text">TRANSFORM的输出</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#操作符和用户自定义函数-UDFS"><span class="toc-number">1.3.1.5.</span> <span class="toc-text">操作符和用户自定义函数(UDFS)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#内置操作符"><span class="toc-number">1.3.1.5.1.</span> <span class="toc-text">内置操作符</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#关系运算符"><span class="toc-number">1.3.1.5.1.1.</span> <span class="toc-text">关系运算符</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#算术运算符"><span class="toc-number">1.3.1.5.1.2.</span> <span class="toc-text">算术运算符</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#逻辑运算符"><span class="toc-number">1.3.1.5.1.3.</span> <span class="toc-text">逻辑运算符</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#复杂类型的运算符"><span class="toc-number">1.3.1.5.1.4.</span> <span class="toc-text">复杂类型的运算符</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#复杂类型操作"><span class="toc-number">1.3.1.5.1.5.</span> <span class="toc-text">复杂类型操作</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#内置函数"><span class="toc-number">1.3.1.5.2.</span> <span class="toc-text">内置函数</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#数学函数"><span class="toc-number">1.3.1.5.2.1.</span> <span class="toc-text">数学函数</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Decimal类型的数学函数和操作符"><span class="toc-number">1.3.1.5.2.2.</span> <span class="toc-text">Decimal类型的数学函数和操作符</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#集合函数"><span class="toc-number">1.3.1.5.2.3.</span> <span class="toc-text">集合函数</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#类型转换函数"><span class="toc-number">1.3.1.5.2.4.</span> <span class="toc-text">类型转换函数</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#日期函数"><span class="toc-number">1.3.1.5.2.5.</span> <span class="toc-text">日期函数</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#条件函数"><span class="toc-number">1.3.1.5.2.6.</span> <span class="toc-text">条件函数</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#String函数"><span class="toc-number">1.3.1.5.2.7.</span> <span class="toc-text">String函数</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#其他函数"><span class="toc-number">1.3.1.5.2.8.</span> <span class="toc-text">其他函数</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#xpath"><span class="toc-number">1.3.1.5.2.9.</span> <span class="toc-text">xpath</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#get-json-object"><span class="toc-number">1.3.1.5.2.10.</span> <span class="toc-text">get_json_object</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#内置聚合函数-UDAF"><span class="toc-number">1.3.1.5.3.</span> <span class="toc-text">内置聚合函数(UDAF)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#内置表生成函数-UDTF"><span class="toc-number">1.3.1.5.4.</span> <span class="toc-text">内置表生成函数(UDTF)</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#explode"><span class="toc-number">1.3.1.5.4.1.</span> <span class="toc-text">explode</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#posexplode"><span class="toc-number">1.3.1.5.4.2.</span> <span class="toc-text">posexplode</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#json-tuple"><span class="toc-number">1.3.1.5.4.3.</span> <span class="toc-text">json_tuple</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#parse-url-tuple"><span class="toc-number">1.3.1.5.4.4.</span> <span class="toc-text">parse_url_tuple</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Grouping-and-Sorting-on"><span class="toc-number">1.3.1.5.5.</span> <span class="toc-text">Grouping and Sorting on</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#UDF内部"><span class="toc-number">1.3.1.5.6.</span> <span class="toc-text">UDF内部</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#创建自定义的UDF"><span class="toc-number">1.3.1.5.7.</span> <span class="toc-text">创建自定义的UDF</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#XPath专用函数"><span class="toc-number">1.3.1.6.</span> <span class="toc-text">XPath专用函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Joins"><span class="toc-number">1.3.1.7.</span> <span class="toc-text">Joins</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Join优化"><span class="toc-number">1.3.1.8.</span> <span class="toc-text">Join优化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Union"><span class="toc-number">1.3.1.9.</span> <span class="toc-text">Union</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#横向视图"><span class="toc-number">1.3.1.10.</span> <span class="toc-text">横向视图</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#子查询"><span class="toc-number">1.3.2.</span> <span class="toc-text">子查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#采样"><span class="toc-number">1.3.3.</span> <span class="toc-text">采样</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#虚拟列"><span class="toc-number">1.3.4.</span> <span class="toc-text">虚拟列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#窗口和分析函数"><span class="toc-number">1.3.5.</span> <span class="toc-text">窗口和分析函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#增强聚合、多维数据集、分组和汇总"><span class="toc-number">1.3.6.</span> <span class="toc-text">增强聚合、多维数据集、分组和汇总</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#程序语言：Hive-HPL-SQL"><span class="toc-number">1.4.</span> <span class="toc-text">程序语言：Hive HPL/SQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解释执行计划"><span class="toc-number">1.5.</span> <span class="toc-text">解释执行计划</span></a></li></ol></li></ol></div></div><div class="post-content"><h1 id="数据操作语句"><a href="#数据操作语句" class="headerlink" title="数据操作语句"></a>数据操作语句</h1><h2 id="DML：装载，插入，更新，删除"><a href="#DML：装载，插入，更新，删除" class="headerlink" title="DML：装载，插入，更新，删除"></a>DML：装载，插入，更新，删除</h2><h2 id="导入-导出"><a href="#导入-导出" class="headerlink" title="导入/导出"></a>导入/导出</h2><h2 id="数据检索：查询"><a href="#数据检索：查询" class="headerlink" title="数据检索：查询"></a>数据检索：查询</h2><h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><h4 id="select语法"><a href="#select语法" class="headerlink" title="select语法"></a>select语法</h4><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[<span class="keyword">WITH</span> CommonTableExpression (, CommonTableExpression)*]    (Note: Only available starting <span class="keyword">with</span> Hive <span class="number">0.13</span>.<span class="number">0</span>)</span><br><span class="line"><span class="keyword">SELECT</span> [ALL | <span class="keyword">DISTINCT</span>] select_expr, select_expr, ...</span><br><span class="line">  <span class="keyword">FROM</span> table_reference</span><br><span class="line">  [<span class="keyword">WHERE</span> where_condition]</span><br><span class="line">  [<span class="keyword">GROUP</span> <span class="keyword">BY</span> col_list]</span><br><span class="line">  [<span class="keyword">ORDER</span> <span class="keyword">BY</span> col_list]</span><br><span class="line">  [CLUSTER <span class="keyword">BY</span> col_list</span><br><span class="line">    | [DISTRIBUTE <span class="keyword">BY</span> col_list] [SORT <span class="keyword">BY</span> col_list]</span><br><span class="line">  ]</span><br><span class="line"> [LIMIT number]</span><br></pre></td></tr></table></figure>
 <ul>
 <li>select语句可以是联合查询(union)的一部分或另一个查询的子查询。</li>
 <li>table_reference表示实际的查询对象，可以是一个普通表，一个视图，一个join或一个子查询。</li>
@@ -152,12 +152,1285 @@
 <h4 id="操作符和用户自定义函数-UDFS"><a href="#操作符和用户自定义函数-UDFS" class="headerlink" title="操作符和用户自定义函数(UDFS)"></a>操作符和用户自定义函数(UDFS)</h4><p>在Beeline或CLi下，使用如下命令来显示最近的文档：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> FUNCTIONS;</span><br><span class="line"><span class="keyword">DESCRIBE</span> <span class="keyword">FUNCTION</span> &lt;function_name&gt;;</span><br><span class="line"><span class="keyword">DESCRIBE</span> <span class="keyword">FUNCTION</span> <span class="keyword">EXTENDED</span> &lt;function_name&gt;;</span><br></pre></td></tr></table></figure>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">当UDF嵌套在UDF或function中时存在Bug。</span><br><span class="line">当 <span class="code">`hive.cache.expr.evaluation`</span>设置为<span class="code">`true`</span>（默认）时，UDF嵌套在UDF或function中将会产生不正确的结果。这个bug会影响0.12.0, 0.13.0和0.13.1。0.14.0修复了这个bug([<span class="string">HIVE-7314</span>](<span class="link">https://issues.apache.org/jira/browse/HIVE-7314</span>).</span><br><span class="line">这个问题与UDF的实现的getDisplayString方法有关，在Hive user mailing list中的相关[<span class="string">讨论</span>](<span class="link">http://mail-archives.apache.org/mod_mbox/hive-user/201407.mbox/%3cCAEWg7THU-Pr1Dfv_A8VS3Uz5t3ZyJvL0f-bebg4Zb3hXkK-CGQ@mail.gmail.com%3e</span>)</span><br></pre></td></tr></table></figure>
-<h5 id="内置操作符"><a href="#内置操作符" class="headerlink" title="内置操作符"></a>内置操作符</h5><h6 id="关系运算符"><a href="#关系运算符" class="headerlink" title="关系运算符"></a>关系运算符</h6><h6 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h6><h6 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h6><h6 id="复杂类型的运算符"><a href="#复杂类型的运算符" class="headerlink" title="复杂类型的运算符"></a>复杂类型的运算符</h6><h5 id="内置函数"><a href="#内置函数" class="headerlink" title="内置函数"></a>内置函数</h5><p>###### </p>
-<p>###### </p>
-<p>###### </p>
-<p>###### </p>
-<p>###### </p>
-<h5 id="内置聚合函数"><a href="#内置聚合函数" class="headerlink" title="内置聚合函数"></a>内置聚合函数</h5><h5 id="内置生成表函数"><a href="#内置生成表函数" class="headerlink" title="内置生成表函数"></a>内置生成表函数</h5><h5 id="Grouping-and-Sorting-on"><a href="#Grouping-and-Sorting-on" class="headerlink" title="Grouping and Sorting on"></a>Grouping and Sorting on</h5><h5 id="UDF内部"><a href="#UDF内部" class="headerlink" title="UDF内部"></a>UDF内部</h5><h5 id="创建自定义的UDF"><a href="#创建自定义的UDF" class="headerlink" title="创建自定义的UDF"></a>创建自定义的UDF</h5><h4 id="XPath专用函数"><a href="#XPath专用函数" class="headerlink" title="XPath专用函数"></a>XPath专用函数</h4><h4 id="Joins"><a href="#Joins" class="headerlink" title="Joins"></a>Joins</h4><h4 id="Join优化"><a href="#Join优化" class="headerlink" title="Join优化"></a>Join优化</h4><h4 id="Union"><a href="#Union" class="headerlink" title="Union"></a>Union</h4><h4 id="横向视图"><a href="#横向视图" class="headerlink" title="横向视图"></a>横向视图</h4><h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><h3 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h3><h3 id="虚拟列"><a href="#虚拟列" class="headerlink" title="虚拟列"></a>虚拟列</h3><h3 id="窗口和分析函数"><a href="#窗口和分析函数" class="headerlink" title="窗口和分析函数"></a>窗口和分析函数</h3><h3 id="增强聚合、多维数据集、分组和汇总"><a href="#增强聚合、多维数据集、分组和汇总" class="headerlink" title="增强聚合、多维数据集、分组和汇总"></a>增强聚合、多维数据集、分组和汇总</h3><h2 id="程序语言：Hive-HPL-SQL"><a href="#程序语言：Hive-HPL-SQL" class="headerlink" title="程序语言：Hive HPL/SQL"></a>程序语言：Hive HPL/SQL</h2><h2 id="解释执行计划"><a href="#解释执行计划" class="headerlink" title="解释执行计划"></a>解释执行计划</h2></div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://jackalope.cn/2016/04/06/hive-language-manual/" data-id="ciruc8szc0000hgv0hf3e2msj" class="article-share-link">分享到</a><div class="tags"><a href="/tags/hive/">hive</a></div><div class="post-nav"><a href="/2016/04/06/hello-world/" class="pre">欢迎</a><a href="/2015/02/14/hadoop-trouble-shooting/" class="next">hadoop-trouble-shooting</a></div><div id="disqus_thread"><script>var disqus_shortname = 'hedgehog-zowie';
+<h5 id="内置操作符"><a href="#内置操作符" class="headerlink" title="内置操作符"></a>内置操作符</h5><h6 id="关系运算符"><a href="#关系运算符" class="headerlink" title="关系运算符"></a>关系运算符</h6><p>以下操作符比较输入的操作数并且依据操作数之前的比较生成TRUE或FALSE值。</p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>操作数类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A = B</td>
+<td>所有基本类型</td>
+<td>如果表达式A与表达式B相等，则为TRUE，否则为FALSE。</td>
+</tr>
+<tr>
+<td>A == B</td>
+<td>所有基本类型</td>
+<td>同 = </td>
+</tr>
+<tr>
+<td>A &lt;=&gt; B</td>
+<td>所有基本类型</td>
+<td>若操作数非空（non-none），则返回与=相同的结果；若存存空操作数，当两个都为空操作符时，返回TRUE，仅一个为空时，返回FALSE（截至版本<a href="https://issues.apache.org/jira/browse/HIVE-2810" target="_blank" rel="external">0.9.0</a>）；</td>
+</tr>
+<tr>
+<td>A &lt;&gt; B</td>
+<td>所有基本类型</td>
+<td>如果A或B为NULL，返回NULL；如果A不等于B，返回TRUE，否则返回FALSE</td>
+</tr>
+<tr>
+<td>A != B</td>
+<td>所有基本类型</td>
+<td>同 &lt;&gt; </td>
+</tr>
+<tr>
+<td>A &lt; B</td>
+<td>所有基本类型</td>
+<td>如果A或B为NULL，返回NULL；如果A小于B，返回TRUE，否则返回FALSE</td>
+</tr>
+<tr>
+<td>A &lt;= B</td>
+<td>所有基本类型</td>
+<td>如果A或B为NULL，返回NULL；如果A小于等于B，返回TRUE，否则返回FALSE</td>
+</tr>
+<tr>
+<td>A &gt; B</td>
+<td>所有基本类型</td>
+<td>如果A或B为NULL，返回NULL；如果A大于B，返回TRUE，否则返回FALSE</td>
+</tr>
+<tr>
+<td>A &gt;= B</td>
+<td>所有基本类型</td>
+<td>如果A或B为NULL，返回NULL；如果A大于等于B，返回TRUE，否则返回FALSE</td>
+</tr>
+<tr>
+<td>A [NOT] BETWEEN B AND C</td>
+<td>所有基本类型</td>
+<td>如果A、B或C为NULL，返回NULL；如果A大于等于B并且A小于等于C，返回TRUE，否则返回FALSE。可以使用NOT关键字（（截至版本<a href="https://issues.apache.org/jira/browse/HIVE-2810" target="_blank" rel="external">0.9.0</a>。）</td>
+</tr>
+<tr>
+<td>A IS NULL</td>
+<td>所有类型</td>
+<td>如果表达式A计算为NULL，则返回TRUE，否则返回FALSE。</td>
+</tr>
+<tr>
+<td>A IS NOT NULL</td>
+<td>所有类型</td>
+<td>如果表达式A计算不为NULL，则返回TRUE，否则返回FALSE。</td>
+</tr>
+<tr>
+<td>A [NOT] LIKE B</td>
+<td>strings</td>
+<td>如果A或B为NULL，返回NULL；如果字符串A正则匹配表达式B（SQL正则），则返回TRUE，否则返回FALSE。挨个字符进行比较，表达式B中的<em>字符表示匹配任意字符（类型posix正则表达式的.），%字符表示匹配A中的一串字符（类似posix正则表达式中的.*）。例如：’foobar’ like ‘foo’为FALSE，则’foobar’ like ‘foo</em>__‘和’foobar’ like ‘foo%’为TRUE。</td>
+</tr>
+<tr>
+<td>A RLIKE B</td>
+<td>strings</td>
+<td>如果A或B为NULL，返回NULL；如果A中的任意子字符串正则匹配B（JAVA正则），则返回TRUE，否则返回FALSE。例如：’foobar’ RLIKE ‘foo’为TRUE，’foobar’ RLIKE ‘^f.*r$’</td>
+</tr>
+<tr>
+<td>A REGEXP B</td>
+<td>strings</td>
+<td>同 RLIKE</td>
+</tr>
+</tbody>
+</table>
+<h6 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h6><p>以下操作符支持操作数间常见的运算，返回值均为数值型，如果存在任意值为NULL，则返回值也为NULL。</p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>操作数类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A + B</td>
+<td></td>
+</tr>
+<tr>
+<td>A - B</td>
+<td></td>
+</tr>
+<tr>
+<td>A * B</td>
+<td></td>
+</tr>
+<tr>
+<td>A / B</td>
+<td></td>
+</tr>
+<tr>
+<td>A % B</td>
+<td></td>
+</tr>
+<tr>
+<td>A &amp; B</td>
+<td></td>
+</tr>
+<tr>
+<td>A ^ B</td>
+<td></td>
+</tr>
+<tr>
+<td>~A</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h6><p>以下操作符支持创建逻辑表达式。所有的返回值均为TRUE，FALSE或NULL，取闷在于操作数的boolean值。NULL标识为”unknown”，因此如果结果取决于”unknown”状态，那么结果本身是”unknown”。</p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>操作数类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A AND B</td>
+<td>boolean</td>
+<td></td>
+</tr>
+<tr>
+<td>A &amp;&amp; B</td>
+<td>boolean</td>
+<td></td>
+</tr>
+<tr>
+<td>A OR B</td>
+<td>boolean</td>
+<td></td>
+</tr>
+<tr>
+<td>A</td>
+<td></td>
+<td>B</td>
+<td>boolean</td>
+<td></td>
+</tr>
+<tr>
+<td>NOT A</td>
+<td>boolean</td>
+<td></td>
+</tr>
+<tr>
+<td>!A</td>
+<td>boolean</td>
+<td></td>
+</tr>
+<tr>
+<td>A IN (val1, val2, …)</td>
+<td>boolean</td>
+<td></td>
+</tr>
+<tr>
+<td>A NOT IN (val1, val2, …)</td>
+<td>boolean</td>
+<td></td>
+</tr>
+<tr>
+<td>[NOT] EXISTS(subquery)</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="复杂类型的运算符"><a href="#复杂类型的运算符" class="headerlink" title="复杂类型的运算符"></a>复杂类型的运算符</h6><p>以下函数构造复杂对象的实例。</p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>操作数类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>map</td>
+<td></td>
+</tr>
+<tr>
+<td>struct</td>
+<td></td>
+</tr>
+<tr>
+<td>named_struct</td>
+<td></td>
+</tr>
+<tr>
+<td>array</td>
+<td></td>
+</tr>
+<tr>
+<td>create_union</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="复杂类型操作"><a href="#复杂类型操作" class="headerlink" title="复杂类型操作"></a>复杂类型操作</h6><p>以下函数提供访问复杂对象的机制。</p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>操作数类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A[n]</td>
+<td></td>
+</tr>
+<tr>
+<td>M[key]</td>
+<td></td>
+</tr>
+<tr>
+<td>S.x</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h5 id="内置函数"><a href="#内置函数" class="headerlink" title="内置函数"></a>内置函数</h5><h6 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h6><p>Hive支持以下内置数学函数，当参数为NULL时大部分返回NULL。</p>
+<table>
+<thead>
+<tr>
+<th>返回类型</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DOUBLE</td>
+<td>round(DOUBLE a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>round(DOUBLE a, INT d)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>bround(DOUBLE a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>bround(DOUBLE a, INT d)</td>
+<td></td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>floor(DOUBLE a)</td>
+<td></td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>ceil(DOUBLE a), ceiling(DOUBLE a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>rand(), rand(INT seed)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>exp(DOUBLE a), exp(DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>ln(DOUBLE a), ln(DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>log10(DOUBLE a), log10(DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>log2(DOUBLE a), log2(DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>log(DOUBLE base, DOUBLE a)  log(DECIMAL base, DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>pow(DOUBLE a, DOUBLE p)  power(DOUBLE a, DOUBLE p)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>sqrt(DOUBLE a)  sqrt(DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>STRING</td>
+<td>bin(BIGINT a)</td>
+<td></td>
+</tr>
+<tr>
+<td>STRING</td>
+<td>hex(BIGINT a)  hex(STRING a)  hex(BINARY a)</td>
+<td></td>
+</tr>
+<tr>
+<td>BINARAY</td>
+<td>unhex(STRING a)</td>
+<td></td>
+</tr>
+<tr>
+<td>STRING</td>
+<td>conv(BIGINT num, INT from_base, INT to_base)  conv(STRING num, INT from_base, INT to_base)  DOUBLE</td>
+<td>abs(DOUBLE a)</td>
+<td></td>
+</tr>
+<tr>
+<td>INT OR DOUBLE</td>
+<td>pmod(INT a, INT b)  pmod(DOUBLE a, DOUBLE b)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>sin(DOUBLE a), sin(DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>asin(DOUBLE a), asin(DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>cos(DOUBLE a), cos(DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>acos(DOUBLE a), acos(DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>tan(DOUBLE a), tan(DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>atan(DOUBLE a), atan(DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>degrees(DOUBLE a), degrees(DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>radians(DOUBLE a), radians(DOUBLE a)</td>
+<td></td>
+</tr>
+<tr>
+<td>INT OR DOUBLE</td>
+<td>positive(INT a)  positive(DOUBLE a)</td>
+<td></td>
+</tr>
+<tr>
+<td>INT OR DOUBLE</td>
+<td>negative(INT a)  negative(DOUBLE a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE or INT</td>
+<td>sign(DOUBLE a)  sign(DECIMAL a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>e()</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>pi()</td>
+<td></td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>factorial(INT a)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLT</td>
+<td>cbrt(DOUBLE a)</td>
+<td></td>
+</tr>
+<tr>
+<td>INT OR BIGINT</td>
+<td>shiftleft(TINYINT</td>
+<td>SMALLINT</td>
+<td>INT a, INT b)  shiftleft(BIGINT a, INT b)</td>
+<td></td>
+</tr>
+<tr>
+<td>INT OR BIGINT</td>
+<td>shiftright(TINYINT</td>
+<td>SMALLINT</td>
+<td>INT a, INT b)  shiftright(BIGINT a, INT b)</td>
+<td></td>
+</tr>
+<tr>
+<td>INT OR BIGINT</td>
+<td>shiftrightunsigned(TINYINT</td>
+<td>SMALLINT</td>
+<td>INT a, INT b)  shiftrightunsigned(BIGINT a, INT b)</td>
+<td></td>
+</tr>
+<tr>
+<td>T</td>
+<td>greatest(T v1, T v2, …)</td>
+<td></td>
+</tr>
+<tr>
+<td>T</td>
+<td>least(T v1, T v2, …)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="Decimal类型的数学函数和操作符"><a href="#Decimal类型的数学函数和操作符" class="headerlink" title="Decimal类型的数学函数和操作符"></a>Decimal类型的数学函数和操作符</h6><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">版本：</span><br><span class="line">decimal类型在Hive 0.11.0中引入（[<span class="string">HIVE-2693</span>](<span class="link">https://issues.apache.org/jira/browse/HIVE-2693</span>)）</span><br></pre></td></tr></table></figure>
+<p>所有常规算术运算符（如+，-，*，/）及相关的算术UDF(Floor, Ceil, Round等)都已更新为处理小数值类型。关于支持的UDF列表，请参考<a href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Types#LanguageManualTypes" target="_blank" rel="external">Mathematical UDFs</a>中的<a href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Types#LanguageManualTypes-MathematicalUDFs" target="_blank" rel="external">Hive Data Types</a></p>
+<h6 id="集合函数"><a href="#集合函数" class="headerlink" title="集合函数"></a>集合函数</h6><p>HIVE支持以下内置集合函数</p>
+<table>
+<thead>
+<tr>
+<th>返回类型</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int</td>
+<td>size(Map<k.v>)</k.v></td>
+</tr>
+<tr>
+<td>int</td>
+<td>size(Array<t>)</t></td>
+</tr>
+<tr>
+<td>array<k></k></td>
+<td>map_keys(Map<k.v>)</k.v></td>
+</tr>
+<tr>
+<td>array<v></v></td>
+<td>map_values(Map<k.v>)</k.v></td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>array_contains(Array<t>, value)</t></td>
+</tr>
+<tr>
+<td>array<t></t></td>
+<td>sort_array(Array<t>)</t></td>
+</tr>
+</tbody>
+</table>
+<h6 id="类型转换函数"><a href="#类型转换函数" class="headerlink" title="类型转换函数"></a>类型转换函数</h6><p>HIVE支持以下类型转换函数</p>
+<table>
+<thead>
+<tr>
+<th>返回类型</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>binary</td>
+<td>binary(string</td>
+<td>binary)</td>
+<td></td>
+</tr>
+<tr>
+<td>Expected “=” to follow “type”</td>
+<td>cast(expr as <type>)</type></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="日期函数"><a href="#日期函数" class="headerlink" title="日期函数"></a>日期函数</h6><p>HIVE支持以下日期函数</p>
+<table>
+<thead>
+<tr>
+<th>返回类型</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>string</td>
+<td>from_unixtime(bigint unixtime[, string format])</td>
+<td></td>
+</tr>
+<tr>
+<td>bigint</td>
+<td>unix_timestamp()</td>
+<td></td>
+</tr>
+<tr>
+<td>bigint</td>
+<td>unix_timestamp(string date)</td>
+<td></td>
+</tr>
+<tr>
+<td>bigint</td>
+<td>unix_timestamp(string date, string pattern)</td>
+<td></td>
+</tr>
+<tr>
+<td>pre 2.1.0: string  2.1.0 on: date</td>
+<td>to_date(string timestamp)</td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td>year(string date)</td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td>quarter(date/timestamp/string)</td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td>month(string date)</td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td>day(string date) dayofmonth(date)</td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td>hour(string date)</td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td>minute(string date)</td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td>second(string date)</td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td>weekofyear(string date)</td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td>datediff(string enddate, string startdate)</td>
+<td></td>
+</tr>
+<tr>
+<td>pre 2.1.0: string  2.1.0 on: date</td>
+<td>date_add(string startdate, int days)</td>
+<td></td>
+</tr>
+<tr>
+<td>pre 2.1.0: string  2.1.0 on: date</td>
+<td>date_sub(string startdate, int days)</td>
+<td></td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>from_utc_timestamp(timestamp, string timezone)</td>
+<td></td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>to_utc_timestamp(timestamp, string timezone)</td>
+<td></td>
+</tr>
+<tr>
+<td>date</td>
+<td>current_date</td>
+<td></td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>current_timestamp</td>
+<td></td>
+</tr>
+<tr>
+<td>string</td>
+<td>add_months(string start_date, int num_months)</td>
+<td></td>
+</tr>
+<tr>
+<td>string</td>
+<td>last_day(string date)</td>
+<td></td>
+</tr>
+<tr>
+<td>string</td>
+<td>next_day(string start_date, string day_of_week)</td>
+<td></td>
+</tr>
+<tr>
+<td>string</td>
+<td>trunc(string date, string format)</td>
+</tr>
+<tr>
+<td>double</td>
+<td>months_between(date1, date2)</td>
+<td></td>
+</tr>
+<tr>
+<td>string</td>
+<td>date_format(date/timestamp/string ts, string fmt)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="条件函数"><a href="#条件函数" class="headerlink" title="条件函数"></a>条件函数</h6><p>HIVE支持以下条件函数</p>
+<table>
+<thead>
+<tr>
+<th>返回类型</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T</td>
+<td>if(boolean testCondition, T valueTrue, T valueFalseOrNull)</td>
+<td></td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>isnull( a )</td>
+<td></td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>isnotnull ( a )</td>
+<td></td>
+</tr>
+<tr>
+<td>T</td>
+<td>nvl(T value, T default_value)</td>
+<td></td>
+</tr>
+<tr>
+<td>T</td>
+<td>COALESCE(T v1, T v2, …)</td>
+<td></td>
+</tr>
+<tr>
+<td>T</td>
+<td>CASE a WHEN b THEN c [WHEN d THEN e]* [ELSE f] END</td>
+<td></td>
+</tr>
+<tr>
+<td>T</td>
+<td>CASE WHEN a THEN b [WHEN c THEN d]* [ELSE e] END</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="String函数"><a href="#String函数" class="headerlink" title="String函数"></a>String函数</h6><p>HIVE支持以下内置String函数</p>
+<table>
+<thead>
+<tr>
+<th>返回类型</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int</td>
+<td>ascii(string str)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>base64(binary bin)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>concat(string</td>
+<td>binary A, string</td>
+<td>binary B…)</td>
+</tr>
+<tr>
+<td>array<struct<string,double>&gt;</struct<string,double></td>
+<td>context_ngrams(array<array<string>&gt;, array<string>, int K, int pf)</string></array<string></td>
+</tr>
+<tr>
+<td>string</td>
+<td>concat_ws(string SEP, string A, string B…)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>concat_ws(string SEP, array<string>)</string></td>
+</tr>
+<tr>
+<td>string</td>
+<td>decode(binary bin, string charset)</td>
+</tr>
+<tr>
+<td>binary</td>
+<td>encode(string src, string charset)</td>
+</tr>
+<tr>
+<td>int</td>
+<td>find_in_set(string str, string strList)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>format_number(number x, int d)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>get_json_object(string json_string, string path)</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>in_file(string str, string filename)</td>
+</tr>
+<tr>
+<td>int</td>
+<td>instr(string str, string substr)</td>
+</tr>
+<tr>
+<td>int</td>
+<td>length(string A)</td>
+</tr>
+<tr>
+<td>int</td>
+<td>locate(string substr, string str[, int pos])</td>
+</tr>
+<tr>
+<td>string</td>
+<td>lower(string A) lcase(string A)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>lpad(string str, int len, string pad)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>ltrim(string A)</td>
+</tr>
+<tr>
+<td>array<struct<string,double>&gt;</struct<string,double></td>
+<td>ngrams(array<array<string>&gt;, int N, int K, int pf)</array<string></td>
+</tr>
+<tr>
+<td>string</td>
+<td>parse_url(string urlString, string partToExtract [, string keyToExtract])</td>
+</tr>
+<tr>
+<td>string</td>
+<td>printf(String format, Obj… args)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>regexp_extract(string subject, string pattern, int index)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>regexp_replace(string INITIAL_STRING, string PATTERN, string REPLACEMENT)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>repeat(string str, int n)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>reverse(string A)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>rpad(string str, int len, string pad)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>rtrim(string A)</td>
+</tr>
+<tr>
+<td>array<array<string>&gt;</array<string></td>
+<td>sentences(string str, string lang, string locale)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>space(int n)</td>
+</tr>
+<tr>
+<td>array</td>
+<td>split(string str, string pat)</td>
+</tr>
+<tr>
+<td>map<string,string></string,string></td>
+<td>str_to_map(text[, delimiter1, delimiter2])</td>
+</tr>
+<tr>
+<td>string</td>
+<td>substr(string</td>
+<td>binary A, int start)  substring(string</td>
+<td>binary A, int start)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>substr(string</td>
+<td>binary A, int start, int len) substring(string</td>
+<td>binary A, int start, int len)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>substring_index(string A, string delim, int count)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>translate(string</td>
+<td>char</td>
+<td>varchar input, string</td>
+<td>char</td>
+<td>varchar from, string</td>
+<td>char</td>
+<td>varchar to)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>trim(string A)</td>
+</tr>
+<tr>
+<td>binary</td>
+<td>unbase64(string str)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>upper(string A) ucase(string A)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>initcap(string A)</td>
+</tr>
+<tr>
+<td>int</td>
+<td>levenshtein(string A, string B)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>soundex(string A)</td>
+</tr>
+</tbody>
+</table>
+<h6 id="其他函数"><a href="#其他函数" class="headerlink" title="其他函数"></a>其他函数</h6><table>
+<thead>
+<tr>
+<th>返回类型</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>varies</td>
+<td>java_method(class, method[, arg1[, arg2..]])</td>
+</tr>
+<tr>
+<td>varies</td>
+<td>reflect(class, method[, arg1[, arg2..]])</td>
+</tr>
+<tr>
+<td>int</td>
+<td>hash(a1[, a2…])</td>
+</tr>
+<tr>
+<td>string</td>
+<td>current_user()</td>
+</tr>
+<tr>
+<td>string</td>
+<td>current_database()</td>
+</tr>
+<tr>
+<td>string</td>
+<td>md5(string/binary)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>sha1(string/binary) sha(string/binary)</td>
+</tr>
+<tr>
+<td>bigint</td>
+<td>crc32(string/binary)    </td>
+</tr>
+<tr>
+<td>string</td>
+<td>sha2(string/binary, int)</td>
+</tr>
+<tr>
+<td>binary</td>
+<td>aes_encrypt(input string/binary, key string/binary)</td>
+</tr>
+<tr>
+<td>string</td>
+<td>aes_decrypt(input binary, key string/binary)</td>
+</tr>
+</tbody>
+</table>
+<h6 id="xpath"><a href="#xpath" class="headerlink" title="xpath"></a>xpath</h6><p>下列函数在<a href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+XPathUDF" target="_blank" rel="external">XPathUDF</a>中描述:</p>
+<ul>
+<li>xpath, xpath_short, xpath_int, xpath_long, xpath_float, xpath_double, xpath_number, xpath_string</li>
+</ul>
+<h6 id="get-json-object"><a href="#get-json-object" class="headerlink" title="get_json_object"></a>get_json_object</h6><p>JSONPath支持限制：</p>
+<ul>
+<li>$: </li>
+<li>.:</li>
+<li>[]:</li>
+<li>*:</li>
+</ul>
+<p>值得注意的是以下语法不支持：</p>
+<ul>
+<li>:</li>
+<li>..:</li>
+<li>@:</li>
+<li>():</li>
+<li>?():</li>
+<li>[,]:</li>
+<li>[start:end.step]:</li>
+</ul>
+<p>例如：src_json表仅有一行一列：</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+----+</span><br><span class="line">                               json</span><br><span class="line">+----+</span><br><span class="line">&#123;<span class="string">"store"</span>:</span><br><span class="line">  &#123;<span class="string">"fruit"</span>:\[&#123;<span class="string">"weight"</span>:<span class="number">8</span>,<span class="string">"type"</span>:<span class="string">"apple"</span>&#125;,&#123;<span class="string">"weight"</span>:<span class="number">9</span>,<span class="string">"type"</span>:<span class="string">"pear"</span>&#125;],</span><br><span class="line">   <span class="string">"bicycle"</span>:&#123;<span class="string">"price"</span>:<span class="number">19.95</span>,<span class="string">"color"</span>:<span class="string">"red"</span>&#125;</span><br><span class="line">  &#125;,</span><br><span class="line"> <span class="string">"email"</span>:<span class="string">"amy@only_for_json_udf_test.net"</span>,</span><br><span class="line"> <span class="string">"owner"</span>:<span class="string">"amy"</span></span><br><span class="line">&#125;</span><br><span class="line">+----+</span><br></pre></td></tr></table></figure>
+<p>可以使用以下查询抽取json对象：</p>
+<figure class="highlight ruleslanguage"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; <span class="keyword">SELECT</span> get_json_object(src_json.json, <span class="string">'$.owner'</span>) <span class="keyword">FROM</span> src_json;</span><br><span class="line">amy</span><br><span class="line"> </span><br><span class="line">hive&gt; <span class="keyword">SELECT</span> get_json_object(src_json.json, <span class="string">'$.store.fruit\[0]'</span>) <span class="keyword">FROM</span> src_json;</span><br><span class="line">&#123;<span class="string">"weight"</span>:<span class="number">8</span>,<span class="string">"type"</span>:<span class="string">"apple"</span>&#125;</span><br><span class="line"> </span><br><span class="line">hive&gt; <span class="keyword">SELECT</span> get_json_object(src_json.json, <span class="string">'$.non_exist_key'</span>) <span class="keyword">FROM</span> src_json;</span><br><span class="line">NULL</span><br></pre></td></tr></table></figure>
+<h5 id="内置聚合函数-UDAF"><a href="#内置聚合函数-UDAF" class="headerlink" title="内置聚合函数(UDAF)"></a>内置聚合函数(UDAF)</h5><p>Hive支持下内置聚合函数</p>
+<table>
+<thead>
+<tr>
+<th>返回类型</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BIGINT</td>
+<td>count(*), count(expr), count(DISTINCT expr[, expr…])</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>sum(col), sum(DISTINCT col)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>avg(col), avg(DISTINCT col)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>min(col)</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>max(col)</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>variance(col), var_pop(col)</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>var_samp(col)</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>stddev_pop(col)</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>stddev_samp(col)</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>covar_pop(col1, col2)</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>covar_samp(col1, col2)</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>corr(col1, col2)</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>percentile(BIGINT col, p)</td>
+</tr>
+<tr>
+<td>array<double></double></td>
+<td>percentile(BIGINT col, array(p1 [, p2]…))</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>percentile_approx(DOUBLE col, p [, B])</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>percentile_approx(DOUBLE col, array(p1 [, p2]…) [, B])</td>
+</tr>
+<tr>
+<td>array<struct {'x','y'}=""></struct></td>
+<td>histogram_numeric(col, b)</td>
+</tr>
+<tr>
+<td>array</td>
+<td>collect_set(col)</td>
+</tr>
+<tr>
+<td>array</td>
+<td>collect_list(col)</td>
+</tr>
+<tr>
+<td>INTEGER</td>
+<td>ntile(INTEGER x)</td>
+</tr>
+</tbody>
+</table>
+<h5 id="内置表生成函数-UDTF"><a href="#内置表生成函数-UDTF" class="headerlink" title="内置表生成函数(UDTF)"></a>内置表生成函数(UDTF)</h5><p>普通的用户自定义函数，如concat()，输入一行输出一行，与此相反，表生成函数将一行转换成多行。</p>
+<table>
+<thead>
+<tr>
+<th>返回类型</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N rows</td>
+<td>explode(ARRAY)</td>
+<td></td>
+</tr>
+<tr>
+<td>N rows</td>
+<td>explode(MAP)</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>inline(ARRAY<struct[,struct]>)</struct[,struct]></td>
+<td></td>
+</tr>
+<tr>
+<td>Array Type</td>
+<td>explode(array<type> a)</type></td>
+<td></td>
+</tr>
+<tr>
+<td>tuple</td>
+<td>json_tuple(jsonStr, k1, k2, …)</td>
+<td></td>
+</tr>
+<tr>
+<td>tuple</td>
+<td>parse_url_tuple(url, p1, p2, …)</td>
+<td></td>
+</tr>
+<tr>
+<td>N rows</td>
+<td>posexplode(ARRAY)</td>
+<td></td>
+</tr>
+<tr>
+<td>N rows</td>
+<td>stack(INT n, v_1, v_2, …, v_k)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>使用语法”SELECT udtf(col) AS colAlias…”有以下限制：</p>
+<ul>
+<li>SELECT子句中不允许其他表达式<ul>
+<li>SELECT pageid, explode(adid_list) AS myCol… 不支持</li>
+</ul>
+</li>
+<li>UDTF不能嵌套<ul>
+<li>SELECT explode(explode(adid_list)) AS myCol… 不支持</li>
+</ul>
+</li>
+<li>GROUP BY / CLUSTER BY / DISTRIBUTE BY / SORT BY不支持<ul>
+<li>SELECT explode(adid_list) AS myCol … GROUP BY myCol i 不支持</li>
+</ul>
+</li>
+</ul>
+<p>参阅<a href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+LateralView" target="_blank" rel="external"> LanguageManual LateralView </a>查看替代语法。</p>
+<p>如果想创建一个字定义的UDTF，请参阅<a href="https://cwiki.apache.org/confluence/display/Hive/DeveloperGuide+UDTF" target="_blank" rel="external"> Writing UDTFs </a></p>
+<h6 id="explode"><a href="#explode" class="headerlink" title="explode"></a>explode</h6><p>explode()将一个array(或一个map)作为输入，然后将每个元素作为一行输出。UDTF可用于SELECT表达式列表或作为LATERAL视图的一部分。</p>
+<p>SELECT中使用explode()表达式列表的例子，有一个表myTable有一个列myCol和两行数据如下：</p>
+<table>
+<thead>
+<tr>
+<th>Array<int> myCol</int></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[100,200,300]</td>
+<td></td>
+</tr>
+<tr>
+<td>[400,500,600]</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>执行这条查询：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> explode(myCol) <span class="keyword">AS</span> myNewCol <span class="keyword">FROM</span> myTable;</span><br></pre></td></tr></table></figure>
+<p>将产生如下结果：</p>
+<table>
+<thead>
+<tr>
+<th>(int) myNewCol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100</td>
+<td></td>
+</tr>
+<tr>
+<td>200</td>
+<td></td>
+</tr>
+<tr>
+<td>300</td>
+<td></td>
+</tr>
+<tr>
+<td>400</td>
+<td></td>
+</tr>
+<tr>
+<td>500</td>
+<td></td>
+</tr>
+<tr>
+<td>600</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>使用MAP类似：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT explode(<span class="name">myMap</span>) AS (<span class="name">myMapKey</span>, myMapValue) FROM myMapTable<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<h6 id="posexplode"><a href="#posexplode" class="headerlink" title="posexplode"></a>posexplode</h6><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">版本：</span><br><span class="line">Hive 0.13.0可用。查看[<span class="string">HIVE-4943</span>](<span class="link">https://issues.apache.org/jira/browse/HIVE-4943</span>)</span><br></pre></td></tr></table></figure>
+<p>posexplode()与explode类似，但是它不仅仅返回元素，还会返回元素的位置。</p>
+<p>SELECT中使用posexplode()表达式列表的例子，有一个表myTable有一个列myCol和两行数据如下：</p>
+<table>
+<thead>
+<tr>
+<th>Array<int> myCol</int></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[100,200,300]</td>
+<td></td>
+</tr>
+<tr>
+<td>[400,500,600]</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>执行如下查询：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> posexplode(myCol) <span class="keyword">AS</span> pos, myNewCol <span class="keyword">FROM</span> myTable;</span><br></pre></td></tr></table></figure>
+<p>将产生如下结果：</p>
+<table>
+<thead>
+<tr>
+<th>(int) pos</th>
+<th>(int) myNewCol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>100</td>
+</tr>
+<tr>
+<td>1</td>
+<td>400</td>
+</tr>
+<tr>
+<td>2</td>
+<td>200</td>
+</tr>
+<tr>
+<td>2</td>
+<td>500</td>
+</tr>
+<tr>
+<td>3</td>
+<td>300</td>
+</tr>
+<tr>
+<td>3</td>
+<td>600</td>
+</tr>
+</tbody>
+</table>
+<h6 id="json-tuple"><a href="#json-tuple" class="headerlink" title="json_tuple"></a>json_tuple</h6><p>json_tuple() UDTF于Hive 0.7版本引入，它输入一个names(keys)的set集合和一个JSON字符串，返回一个使用函数的元组。从一个JSON字符串中获取一个以上元素时，这个方法比GET_JSON_OBJECT更有效。在任何一个JSON字符串被解析多次的情况下，查询时只解析一次会更有效率，这就是JSON_TRUPLE的目的。JSON_TUPLE作为一个UDTF，你需要使用LATERAL VIEW语法。</p>
+<p>例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.timestamp, get_json_object(a.appevents, <span class="string">'$.eventid'</span>), get_json_object(a.appenvets, <span class="string">'$.eventname'</span>) <span class="keyword">from</span> <span class="keyword">log</span> a;</span><br></pre></td></tr></table></figure>
+<p>可以转换为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.timestamp, b.*</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">log</span> a lateral <span class="keyword">view</span> json_tuple(a.appevent, <span class="string">'eventid'</span>, <span class="string">'eventname'</span>) b <span class="keyword">as</span> f1, f2;</span><br></pre></td></tr></table></figure>
+<h6 id="parse-url-tuple"><a href="#parse-url-tuple" class="headerlink" title="parse_url_tuple"></a>parse_url_tuple</h6><p>parse_url_tuple() UDTF与parse_url()类似，但是可以抽取指定URL的多个部分，返回一个元组。将key添加在QUERY关键字与：后面，例如：<code>arse_url_tuple(&#39;http://facebook.com/path1/p.php?k1=v1&amp;k2=v2#Ref1&#39;, &#39;QUERY:k1&#39;, &#39;QUERY:k2&#39;)</code>返回一个具有v1和v2的元组。这个方法比多次调用parse_url() 更有效率。所有的输入和输出类型均为string。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> b.*</span><br><span class="line"><span class="keyword">FROM</span> src LATERAL <span class="keyword">VIEW</span> parse_url_tuple(fullurl, <span class="string">'HOST'</span>, <span class="string">'PATH'</span>, <span class="string">'QUERY'</span>, <span class="string">'QUERY:id'</span>) b <span class="keyword">as</span> host, <span class="keyword">path</span>, <span class="keyword">query</span>, query_id <span class="keyword">LIMIT</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="Grouping-and-Sorting-on"><a href="#Grouping-and-Sorting-on" class="headerlink" title="Grouping and Sorting on"></a>Grouping and Sorting on</h5><p>一个典型的OLAP模式：你有一个时间戳列，你想按照daily或者其他更细粒度进行分组。因此你想select concat(year(dt),month(dt)) 然后你想在concat()上做group。但是如果你想要GROUP BY或ORDER BY函数或别名，像这样：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> f(<span class="keyword">col</span>) <span class="keyword">as</span> fc, <span class="keyword">count</span>(*) <span class="keyword">from</span> table_name <span class="keyword">group</span> <span class="keyword">by</span> fc;</span><br></pre></td></tr></table></figure>
+<p>将会产生如下错误：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> f(<span class="keyword">col</span>) <span class="keyword">as</span> fc, <span class="keyword">count</span>(*) <span class="keyword">from</span> table_name <span class="keyword">group</span> <span class="keyword">by</span> fc;</span><br></pre></td></tr></table></figure>
+<p>因为你不能在应用了函数的列别名上使用GROUP BY或ORDER BY，有两个解决办法：<br>1，使用子查询，看起来有点复杂：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> sq.fc,col1,col2,...,colN,<span class="keyword">count</span>(*) <span class="keyword">from</span></span><br><span class="line">  (<span class="keyword">select</span> f(<span class="keyword">col</span>) <span class="keyword">as</span> fc,col1,col2,...,colN <span class="keyword">from</span> table_name) sq</span><br><span class="line"> <span class="keyword">group</span> <span class="keyword">by</span> sq.fc,col1,col2,...,colN;</span><br></pre></td></tr></table></figure>
+<p>2，你可以确保不使用列别名，这个比较简单：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> f(<span class="keyword">col</span>) <span class="keyword">as</span> fc, <span class="keyword">count</span>(*) <span class="keyword">from</span> table_name <span class="keyword">group</span> <span class="keyword">by</span> f(<span class="keyword">col</span>);</span><br></pre></td></tr></table></figure>
+<h5 id="UDF内部"><a href="#UDF内部" class="headerlink" title="UDF内部"></a>UDF内部</h5><p>UDF的上下文计算方法是一次一行，一个简单的使用UDF的例子如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">length</span>(string_col) <span class="keyword">FROM</span> table_name;</span><br></pre></td></tr></table></figure>
+<p>将会在MAP端计算每一个string_col的值的长度。UDF在MAP端进行计算的影响是，不能控制发送给mapper的行的顺序，它与文件片发送给mapper进行反序列化的顺序 相同。任何reduce端的操作（如sort by, order by，普通的join等），将请求UDF的输出就好像它仅仅是表中的另一个列一样。</p>
+<p>如果你想控制每一行发送到相同的UDF中（并且排序），你将需要在reduce端进行udf的运算，可以通过 DISTRIBUTE BY, DISTRIBUTE BY + SORT BY, CLUSTER BY来实现，查询例子如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> reducer_udf(my_col, distribute_col, sort_col) <span class="keyword">FROM</span></span><br><span class="line">(<span class="keyword">SELECT</span> my_col, distribute_col, sort_col <span class="keyword">FROM</span> table_name <span class="keyword">DISTRIBUTE</span> <span class="keyword">BY</span> distribute_col <span class="keyword">SORT</span> <span class="keyword">BY</span> distribute_col, sort_col) t</span><br></pre></td></tr></table></figure>
+<p>然后，值得争议的是，你的需求是控制将行发送到相同的UDF中做聚合，在这种情况下，使用用户定义聚合函数（UDAF）是更好的选择。可以参考更多的关于<a href="https://cwiki.apache.org/confluence/display/Hive/GenericUDAFCaseStudy" target="_blank" rel="external">UDAF</a>的写法。也可以使用自定义的<a href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Transform" target="_blank" rel="external">reducer脚本</a>，两者都可以在reduce端做聚合。</p>
+<h5 id="创建自定义的UDF"><a href="#创建自定义的UDF" class="headerlink" title="创建自定义的UDF"></a>创建自定义的UDF</h5><p>参阅 <a href="https://cwiki.apache.org/confluence/display/Hive/HivePlugins" target="_blank" rel="external">Hive Plugins</a>和<a href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL#LanguageManualDDL-CreateFunction" target="_blank" rel="external">Create Function</a>查看如何创建自定义的UDF.</p>
+<h4 id="XPath专用函数"><a href="#XPath专用函数" class="headerlink" title="XPath专用函数"></a>XPath专用函数</h4><h4 id="Joins"><a href="#Joins" class="headerlink" title="Joins"></a>Joins</h4><h4 id="Join优化"><a href="#Join优化" class="headerlink" title="Join优化"></a>Join优化</h4><h4 id="Union"><a href="#Union" class="headerlink" title="Union"></a>Union</h4><h4 id="横向视图"><a href="#横向视图" class="headerlink" title="横向视图"></a>横向视图</h4><h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><h3 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h3><h3 id="虚拟列"><a href="#虚拟列" class="headerlink" title="虚拟列"></a>虚拟列</h3><h3 id="窗口和分析函数"><a href="#窗口和分析函数" class="headerlink" title="窗口和分析函数"></a>窗口和分析函数</h3><h3 id="增强聚合、多维数据集、分组和汇总"><a href="#增强聚合、多维数据集、分组和汇总" class="headerlink" title="增强聚合、多维数据集、分组和汇总"></a>增强聚合、多维数据集、分组和汇总</h3><h2 id="程序语言：Hive-HPL-SQL"><a href="#程序语言：Hive-HPL-SQL" class="headerlink" title="程序语言：Hive HPL/SQL"></a>程序语言：Hive HPL/SQL</h2><h2 id="解释执行计划"><a href="#解释执行计划" class="headerlink" title="解释执行计划"></a>解释执行计划</h2></div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://jackalope.cn/2016/04/06/hive-language-manual/" data-id="ciruc8szc0000hgv0hf3e2msj" class="article-share-link">分享到</a><div class="tags"><a href="/tags/hive/">hive</a></div><div class="post-nav"><a href="/2016/04/06/hello-world/" class="pre">欢迎</a><a href="/2015/02/14/hadoop-trouble-shooting/" class="next">hadoop-trouble-shooting</a></div><div id="disqus_thread"><script>var disqus_shortname = 'hedgehog-zowie';
 var disqus_identifier = '2016/04/06/hive-language-manual/';
 var disqus_title = 'Hive语法手册';
 var disqus_url = 'http://jackalope.cn/2016/04/06/hive-language-manual/';

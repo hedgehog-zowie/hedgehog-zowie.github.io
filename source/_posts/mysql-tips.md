@@ -26,3 +26,10 @@ select * from t1 left join t2 on
 or
 (t1.code = t2.code)
 ```
+
+# collate
+使用关联查询已经过滤掉了某表中不存在的记录，而在往该表中插入这些数据时，报出主键冲突，如下：
+select a.* from a left join b on a.id = b.id and b.id is null;
+经查，由于mysql中默认不区分大小写，而表a中id字段的校对集设置为`utf8_bin`(将字符串中的每一个字符用二进制数据存储，区分大小写)，而表b中的id校对集为默认的`utf8_general_ci`(ci为case insensitive的缩写，即大小写不敏感，ps:还有一个校对集`utf8_general_cs`——cs为case sensitive的缩写，即大小写敏感)，因此在关联的时候区分了大小写，而导致不相等，而在插入时又不区分大小写，导致主键冲突。
+`注意：子查询中的校对集与所查询的表中一致`
+
