@@ -1,0 +1,5 @@
+.deploy_git/
+db.json
+node_modules
+package.json
+public

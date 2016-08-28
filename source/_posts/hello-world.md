@@ -28,6 +28,16 @@ categories:
 
 ## maupassant主题
 使用[屠城](https://www.haomwei.com/)的主题，感谢！
+
+安装主题和渲染器：
+
+```
+$ git clone https://github.com/tufu9441/maupassant-hexo.git themes/maupassant
+$ npm install hexo-renderer-jade --save
+$ npm install hexo-renderer-sass --save
+```
+编辑Hexo目录下的 _config.yml，将theme的值改为maupassant。
+
 * 添加关于(about)，历史（history），留言（guestbook）
 ```
 hexo new page abou
@@ -36,6 +46,7 @@ hexo new page guestbook
 ```
 
 * _config.yml的menu中添加：
+
 ```
 - page: about
   directory: about/
@@ -47,7 +58,9 @@ hexo new page guestbook
   directory: guestbook/
   icon: fa-comments
 ```
+
 * 添加时间轴
+
 ```
 ---
 title: 时间轴
