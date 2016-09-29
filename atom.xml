@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://jackalope.cn/"/>
-  <updated>2016-08-14T07:34:46.000Z</updated>
+  <updated>2016-09-27T06:45:44.147Z</updated>
   <id>http://jackalope.cn/</id>
   
   <author>
@@ -16,11 +16,114 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>hive-trouble-shooting</title>
+    <link href="http://jackalope.cn/2016/09/27/hive-trouble-shooting/"/>
+    <id>http://jackalope.cn/2016/09/27/hive-trouble-shooting/</id>
+    <published>2016-09-27T06:44:02.000Z</published>
+    <updated>2016-09-27T06:45:44.147Z</updated>
+    
+    <content type="html">&lt;p&gt;此处记录使用Hive过程中遇到的问题、原因及解决办法。&lt;/p&gt;
+&lt;h1 id=&quot;HiveServer提交任务时报出GC-overhead-limit-exceeded&quot;&gt;&lt;a href=&quot;#HiveServer提交任务时报出GC-overhead-limit-exceeded&quot; class=&quot;headerlink&quot; title=&quot;HiveServer提交任务时报出GC overhead limit exceeded&quot;&gt;&lt;/a&gt;HiveServer提交任务时报出GC overhead limit exceeded&lt;/h1&gt;&lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h2&gt;&lt;p&gt;由kettle连接HiveServer，查看hive.log可以看到已经接收到任务，但随即立即报出错误如下：&lt;br&gt;&lt;figure class=&quot;highlight stylus&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;2016&lt;/span&gt;-&lt;span class=&quot;number&quot;&gt;08&lt;/span&gt;-&lt;span class=&quot;number&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;09&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;04&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;671&lt;/span&gt; ERROR [pool-&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;-thread-&lt;span class=&quot;number&quot;&gt;106&lt;/span&gt;]: ql&lt;span class=&quot;selector-class&quot;&gt;.Driver&lt;/span&gt; (SessionState&lt;span class=&quot;selector-class&quot;&gt;.java&lt;/span&gt;:printError(&lt;span class=&quot;number&quot;&gt;545&lt;/span&gt;)) - FAILED: Execution Error, return &lt;span class=&quot;selector-tag&quot;&gt;code&lt;/span&gt; -&lt;span class=&quot;number&quot;&gt;101&lt;/span&gt; from org&lt;span class=&quot;selector-class&quot;&gt;.apache&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hadoop&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hive&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.ql&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.exec&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.mr&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.MapRedTask&lt;/span&gt;. GC overhead limit exceeded&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;且没有打印出堆栈信息。&lt;/p&gt;
+&lt;p&gt;##　原因&lt;br&gt;由GC overhead limit exceeded可知，是由于花费了大量的时间进行垃圾回收所致，原文如下：&lt;br&gt;&lt;figure class=&quot;highlight applescript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; too much &lt;span class=&quot;built_in&quot;&gt;time&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; being spent &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; garbage collection: &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; more than &lt;span class=&quot;number&quot;&gt;98&lt;/span&gt;% &lt;span class=&quot;keyword&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;the&lt;/span&gt; total &lt;span class=&quot;built_in&quot;&gt;time&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; spent &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; garbage collection &lt;span class=&quot;keyword&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;less than&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;% &lt;span class=&quot;keyword&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;the&lt;/span&gt; heap &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; recovered, an OutOfMemoryError will be thrown&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;简单来说，就是内存不够，导致了大量GC，而JVM中实际上需要使用很多内存，从来垃圾回收之后并不能释放很多空间，如此反复。&lt;/p&gt;
+&lt;p&gt;查看hive中的源码，ql.Driver类中的execute方法启动任务，如下：&lt;br&gt;&lt;figure class=&quot;highlight mipsasm&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;TaskRunner runner = launchTask(task, queryId, noName, &lt;span class=&quot;keyword&quot;&gt;jobname, &lt;/span&gt;&lt;span class=&quot;keyword&quot;&gt;jobs, &lt;/span&gt;driverCxt)&lt;span class=&quot;comment&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;launchTask方法中新建了一个TaskRunner对象，并运行，如下：&lt;br&gt;&lt;figure class=&quot;highlight dns&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;TaskRunner tskRun = new TaskRunner(tsk, tskRes)&lt;span class=&quot;comment&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;tskRun.runSequential()&lt;span class=&quot;comment&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;TaskRunner的runSequential方法启动任务，并设置返回值。&lt;br&gt;&lt;figure class=&quot;highlight cs&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * Launches a task, and sets its exit value in the result variable.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;runSequential&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; exitVal = &lt;span class=&quot;number&quot;&gt;-101&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    exitVal = tsk.executeTask();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (Throwable t) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (tsk.getException() == &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      tsk.setException(t);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    t.printStackTrace();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  result.setExitVal(exitVal, tsk.getException());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;由此可见，在hiveServer启动任务时，便已报错，任务尚未发送到Hadoop，因此考虑调整HiveServer的内存大小。&lt;/p&gt;
+&lt;h2 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法&quot;&gt;&lt;/a&gt;解决办法&lt;/h2&gt;&lt;p&gt;在&lt;code&gt;hive-env.sh&lt;/code&gt;中设置&lt;code&gt;export HADOOP_HEAPSIZE=1024&lt;/code&gt;&lt;br&gt;或在&lt;code&gt;hadoop-env.sh&lt;/code&gt;中设置&lt;code&gt;export HADOOP_CLIENT_OPTS=&amp;quot;-Xmx1024m $HADOOP_CLIENT_OPTS&amp;quot;&lt;/code&gt;&lt;br&gt;&lt;code&gt;注意，该设置会影响其他hadoop客户端命令&lt;/code&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;此处记录使用Hive过程中遇到的问题、原因及解决办法。&lt;/p&gt;
+&lt;h1 id=&quot;HiveServer提交任务时报出GC-overhead-limit-exceeded&quot;&gt;&lt;a href=&quot;#HiveServer提交任务时报出GC-overhead-limit-exceede
+    
+    </summary>
+    
+      <category term="hive" scheme="http://jackalope.cn/categories/hive/"/>
+    
+    
+      <category term="hive" scheme="http://jackalope.cn/tags/hive/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hbase-trouble-shooting</title>
+    <link href="http://jackalope.cn/2016/09/27/hbase-trouble-shooting/"/>
+    <id>http://jackalope.cn/2016/09/27/hbase-trouble-shooting/</id>
+    <published>2016-09-27T06:42:53.000Z</published>
+    <updated>2016-09-27T07:54:00.450Z</updated>
+    
+    <content type="html">&lt;p&gt;此处记录使用HBase过程中遇到的问题、原因及解决办法。&lt;/p&gt;
+&lt;h1 id=&quot;HBase元数据修复&quot;&gt;&lt;a href=&quot;#HBase元数据修复&quot; class=&quot;headerlink&quot; title=&quot;HBase元数据修复&quot;&gt;&lt;/a&gt;HBase元数据修复&lt;/h1&gt;&lt;p&gt;HBase中出现好几张表都读取报错的情况，表现为提示如下错误：&lt;/p&gt;
+&lt;figure class=&quot;highlight stylus&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Mon Sep &lt;span class=&quot;number&quot;&gt;26&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;16&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;34&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;49&lt;/span&gt; CST &lt;span class=&quot;number&quot;&gt;2016&lt;/span&gt;, org&lt;span class=&quot;selector-class&quot;&gt;.apache&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hadoop&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hbase&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.client&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.RpcRetryingCaller&lt;/span&gt;@&lt;span class=&quot;number&quot;&gt;7293&lt;/span&gt;da04, org&lt;span class=&quot;selector-class&quot;&gt;.apache&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hadoop&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hbase&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.NotServingRegionException&lt;/span&gt;: org&lt;span class=&quot;selector-class&quot;&gt;.apache&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hadoop&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hbase&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.NotServingRegionException&lt;/span&gt;: Region BASE_USER_ACC,&lt;span class=&quot;number&quot;&gt;20160705688835318555647&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1470888379980&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.fd89999e1f6fb506fa69fee69837d47b&lt;/span&gt;. is not online&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org&lt;span class=&quot;selector-class&quot;&gt;.apache&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hadoop&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hbase&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.regionserver&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.HRegionServer&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.getRegionByEncodedName&lt;/span&gt;(HRegionServer&lt;span class=&quot;selector-class&quot;&gt;.java&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;2612&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org&lt;span class=&quot;selector-class&quot;&gt;.apache&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hadoop&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hbase&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.regionserver&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.HRegionServer&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.getRegion&lt;/span&gt;(HRegionServer&lt;span class=&quot;selector-class&quot;&gt;.java&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;4003&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org&lt;span class=&quot;selector-class&quot;&gt;.apache&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hadoop&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hbase&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.regionserver&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.HRegionServer&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.scan&lt;/span&gt;(HRegionServer&lt;span class=&quot;selector-class&quot;&gt;.java&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;3002&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org&lt;span class=&quot;selector-class&quot;&gt;.apache&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hadoop&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hbase&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.protobuf&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.generated&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.ClientProtos&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;$ClientService&lt;/span&gt;$&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;.callBlockingMethod(ClientProtos&lt;span class=&quot;selector-class&quot;&gt;.java&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;26929&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org&lt;span class=&quot;selector-class&quot;&gt;.apache&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hadoop&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hbase&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.ipc&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.RpcServer&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.call&lt;/span&gt;(RpcServer&lt;span class=&quot;selector-class&quot;&gt;.java&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;2185&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org&lt;span class=&quot;selector-class&quot;&gt;.apache&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hadoop&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.hbase&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.ipc&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.RpcServer&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;$Handler&lt;/span&gt;.run(RpcServer&lt;span class=&quot;selector-class&quot;&gt;.java&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;1889&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;重启HBase后，问题依旧。&lt;br&gt;使用命令：&lt;code&gt;hbase hbck BASE_USER_INFO_MERGE&lt;/code&gt;，对该表进行一致性检查，结果如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight applescript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Summary:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  hbase:meta &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; okay.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Number &lt;span class=&quot;keyword&quot;&gt;of&lt;/span&gt; regions: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Deployed &lt;span class=&quot;keyword&quot;&gt;on&lt;/span&gt;:  bis-hadoop-datanode-s2d&lt;span class=&quot;number&quot;&gt;-136&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;60020&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1474869133049&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Table BASE_USER_INFO_MERGE &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; inconsistent.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Number &lt;span class=&quot;keyword&quot;&gt;of&lt;/span&gt; regions: &lt;span class=&quot;number&quot;&gt;76&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Deployed &lt;span class=&quot;keyword&quot;&gt;on&lt;/span&gt;:  bis-hadoop-datanode-s&lt;span class=&quot;number&quot;&gt;-01&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;60020&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1474869134748&lt;/span&gt; bis-hadoop-datanode-s&lt;span class=&quot;number&quot;&gt;-02&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;60020&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1474869134770&lt;/span&gt; ...... bis-newdatawork-s2c&lt;span class=&quot;number&quot;&gt;-126&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;60020&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1474869134031&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;9&lt;/span&gt; inconsistencies detected.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Status: INCONSISTENT&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;存在不一致的情况，进一步查看一致性检查的输出日志，发现提示有一些错误如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight puppet&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;ERROR: &lt;span class=&quot;keyword&quot;&gt;Region&lt;/span&gt; &amp;#123; &lt;span class=&quot;attr&quot;&gt;meta&lt;/span&gt; =&amp;gt; BASE_USER_INFO_MERGE,&lt;span class=&quot;number&quot;&gt;86188803131181&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1472665253414.0&lt;/span&gt;c9057eab1d7da58f2d44bfab641dada., &lt;span class=&quot;attr&quot;&gt;hdfs&lt;/span&gt; =&amp;gt; hdfs://webcluster/hbase/data/&lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;/BASE_USER_INF&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;O_MERGE/0c9057eab1d7da58f2d44bfab641dada, &lt;span class=&quot;attr&quot;&gt;deployed&lt;/span&gt; =&amp;gt;  &amp;#125; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;deployed&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;any&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;region&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;server&lt;/span&gt;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ERROR: &lt;span class=&quot;keyword&quot;&gt;Region&lt;/span&gt; &amp;#123; &lt;span class=&quot;attr&quot;&gt;meta&lt;/span&gt; =&amp;gt; BASE_USER_INFO_MERGE,&lt;span class=&quot;number&quot;&gt;860920020927537&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1472665222872.1&lt;/span&gt;acfd28e4be4fb26da89c3db11d83436., &lt;span class=&quot;attr&quot;&gt;hdfs&lt;/span&gt; =&amp;gt; hdfs://webcluster/hbase/data/&lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;/BASE_USER_IN&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;FO_MERGE/&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;acfd28e4be4fb26da89c3db11d83436, &lt;span class=&quot;attr&quot;&gt;deployed&lt;/span&gt; =&amp;gt;  &amp;#125; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;deployed&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;any&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;region&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;server&lt;/span&gt;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ERROR: &lt;span class=&quot;keyword&quot;&gt;Region&lt;/span&gt; &amp;#123; &lt;span class=&quot;attr&quot;&gt;meta&lt;/span&gt; =&amp;gt; BASE_USER_INFO_MERGE,&lt;span class=&quot;number&quot;&gt;94&lt;/span&gt;de2654afe507bd,&lt;span class=&quot;number&quot;&gt;1473448496650.2807&lt;/span&gt;f8fa14d34f7d997b571c00000366., &lt;span class=&quot;attr&quot;&gt;hdfs&lt;/span&gt; =&amp;gt; hdfs://webcluster/hbase/data/&lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;/BASE_USER_I&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;NFO_MERGE/&lt;span class=&quot;number&quot;&gt;2807&lt;/span&gt;f8fa14d34f7d997b571c00000366, &lt;span class=&quot;attr&quot;&gt;deployed&lt;/span&gt; =&amp;gt;  &amp;#125; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;deployed&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;any&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;region&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;server&lt;/span&gt;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ERROR: &lt;span class=&quot;keyword&quot;&gt;Region&lt;/span&gt; &amp;#123; &lt;span class=&quot;attr&quot;&gt;meta&lt;/span&gt; =&amp;gt; BASE_USER_INFO_MERGE,&lt;span class=&quot;number&quot;&gt;862029023490010&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1472665253414.39&lt;/span&gt;df136d1fb6eda60bbd06d0150f4f01., &lt;span class=&quot;attr&quot;&gt;hdfs&lt;/span&gt; =&amp;gt; hdfs://webcluster/hbase/data/&lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;/BASE_USER_IN&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;FO_MERGE/&lt;span class=&quot;number&quot;&gt;39&lt;/span&gt;df136d1fb6eda60bbd06d0150f4f01, &lt;span class=&quot;attr&quot;&gt;deployed&lt;/span&gt; =&amp;gt;  &amp;#125; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;deployed&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;any&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;region&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;server&lt;/span&gt;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ERROR: &lt;span class=&quot;keyword&quot;&gt;Region&lt;/span&gt; &amp;#123; &lt;span class=&quot;attr&quot;&gt;meta&lt;/span&gt; =&amp;gt; BASE_USER_INFO_MERGE,fa7df192ea2395ad,&lt;span class=&quot;number&quot;&gt;1472871226021.59&lt;/span&gt;bc8c67cc00216964a36188d10223e&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;., &lt;span class=&quot;attr&quot;&gt;hdfs&lt;/span&gt; =&amp;gt; hdfs://webcluster/hbase/data/&lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;/BASE_USER_I&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;NFO_MERGE/&lt;span class=&quot;number&quot;&gt;59&lt;/span&gt;bc8c67cc00216964a36188d10223e&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, &lt;span class=&quot;attr&quot;&gt;deployed&lt;/span&gt; =&amp;gt;  &amp;#125; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;deployed&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;any&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;region&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;server&lt;/span&gt;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2016-09-27 14:31:43,978 DEBUG [main] util.HBaseFsck: There are 82 region info entries&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2016-09-27 14:31:44,685 INFO  [main] util.HBaseFsck: Handling overlap merges in parallel. set hbasefsck.overlap.merge.parallel to false to run serially.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ERROR: There is a hole in the region chain between 860920020927537 and 861060011050756.  You need to create a new .regioninfo and region dir in hdfs to plug the hole.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ERROR: There is a hole in the region chain between 86188803131181 and 862222012466956.  You need to create a new .regioninfo and region dir in hdfs to plug the hole.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ERROR: There is a hole in the region chain between 94de2654afe507bd and 9f2bdf5.  You need to create a new .regioninfo and region dir in hdfs to plug the hole.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ERROR: Last region should end with an empty key. You need to create a new region and regioninfo in HDFS to plug the hole.&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;错误提示为：该表存在一些region未分配到任何regionserver上，且该表存在空洞，即region不连续的情况。&lt;br&gt;于是，进一步执行命令修复空洞：&lt;code&gt;hbase hbck -repairHoles BASE_USER_INFO_MERGE&lt;/code&gt;，可以看到类似如下输出：&lt;/p&gt;
+&lt;figure class=&quot;highlight puppet&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;ERROR: &lt;span class=&quot;keyword&quot;&gt;Region&lt;/span&gt; &amp;#123; &lt;span class=&quot;attr&quot;&gt;meta&lt;/span&gt; =&amp;gt; BASE_USER_INFO_MERGE,&lt;span class=&quot;number&quot;&gt;862029023490010&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1472665253414.39&lt;/span&gt;df136d1fb6eda60bbd06d0150f4f01., &lt;span class=&quot;attr&quot;&gt;hdfs&lt;/span&gt; =&amp;gt; hdfs://webcluster/hbase/data/&lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;/BASE_USER_IN&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;FO_MERGE/&lt;span class=&quot;number&quot;&gt;39&lt;/span&gt;df136d1fb6eda60bbd06d0150f4f01, &lt;span class=&quot;attr&quot;&gt;deployed&lt;/span&gt; =&amp;gt;  &amp;#125; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;deployed&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;any&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;region&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;server&lt;/span&gt;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Trying to fix unassigned region...&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;然而，最后的修复结果：&lt;/p&gt;
+&lt;figure class=&quot;highlight applescript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Summary:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  hbase:meta &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; okay.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Number &lt;span class=&quot;keyword&quot;&gt;of&lt;/span&gt; regions: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Deployed &lt;span class=&quot;keyword&quot;&gt;on&lt;/span&gt;:  bis-hadoop-datanode-s2d&lt;span class=&quot;number&quot;&gt;-136&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;60020&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1474869133049&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Table BASE_USER_INFO_MERGE &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; inconsistent.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Number &lt;span class=&quot;keyword&quot;&gt;of&lt;/span&gt; regions: &lt;span class=&quot;number&quot;&gt;76&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Deployed &lt;span class=&quot;keyword&quot;&gt;on&lt;/span&gt;:  ......&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;9&lt;/span&gt; inconsistencies detected.&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;问题依旧，尝试在HBase中删除一个分区的元数据记录：&lt;code&gt;deleteall &amp;#39;hbase:meta&amp;#39;, &amp;#39;BASE_USER_INFO_MERGE,86188803131181,1472665253414.0c9057eab1d7da58f2d44bfab641dada.&amp;#39;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;然后，再重新生成：&lt;code&gt;hbase hbck -fixMeta BASE_USER_INFO_MERGE&lt;/code&gt;，此时，元数据重新生成后，该region处于&lt;code&gt;not deployed&lt;/code&gt;状态，再执行命令将该region重新分配：&lt;code&gt;hbase hbck -fixAssignments BASE_USER_INFO_MERGE&lt;/code&gt;，然而，却无法重新分配该region，无奈，只得删除其元数据及HDFS上的相关文件，之后再重新生成元数据，并修补空洞。&lt;br&gt;如下：&lt;br&gt;&lt;figure class=&quot;highlight nginx&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;deleteall&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;hbase:meta&#39;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&#39;BASE_USER_INFO_MERGE,860920020927537,1472665222872.1acfd28e4be4fb26da89c3db11d83436.&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight dts&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;hdfs dfs -rm -r -skipTrash &lt;span class=&quot;meta-keyword&quot;&gt;/hbase/&lt;/span&gt;data&lt;span class=&quot;meta-keyword&quot;&gt;/default/&lt;/span&gt;BASE_USER_INFO_MERGE/&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;acfd28e4be4fb26da89c3db11d83436&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight nginx&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;hbase&lt;/span&gt; hbck -repairHoles BASE_USER_INFO_MERGE&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;最后再检查一致性&lt;code&gt;hbase hbck BASE_USER_INFO_MERGE&lt;/code&gt;：&lt;br&gt;&lt;figure class=&quot;highlight applescript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Summary:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  hbase:meta &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; okay.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Number &lt;span class=&quot;keyword&quot;&gt;of&lt;/span&gt; regions: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Deployed &lt;span class=&quot;keyword&quot;&gt;on&lt;/span&gt;:  bis-hadoop-datanode-s2d&lt;span class=&quot;number&quot;&gt;-136&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;60020&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1474869133049&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  BASE_USER_INFO_MERGE &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; okay.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Number &lt;span class=&quot;keyword&quot;&gt;of&lt;/span&gt; regions: &lt;span class=&quot;number&quot;&gt;81&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Deployed &lt;span class=&quot;keyword&quot;&gt;on&lt;/span&gt;:  ......&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt; inconsistencies detected.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Status: OK&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;此处记录使用HBase过程中遇到的问题、原因及解决办法。&lt;/p&gt;
+&lt;h1 id=&quot;HBase元数据修复&quot;&gt;&lt;a href=&quot;#HBase元数据修复&quot; class=&quot;headerlink&quot; title=&quot;HBase元数据修复&quot;&gt;&lt;/a&gt;HBase元数据修复&lt;/h1&gt;&lt;p&gt;HB
+    
+    </summary>
+    
+      <category term="HBase" scheme="http://jackalope.cn/categories/HBase/"/>
+    
+    
+      <category term="HBase" scheme="http://jackalope.cn/tags/HBase/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>spark-tips</title>
+    <link href="http://jackalope.cn/2016/09/23/spark-tips/"/>
+    <id>http://jackalope.cn/2016/09/23/spark-tips/</id>
+    <published>2016-09-23T00:50:52.000Z</published>
+    <updated>2016-09-29T03:14:37.931Z</updated>
+    
+    <content type="html">&lt;p&gt;记录使用spark的过程中一些技巧、方法、注意事项。&lt;/p&gt;
+&lt;h1 id=&quot;executor-cores-executor-memory对执行效率的影响&quot;&gt;&lt;a href=&quot;#executor-cores-executor-memory对执行效率的影响&quot; class=&quot;headerlink&quot; title=&quot;executor-cores/executor-memory对执行效率的影响&quot;&gt;&lt;/a&gt;executor-cores/executor-memory对执行效率的影响&lt;/h1&gt;&lt;p&gt;环境：1 master/4 workers（12核，32G内存，其中spark可用资源为12核，16G内存）&lt;br&gt;程序说明：对约3000万行游戏数据进行ALS模型训练，并对所有用户（约600万）预测200款游戏的评分，最后取出每个用户20款评分最高的游戏进行推荐。&lt;br&gt;效率测试过程：&lt;br&gt;1.executor-cores 12, executor-memory 16g&lt;br&gt;这种配置下，一共会启用4个executor，共使用48 cores, 64G内存。&lt;br&gt;开始时间：16/09/22 16:06:32&lt;br&gt;结束时间：16/09/22 18:05:01&lt;br&gt;耗时：7109s = 118.5m&lt;br&gt;2.executor-cores 3, executor-memory 4g&lt;br&gt;这种配置下，一共会启用16个executor，共使用48 cores, 64G内存。&lt;br&gt;开始时间：2016/9/22 23:00:02&lt;br&gt;结束时间：2016/9/23 0:50:11&lt;br&gt;耗时：6609s = 110.15m&lt;br&gt;3.executor-cores 1, executor-memory 2g, total-executor-cores 16&lt;br&gt;这种配置下，一共会启用16个executor，共使用16 cores, 32G内存，可以结余出资源供其他程序使用。&lt;br&gt;开始时间：2016/9/22 18:32:17&lt;br&gt;结束时间：2016/9/22 21:21:47&lt;br&gt;耗时：10170s = 169.5m&lt;/p&gt;
+&lt;p&gt;结论：&lt;br&gt;&lt;code&gt;1.使用所有资源，其效率比使用部分资源效率要高，但并不能成比例增长；&lt;/code&gt;&lt;br&gt;&lt;code&gt;2.增加executor个数可稍微提升执行效率。&lt;/code&gt;&lt;br&gt;&lt;code&gt;PS: 由于集群规模有限，所得到的信息也相对有限，因此，针对不同集群规模，需做相应的测试，不可直接套用此结论。&lt;/code&gt;&lt;/p&gt;
+&lt;h1 id=&quot;scala-MatchError-GenericRowWithSchema&quot;&gt;&lt;a href=&quot;#scala-MatchError-GenericRowWithSchema&quot; class=&quot;headerlink&quot; title=&quot;scala.MatchError, GenericRowWithSchema&quot;&gt;&lt;/a&gt;scala.MatchError, GenericRowWithSchema&lt;/h1&gt;&lt;p&gt;在评估ALS模型时，需要将predictions中的内容全部取出来计算方差和标准差，而在提取每行内容时，遇到错误如下：&lt;br&gt;&lt;figure class=&quot;highlight stylus&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;16&lt;/span&gt;/&lt;span class=&quot;number&quot;&gt;09&lt;/span&gt;/&lt;span class=&quot;number&quot;&gt;29&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;40&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;59&lt;/span&gt; WARN scheduler&lt;span class=&quot;selector-class&quot;&gt;.TaskSetManager&lt;/span&gt;: Lost task &lt;span class=&quot;number&quot;&gt;2.0&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; stage &lt;span class=&quot;number&quot;&gt;103.0&lt;/span&gt; (TID &lt;span class=&quot;number&quot;&gt;492&lt;/span&gt;, bis-newdatanode-s2b-&lt;span class=&quot;number&quot;&gt;67&lt;/span&gt;): scala&lt;span class=&quot;selector-class&quot;&gt;.MatchError&lt;/span&gt;: [&lt;span class=&quot;number&quot;&gt;0.0013&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;0.018407427&lt;/span&gt;] (of class org&lt;span class=&quot;selector-class&quot;&gt;.apache&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.spark&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.sql&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.catalyst&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.expressions&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.GenericRowWithSchema&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;提示说明类型不匹配，查看我的代码：&lt;br&gt;&lt;figure class=&quot;highlight lasso&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;val predictions = model.transform(test).&lt;span class=&quot;keyword&quot;&gt;cache&lt;/span&gt;()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;val mse = predictions.&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;rating&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;prediction&quot;&lt;/span&gt;).rdd.flatMap &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; Row(rating: Double, prediction: Double) =&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				&lt;span class=&quot;attr&quot;&gt;...&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				&lt;span class=&quot;attr&quot;&gt;...&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;进一步查看transform方法：&lt;br&gt;&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;override &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;transform&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(dataset: DataFrame)&lt;/span&gt;:&lt;/span&gt; DataFrame = &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    // Register a UDF &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; DataFrame, &lt;span class=&quot;keyword&quot;&gt;and&lt;/span&gt; then&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    // create a new column named map(predictionCol) by running the predict UDF.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    val predict = udf &amp;#123; (userFeatures: Seq[Float], itemFeatures: Seq[Float]) =&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (userFeatures != null &amp;amp;&amp;amp; itemFeatures != null) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        blas.sdot(rank, userFeatures.toArray, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, itemFeatures.toArray, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &amp;#125; &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Float.NaN&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    dataset&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      .join(userFactors, dataset($(userCol)) === userFactors(&lt;span class=&quot;string&quot;&gt;&quot;id&quot;&lt;/span&gt;), &lt;span class=&quot;string&quot;&gt;&quot;left&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      .join(itemFactors, dataset($(itemCol)) === itemFactors(&lt;span class=&quot;string&quot;&gt;&quot;id&quot;&lt;/span&gt;), &lt;span class=&quot;string&quot;&gt;&quot;left&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      .select(dataset(&lt;span class=&quot;string&quot;&gt;&quot;*&quot;&lt;/span&gt;),&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        predict(userFactors(&lt;span class=&quot;string&quot;&gt;&quot;features&quot;&lt;/span&gt;), itemFactors(&lt;span class=&quot;string&quot;&gt;&quot;features&quot;&lt;/span&gt;)).&lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt;($(predictionCol)))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;说明rating字段类型，与传入参数test中的rating字段类型一致，而prediction字段类型，是由blas.sdot()函数决定的，查看该函数：&lt;br&gt;&lt;figure class=&quot;highlight aspectj&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;abstract&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;sdot&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; n, &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt;[] sx, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; incx, &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt;[] sy, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; incy)&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;其返回值是float型，因此，将提取行数据的代码修改为：&lt;br&gt;&lt;figure class=&quot;highlight zephir&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; Row(rating: &lt;span class=&quot;keyword&quot;&gt;Double&lt;/span&gt;, prediction: &lt;span class=&quot;keyword&quot;&gt;Float&lt;/span&gt;) =&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录使用spark的过程中一些技巧、方法、注意事项。&lt;/p&gt;
+&lt;h1 id=&quot;executor-cores-executor-memory对执行效率的影响&quot;&gt;&lt;a href=&quot;#executor-cores-executor-memory对执行效率的影响&quot; class=&quot;h
+    
+    </summary>
+    
+      <category term="spark" scheme="http://jackalope.cn/categories/spark/"/>
+    
+    
+      <category term="spark" scheme="http://jackalope.cn/tags/spark/"/>
+    
+  </entry>
+  
+  <entry>
     <title>js-trouble-shooting</title>
     <link href="http://jackalope.cn/2016/08/09/js-trouble-shooting/"/>
     <id>http://jackalope.cn/2016/08/09/js-trouble-shooting/</id>
     <published>2016-08-09T10:32:04.000Z</published>
-    <updated>2016-08-14T07:34:46.000Z</updated>
+    <updated>2016-08-20T23:41:36.000Z</updated>
     
     <content type="html">&lt;p&gt;记录使用js时遇到的问题、原因及解决办法。&lt;/p&gt;
 &lt;h1 id=&quot;chrome-display不生效&quot;&gt;&lt;a href=&quot;#chrome-display不生效&quot; class=&quot;headerlink&quot; title=&quot;chrome display不生效&quot;&gt;&lt;/a&gt;chrome display不生效&lt;/h1&gt;&lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h2&gt;&lt;p&gt;往后台请求数据时有一定的延时，为了更好的用户体验，需要在页面进行查询时，先展示一个loading的gif图片。&lt;br&gt;关键代码如下：&lt;br&gt;&lt;figure class=&quot;highlight elixir&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;string&quot;&gt;&quot;#id&quot;&lt;/span&gt;).css(&lt;span class=&quot;string&quot;&gt;&quot;display&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;none&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;string&quot;&gt;&quot;#id&quot;&lt;/span&gt;).css(&lt;span class=&quot;string&quot;&gt;&quot;display&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;block&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
@@ -75,7 +178,7 @@
     <link href="http://jackalope.cn/2016/07/15/hive-params/"/>
     <id>http://jackalope.cn/2016/07/15/hive-params/</id>
     <published>2016-07-15T02:08:05.000Z</published>
-    <updated>2016-08-14T07:34:46.000Z</updated>
+    <updated>2016-08-20T23:41:36.000Z</updated>
     
     <content type="html">&lt;p&gt;本文主要翻译自hive 1.2.1版本的hive-default.xml.template。&lt;/p&gt;
 &lt;h1 id=&quot;hive参数配置&quot;&gt;&lt;a href=&quot;#hive参数配置&quot; class=&quot;headerlink&quot; title=&quot;hive参数配置&quot;&gt;&lt;/a&gt;hive参数配置&lt;/h1&gt;&lt;p&gt;Hive提供三种可以改变环境变量的方法，分别是：（1）、修改配置文件；（2）、命令行参数；（3）、进入cli后设置参数。&lt;/p&gt;
@@ -133,7 +236,7 @@
     <link href="http://jackalope.cn/2016/04/19/java-core-conception/"/>
     <id>http://jackalope.cn/2016/04/19/java-core-conception/</id>
     <published>2016-04-19T08:28:53.000Z</published>
-    <updated>2016-04-22T06:54:16.000Z</updated>
+    <updated>2016-08-20T23:41:36.000Z</updated>
     
     <content type="html">&lt;p&gt;本文主要介绍一些Java中的基本概念，包括数据类型、变量、运算符、字符串、输入输出、控制流程、大数值、数组。&lt;/p&gt;
 &lt;h1 id=&quot;数据类型&quot;&gt;&lt;a href=&quot;#数据类型&quot; class=&quot;headerlink&quot; title=&quot;数据类型&quot;&gt;&lt;/a&gt;数据类型&lt;/h1&gt;&lt;p&gt;Java是一种强类型语言，必须为每一个变量声明一种类型。Java中一共有8种基本类型，其中有4种整型、2种浮点型、1种用于表示Unicode编码的字符单元的字符型char、1种用于表示真值的boolean型。&lt;/p&gt;
@@ -514,7 +617,7 @@ char[] passwd = console.readPassword(&amp;quot;Password:&amp;quot;);
     <link href="http://jackalope.cn/2016/04/19/java-core-collections/"/>
     <id>http://jackalope.cn/2016/04/19/java-core-collections/</id>
     <published>2016-04-19T07:50:37.000Z</published>
-    <updated>2016-08-14T07:34:47.000Z</updated>
+    <updated>2016-08-20T23:41:36.000Z</updated>
     
     <content type="html">&lt;p&gt;在实现方法时，选择不同的数据结构会导致其实现风格以及性能存存着很大差异，JDK帮我们实现了传统的数据结构，我们称之为collection(集合)。&lt;br&gt;collection（集合）表示一组对象，这些对象也称为collection的元素。一些collection允许有重复的元素，而另一些而不允许。一些collection是有序的，而另一些则是无序的。&lt;/p&gt;
 &lt;h1 id=&quot;接口&quot;&gt;&lt;a href=&quot;#接口&quot; class=&quot;headerlink&quot; title=&quot;接口&quot;&gt;&lt;/a&gt;接口&lt;/h1&gt;&lt;h2 id=&quot;Collection接口&quot;&gt;&lt;a href=&quot;#Collection接口&quot; class=&quot;headerlink&quot; title=&quot;Collection接口&quot;&gt;&lt;/a&gt;Collection接口&lt;/h2&gt;&lt;p&gt;Collection接口是Java集合的根接口，JDK不提供此接口的任何直接实现：它提供更具体的子接口（如Set和List）实现。&lt;br&gt;Collection接口扩展了Iterable接口，因此，对于标准类库中的任何集合都可以使用”for each”循环。&lt;/p&gt;
@@ -629,7 +732,7 @@ char[] passwd = console.readPassword(&amp;quot;Password:&amp;quot;);
     <link href="http://jackalope.cn/2016/04/19/java-core-nio/"/>
     <id>http://jackalope.cn/2016/04/19/java-core-nio/</id>
     <published>2016-04-19T07:48:43.000Z</published>
-    <updated>2016-04-19T08:03:24.000Z</updated>
+    <updated>2016-08-20T23:41:36.000Z</updated>
     
     <content type="html"></content>
     
@@ -651,7 +754,7 @@ char[] passwd = console.readPassword(&amp;quot;Password:&amp;quot;);
     <link href="http://jackalope.cn/2016/04/19/java-core-io/"/>
     <id>http://jackalope.cn/2016/04/19/java-core-io/</id>
     <published>2016-04-19T07:48:35.000Z</published>
-    <updated>2016-04-19T08:04:40.000Z</updated>
+    <updated>2016-08-20T23:41:36.000Z</updated>
     
     <content type="html"></content>
     
@@ -673,7 +776,7 @@ char[] passwd = console.readPassword(&amp;quot;Password:&amp;quot;);
     <link href="http://jackalope.cn/2016/04/19/java-core-thread/"/>
     <id>http://jackalope.cn/2016/04/19/java-core-thread/</id>
     <published>2016-04-19T07:48:26.000Z</published>
-    <updated>2016-04-28T10:04:45.000Z</updated>
+    <updated>2016-08-20T23:41:36.000Z</updated>
     
     <content type="html">&lt;p&gt;线程是程序执行流的最小单元，多线程程序在较低层次上扩展了多任务的概念：一个程序同时执行多个任务。通常每一个任务称为一个线程(thread)，它是线程控制的简称。可以同时运行一个以上线程的程序称为多线程程序(multithreaded)。&lt;/p&gt;
 &lt;h1 id=&quot;线程的状态&quot;&gt;&lt;a href=&quot;#线程的状态&quot; class=&quot;headerlink&quot; title=&quot;线程的状态&quot;&gt;&lt;/a&gt;线程的状态&lt;/h1&gt;&lt;p&gt;Java的线程如下有6种状态：&lt;br&gt;NEW（新建）&lt;br&gt;RUNNABLE（就绪，可运行）&lt;br&gt;BLOCKED（被阻塞）&lt;br&gt;WAITING（等待）&lt;br&gt;TIMED_WAITING（计时等待）&lt;br&gt;TERMINATED（被终止）&lt;/p&gt;
@@ -884,7 +987,7 @@ char[] passwd = console.readPassword(&amp;quot;Password:&amp;quot;);
     <link href="http://jackalope.cn/2016/04/14/java-core-object/"/>
     <id>http://jackalope.cn/2016/04/14/java-core-object/</id>
     <published>2016-04-14T07:18:01.000Z</published>
-    <updated>2016-04-26T03:38:53.000Z</updated>
+    <updated>2016-08-20T23:41:36.000Z</updated>
     
     <content type="html">&lt;p&gt;Object类是Java中所有类的祖先，在Java中每个类都是由它扩展而来的。如果没有明确地指出超类，Object类就被认为是这个类的超类。&lt;br&gt;可以使用Object类型的变量引用任何类型的对象：&lt;br&gt;&lt;code&gt;Object obj = new MyObject();&lt;/code&gt;&lt;br&gt;但是，要想对其中的内容进行具体的操作，还需要清楚对象的原始类型，并进行相应的转化：&lt;br&gt;&lt;code&gt;MyObject mObj = (MyObject) obj;&lt;/code&gt;&lt;br&gt;在Java中只有基本类型不是对象，例如：数值、字符和布尔型的值都不是对象。所有的数组类型，不管是对象数组还是基本类型数组都扩展于Object类。&lt;/p&gt;
 &lt;h1 id=&quot;方法&quot;&gt;&lt;a href=&quot;#方法&quot; class=&quot;headerlink&quot; title=&quot;方法&quot;&gt;&lt;/a&gt;方法&lt;/h1&gt;&lt;h2 id=&quot;public-Object&quot;&gt;&lt;a href=&quot;#public-Object&quot; class=&quot;headerlink&quot; title=&quot;public Object();&quot;&gt;&lt;/a&gt;public Object();&lt;/h2&gt;&lt;p&gt;Java中规定：在类定义过程中，对于未定义构造函数的类，默认会有一个无参数的构造函数，作为所有类的祖先，Object类自然要反映出此特性，在源代码中，未给出Object类构造函数定义，但实际上，此构造函数是存存的。&lt;/p&gt;
@@ -944,7 +1047,7 @@ char[] passwd = console.readPassword(&amp;quot;Password:&amp;quot;);
     <link href="http://jackalope.cn/2016/04/13/java-core-jni/"/>
     <id>http://jackalope.cn/2016/04/13/java-core-jni/</id>
     <published>2016-04-13T08:44:39.000Z</published>
-    <updated>2016-04-15T10:10:08.000Z</updated>
+    <updated>2016-08-20T23:41:36.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h1&gt;&lt;p&gt;Java本地接口（Java Native Interface(JNI)）允许运行在Java虚拟机(Java Virtual Machine(JVM))上的代码调用本地程序和类库，或者被它们调用，这些程序和类库可以是其他语言编写的，比如：C、C++或汇编语言。&lt;br&gt;很多基本类库都依赖JNI来为开发者和用户提供服务，比如文件的输入/输出和音频功能。在基本类库中包含的对于性能和平台敏感的API可以允许所有的Java程序以安全和平台无关的方式来使用这些功能。&lt;/p&gt;
 &lt;h1 id=&quot;知识图&quot;&gt;&lt;a href=&quot;#知识图&quot; class=&quot;headerlink&quot; title=&quot;知识图&quot;&gt;&lt;/a&gt;知识图&lt;/h1&gt;&lt;p&gt;&lt;img src=&quot;jni.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
@@ -1006,237 +1109,6 @@ char[] passwd = console.readPassword(&amp;quot;Password:&amp;quot;);
       <category term="java" scheme="http://jackalope.cn/tags/java/"/>
     
       <category term="jni" scheme="http://jackalope.cn/tags/jni/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>欢迎</title>
-    <link href="http://jackalope.cn/2016/04/06/hello-world/"/>
-    <id>http://jackalope.cn/2016/04/06/hello-world/</id>
-    <published>2016-04-05T16:00:00.000Z</published>
-    <updated>2016-04-19T07:55:45.000Z</updated>
-    
-    <content type="html">&lt;p&gt;基于hexo搭好了个人博客，在这里记录并测试一下。&lt;/p&gt;
-&lt;h1 id=&quot;hexo的安装步骤&quot;&gt;&lt;a href=&quot;#hexo的安装步骤&quot; class=&quot;headerlink&quot; title=&quot;hexo的安装步骤&quot;&gt;&lt;/a&gt;hexo的安装步骤&lt;/h1&gt;&lt;p&gt;参考官方文档：&lt;a href=&quot;https://hexo.io/zh-cn/docs/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo.io&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;注意事项&quot;&gt;&lt;a href=&quot;#注意事项&quot; class=&quot;headerlink&quot; title=&quot;注意事项&quot;&gt;&lt;/a&gt;注意事项&lt;/h1&gt;&lt;h2 id=&quot;Node-js版本&quot;&gt;&lt;a href=&quot;#Node-js版本&quot; class=&quot;headerlink&quot; title=&quot;Node.js版本&quot;&gt;&lt;/a&gt;Node.js版本&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;不使用最新版本的Node.js，使用官方文档建议的v4；&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;disqus集成&quot;&gt;&lt;a href=&quot;#disqus集成&quot; class=&quot;headerlink&quot; title=&quot;disqus集成&quot;&gt;&lt;/a&gt;disqus集成&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;注册disqus；&lt;/li&gt;
-&lt;li&gt;将short_name添加到_config.yml；&lt;/li&gt;
-&lt;li&gt;注意修改disqus设置为中文；&lt;/li&gt;
-&lt;li&gt;不使用评论：&lt;br&gt;  在front-matter中添加一行  &lt;figure class=&quot;highlight groovy&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;comments:&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;maupassant主题&quot;&gt;&lt;a href=&quot;#maupassant主题&quot; class=&quot;headerlink&quot; title=&quot;maupassant主题&quot;&gt;&lt;/a&gt;maupassant主题&lt;/h2&gt;&lt;p&gt;使用&lt;a href=&quot;https://www.haomwei.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;屠城&lt;/a&gt;的主题，感谢！&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;添加关于(about)，历史（history），留言（guestbook）&lt;/p&gt;
-&lt;figure class=&quot;highlight vim&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;hexo &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; page abou&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hexo &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; page &lt;span class=&quot;keyword&quot;&gt;history&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hexo &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; page guestbook&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;_config.yml的menu中添加：&lt;/p&gt;
-&lt;figure class=&quot;highlight less&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;- &lt;span class=&quot;attribute&quot;&gt;page&lt;/span&gt;: about&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;directory&lt;/span&gt;: about/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;icon&lt;/span&gt;: fa-user&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;- &lt;span class=&quot;attribute&quot;&gt;page&lt;/span&gt;: history&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;directory&lt;/span&gt;: history/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;icon&lt;/span&gt;: fa-book&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;- &lt;span class=&quot;attribute&quot;&gt;page&lt;/span&gt;: guestbook&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;directory&lt;/span&gt;: guestbook/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;icon&lt;/span&gt;: fa-comments&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;添加时间轴&lt;/p&gt;
-&lt;figure class=&quot;highlight applescript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;---&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;title: 时间轴&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;date&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;2016&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;-04&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;-07&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;15&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;12&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;comments: &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;---&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;timeline&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;timeline-item active&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;year&quot;&lt;/span&gt;&amp;gt;&lt;span class=&quot;number&quot;&gt;2014&lt;/span&gt;&amp;lt;span &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;marker&quot;&lt;/span&gt;&amp;gt;&amp;lt;span &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;dot&quot;&lt;/span&gt;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;info&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			注册域名jackalope.cn&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;timeline-item active&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;year&quot;&lt;/span&gt;&amp;gt;&lt;span class=&quot;number&quot;&gt;2016&lt;/span&gt;&amp;lt;span &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;marker&quot;&lt;/span&gt;&amp;gt;&amp;lt;span &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;dot&quot;&lt;/span&gt;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;info&quot;&lt;/span&gt;&amp;gt;初试个人博客，使用hexo搭建，托管于Github&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;配置文件&quot;&gt;&lt;a href=&quot;#配置文件&quot; class=&quot;headerlink&quot; title=&quot;配置文件&quot;&gt;&lt;/a&gt;配置文件&lt;/h2&gt;
-
-&lt;h1 id=&quot;Mou的使用&quot;&gt;&lt;a href=&quot;#Mou的使用&quot; class=&quot;headerlink&quot; title=&quot;Mou的使用&quot;&gt;&lt;/a&gt;Mou的使用&lt;/h1&gt;&lt;h2 id=&quot;标题&quot;&gt;&lt;a href=&quot;#标题&quot; class=&quot;headerlink&quot; title=&quot;标题&quot;&gt;&lt;/a&gt;标题&lt;/h2&gt;&lt;p&gt;将#号写在行首表示标题，标题1 - 标题6，数字对应#号个数&lt;/p&gt;
-&lt;h2 id=&quot;加粗&quot;&gt;&lt;a href=&quot;#加粗&quot; class=&quot;headerlink&quot; title=&quot;加粗&quot;&gt;&lt;/a&gt;加粗&lt;/h2&gt;&lt;p&gt;未加粗/&lt;strong&gt;加粗&lt;/strong&gt;（aaa/&lt;strong&gt;aaa&lt;/strong&gt;）(快捷链：Cmd + B)&lt;/p&gt;
-&lt;h2 id=&quot;倾斜&quot;&gt;&lt;a href=&quot;#倾斜&quot; class=&quot;headerlink&quot; title=&quot;倾斜&quot;&gt;&lt;/a&gt;倾斜&lt;/h2&gt;&lt;p&gt;未倾斜/&lt;em&gt;倾斜&lt;/em&gt;（aaa/&lt;em&gt;aaa&lt;/em&gt;）(快捷键：Cmd + I)&lt;/p&gt;
-&lt;h2 id=&quot;引用&quot;&gt;&lt;a href=&quot;#引用&quot; class=&quot;headerlink&quot; title=&quot;引用&quot;&gt;&lt;/a&gt;引用&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;把 &amp;gt; 写到开头，本质上是生成blockquote标签&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;链接&quot;&gt;&lt;a href=&quot;#链接&quot; class=&quot;headerlink&quot; title=&quot;链接&quot;&gt;&lt;/a&gt;链接&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://jackalope.cn&quot;&gt;jackalope&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;邮件&quot;&gt;&lt;a href=&quot;#邮件&quot; class=&quot;headerlink&quot; title=&quot;邮件&quot;&gt;&lt;/a&gt;邮件&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;&amp;#x6d;&amp;#x61;&amp;#105;&amp;#x6c;&amp;#x74;&amp;#111;&amp;#58;&amp;#122;&amp;#111;&amp;#119;&amp;#105;&amp;#101;&amp;#x5f;&amp;#x63;&amp;#x68;&amp;#x65;&amp;#x6e;&amp;#64;&amp;#49;&amp;#x36;&amp;#x33;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#109;&quot;&gt;&amp;#122;&amp;#111;&amp;#119;&amp;#105;&amp;#101;&amp;#x5f;&amp;#x63;&amp;#x68;&amp;#x65;&amp;#x6e;&amp;#64;&amp;#49;&amp;#x36;&amp;#x33;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#109;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;图片&quot;&gt;&lt;a href=&quot;#图片&quot; class=&quot;headerlink&quot; title=&quot;图片&quot;&gt;&lt;/a&gt;图片&lt;/h2&gt;&lt;p&gt;内嵌图片，直接写入具体图片地址&lt;br&gt;&lt;img src=&quot;http://25.io/smaller/favicon.ico&quot; alt=&quot;内嵌图片&quot; title=&quot;Title here&quot;&gt;&lt;/p&gt;
-&lt;p&gt;引用图片，先指定图片名称，之后再将图片名称映射到具体图片地址&lt;br&gt;&lt;img src=&quot;http://resizesafari.com/favicon.ico&quot; alt=&quot;引用图片&quot; title=&quot;Title&quot;&gt;&lt;/p&gt;
-&lt;h2 id=&quot;代码块&quot;&gt;&lt;a href=&quot;#代码块&quot; class=&quot;headerlink&quot; title=&quot;代码块&quot;&gt;&lt;/a&gt;代码块&lt;/h2&gt;&lt;p&gt;使用3个及以上着重符(`)开始并结束：&lt;br&gt;&lt;figure class=&quot;highlight less&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;System&lt;span class=&quot;selector-class&quot;&gt;.out&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.println&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;Hello world!&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;h2 id=&quot;有序列表&quot;&gt;&lt;a href=&quot;#有序列表&quot; class=&quot;headerlink&quot; title=&quot;有序列表&quot;&gt;&lt;/a&gt;有序列表&lt;/h2&gt;&lt;p&gt;使用”1.” + 空格&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;111&lt;/li&gt;
-&lt;li&gt;222&lt;/li&gt;
-&lt;li&gt;333&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&quot;无序列表&quot;&gt;&lt;a href=&quot;#无序列表&quot; class=&quot;headerlink&quot; title=&quot;无序列表&quot;&gt;&lt;/a&gt;无序列表&lt;/h2&gt;&lt;p&gt;使用”*” + 空格&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;111&lt;/li&gt;
-&lt;li&gt;222&lt;/li&gt;
-&lt;li&gt;333&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;或者”-“ + 空格&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;111&lt;/li&gt;
-&lt;li&gt;222&lt;/li&gt;
-&lt;li&gt;333&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;换行符&quot;&gt;&lt;a href=&quot;#换行符&quot; class=&quot;headerlink&quot; title=&quot;换行符&quot;&gt;&lt;/a&gt;换行符&lt;/h2&gt;&lt;p&gt;两个及以上空格即可生成一个换行符&lt;code&gt;&amp;lt;br /&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;h2 id=&quot;水平分隔符&quot;&gt;&lt;a href=&quot;#水平分隔符&quot; class=&quot;headerlink&quot; title=&quot;水平分隔符&quot;&gt;&lt;/a&gt;水平分隔符&lt;/h2&gt;&lt;p&gt;三个及以上 “*” 或 “-“ 或 “- “，每行之前有空行&lt;/p&gt;
-&lt;hr&gt;
-&lt;hr&gt;
-&lt;hr&gt;
-&lt;h2 id=&quot;脚注&quot;&gt;&lt;a href=&quot;#脚注&quot; class=&quot;headerlink&quot; title=&quot;脚注&quot;&gt;&lt;/a&gt;脚注&lt;/h2&gt;&lt;p&gt;脚本，跳到标题&lt;a href=&quot;#标题&quot;&gt;^1&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;删除线&quot;&gt;&lt;a href=&quot;#删除线&quot; class=&quot;headerlink&quot; title=&quot;删除线&quot;&gt;&lt;/a&gt;删除线&lt;/h2&gt;&lt;p&gt;使用两个~开始并结束&lt;br&gt;&lt;del&gt;ZZZZZZzzzzzz&lt;/del&gt;&lt;/p&gt;
-&lt;h2 id=&quot;表格&quot;&gt;&lt;a href=&quot;#表格&quot; class=&quot;headerlink&quot; title=&quot;表格&quot;&gt;&lt;/a&gt;表格&lt;/h2&gt;&lt;p&gt;列使用|分开，头尾的|可加可不加；&lt;br&gt;列名与行使用多个-分开，:—-表示左对齐，:—-:表示两端对齐，—-:表示右对齐，&lt;code&gt;PS: 表格上方有一空行&lt;/code&gt;&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;列1&lt;/th&gt;
-&lt;th&gt;列2&lt;/th&gt;
-&lt;th&gt;列3&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;11&lt;/td&gt;
-&lt;td&gt;12&lt;/td&gt;
-&lt;td&gt;13&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;21&lt;/td&gt;
-&lt;td&gt;22&lt;/td&gt;
-&lt;td&gt;23&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;31&lt;/td&gt;
-&lt;td&gt;32&lt;/td&gt;
-&lt;td&gt;33&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;&lt;code&gt;列补齐&amp;quot;|&amp;quot;&lt;/code&gt;&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;列1&lt;/th&gt;
-&lt;th&gt;列2&lt;/th&gt;
-&lt;th&gt;列3&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;11&lt;/td&gt;
-&lt;td&gt;12&lt;/td&gt;
-&lt;td&gt;13&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;21&lt;/td&gt;
-&lt;td&gt;22&lt;/td&gt;
-&lt;td&gt;23&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;31&lt;/td&gt;
-&lt;td&gt;32&lt;/td&gt;
-&lt;td&gt;33&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;&lt;code&gt;左中右对齐&lt;/code&gt;&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th style=&quot;text-align:left&quot;&gt;列1&lt;/th&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;列2&lt;/th&gt;
-&lt;th style=&quot;text-align:right&quot;&gt;列3&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:left&quot;&gt;11&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;12&lt;/td&gt;
-&lt;td style=&quot;text-align:right&quot;&gt;13&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:left&quot;&gt;21&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;22&lt;/td&gt;
-&lt;td style=&quot;text-align:right&quot;&gt;23&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:left&quot;&gt;31&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;32&lt;/td&gt;
-&lt;td style=&quot;text-align:right&quot;&gt;33&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h2 id=&quot;快捷链&quot;&gt;&lt;a href=&quot;#快捷链&quot; class=&quot;headerlink&quot; title=&quot;快捷链&quot;&gt;&lt;/a&gt;快捷链&lt;/h2&gt;&lt;h3 id=&quot;视图&quot;&gt;&lt;a href=&quot;#视图&quot; class=&quot;headerlink&quot; title=&quot;视图&quot;&gt;&lt;/a&gt;视图&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;预览: Shift + Cmd + I&lt;/li&gt;
-&lt;li&gt;统计字数: Shift + Cmd + W&lt;/li&gt;
-&lt;li&gt;透明: Shift + Cmd + T&lt;/li&gt;
-&lt;li&gt;悬浮，永在最前: Shift + Cmd + F&lt;/li&gt;
-&lt;li&gt;左右窗口大小1/1: Cmd + 0&lt;/li&gt;
-&lt;li&gt;左右窗口大小3/1: Cmd + +&lt;/li&gt;
-&lt;li&gt;左右窗口大小1/3: Cmd + -&lt;/li&gt;
-&lt;li&gt;书写方向: Cmd + L&lt;/li&gt;
-&lt;li&gt;全屏/退出全屏: Control + Cmd + F&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;操作&quot;&gt;&lt;a href=&quot;#操作&quot; class=&quot;headerlink&quot; title=&quot;操作&quot;&gt;&lt;/a&gt;操作&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;拷贝html: Option + Cmd + C&lt;/li&gt;
-&lt;li&gt;加黑加粗: Select text, Cmd + B&lt;/li&gt;
-&lt;li&gt;倾斜: Select text, Cmd + I&lt;/li&gt;
-&lt;li&gt;Inline Code: Select text, Cmd + K&lt;/li&gt;
-&lt;li&gt;Strikethrough: Select text, Cmd + U&lt;/li&gt;
-&lt;li&gt;Link: Select text, Control + Shift + L&lt;/li&gt;
-&lt;li&gt;Image: Select text, Control + Shift + I&lt;/li&gt;
-&lt;li&gt;Select Word: Control + Option + W&lt;/li&gt;
-&lt;li&gt;Select Line: Shift + Cmd + L&lt;/li&gt;
-&lt;li&gt;Select All: Cmd + A&lt;/li&gt;
-&lt;li&gt;Deselect All: Cmd + D&lt;/li&gt;
-&lt;li&gt;Convert to Uppercase: Select text, Control + U&lt;/li&gt;
-&lt;li&gt;Convert to Lowercase: Select text, Control + Shift + U&lt;/li&gt;
-&lt;li&gt;Convert to Titlecase: Select text, Control + Option + U&lt;/li&gt;
-&lt;li&gt;Convert to List: Select lines, Control + L&lt;/li&gt;
-&lt;li&gt;Convert to Blockquote: Select lines, Control + Q&lt;/li&gt;
-&lt;li&gt;Convert to H1: Cmd + 1&lt;/li&gt;
-&lt;li&gt;Convert to H2: Cmd + 2&lt;/li&gt;
-&lt;li&gt;Convert to H3: Cmd + 3&lt;/li&gt;
-&lt;li&gt;Convert to H4: Cmd + 4&lt;/li&gt;
-&lt;li&gt;Convert to H5: Cmd + 5&lt;/li&gt;
-&lt;li&gt;Convert to H6: Cmd + 6&lt;/li&gt;
-&lt;li&gt;Convert Spaces to Tabs: Control + [&lt;/li&gt;
-&lt;li&gt;Convert Tabs to Spaces: Control + ]&lt;/li&gt;
-&lt;li&gt;Insert Current Date: Control + Shift + 1&lt;/li&gt;
-&lt;li&gt;Insert Current Time: Control + Shift + 2&lt;/li&gt;
-&lt;li&gt;Insert entity &amp;lt;: Control + Shift + ,&lt;/li&gt;
-&lt;li&gt;Insert entity &amp;gt;: Control + Shift + .&lt;/li&gt;
-&lt;li&gt;Insert entity &amp;amp;: Control + Shift + 7&lt;/li&gt;
-&lt;li&gt;Insert entity Space: Control + Shift + Space&lt;/li&gt;
-&lt;li&gt;Insert Scriptogr.am Header: Control + Shift + G&lt;/li&gt;
-&lt;li&gt;Shift Line Left: Select lines, Cmd + [&lt;/li&gt;
-&lt;li&gt;Shift Line Right: Select lines, Cmd + ]&lt;/li&gt;
-&lt;li&gt;New Line: Cmd + Return&lt;/li&gt;
-&lt;li&gt;Comment: Cmd + /&lt;/li&gt;
-&lt;li&gt;Hard Linebreak: Control + Return&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;编辑&quot;&gt;&lt;a href=&quot;#编辑&quot; class=&quot;headerlink&quot; title=&quot;编辑&quot;&gt;&lt;/a&gt;编辑&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;Auto complete current word: Esc&lt;/li&gt;
-&lt;li&gt;Find: Cmd + F&lt;/li&gt;
-&lt;li&gt;Close find bar: Esc&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;Post&quot;&gt;&lt;a href=&quot;#Post&quot; class=&quot;headerlink&quot; title=&quot;Post&quot;&gt;&lt;/a&gt;Post&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;Post on Scriptogr.am: Control + Shift + S&lt;/li&gt;
-&lt;li&gt;Post on Tumblr: Control + Shift + T&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;导出&quot;&gt;&lt;a href=&quot;#导出&quot; class=&quot;headerlink&quot; title=&quot;导出&quot;&gt;&lt;/a&gt;导出&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;Export HTML: Option + Cmd + E&lt;/li&gt;
-&lt;li&gt;Export PDF:  Option + Cmd + P&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;And-more&quot;&gt;&lt;a href=&quot;#And-more&quot; class=&quot;headerlink&quot; title=&quot;And more?&quot;&gt;&lt;/a&gt;And more?&lt;/h3&gt;&lt;p&gt;Don’t forget to check Preferences, lots of useful options are there.&lt;/p&gt;
-&lt;p&gt;Follow &lt;a href=&quot;https://twitter.com/mou&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;@Mou&lt;/a&gt; on Twitter for the latest news.&lt;/p&gt;
-&lt;p&gt;For feedback, use the menu &lt;code&gt;Help&lt;/code&gt; - &lt;code&gt;Send Feedback&lt;/code&gt;&lt;/p&gt;
-&lt;h1 id=&quot;hello-world-md&quot;&gt;&lt;a href=&quot;#hello-world-md&quot; class=&quot;headerlink&quot; title=&quot;hello-world.md&quot;&gt;&lt;/a&gt;hello-world.md&lt;/h1&gt;</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;基于hexo搭好了个人博客，在这里记录并测试一下。&lt;/p&gt;
-&lt;h1 id=&quot;hexo的安装步骤&quot;&gt;&lt;a href=&quot;#hexo的安装步骤&quot; class=&quot;headerlink&quot; title=&quot;hexo的安装步骤&quot;&gt;&lt;/a&gt;hexo的安装步骤&lt;/h1&gt;&lt;p&gt;参考官方文档：&lt;a
-    
-    </summary>
-    
-      <category term="hexo" scheme="http://jackalope.cn/categories/hexo/"/>
-    
-    
-      <category term="hexo" scheme="http://jackalope.cn/tags/hexo/"/>
     
   </entry>
   
@@ -2695,13 +2567,244 @@ char[] passwd = console.readPassword(&amp;quot;Password:&amp;quot;);
   </entry>
   
   <entry>
+    <title>欢迎</title>
+    <link href="http://jackalope.cn/2016/04/06/hello-world/"/>
+    <id>http://jackalope.cn/2016/04/06/hello-world/</id>
+    <published>2016-04-05T16:00:00.000Z</published>
+    <updated>2016-08-20T23:41:36.000Z</updated>
+    
+    <content type="html">&lt;p&gt;基于hexo搭好了个人博客，在这里记录并测试一下。&lt;/p&gt;
+&lt;h1 id=&quot;hexo的安装步骤&quot;&gt;&lt;a href=&quot;#hexo的安装步骤&quot; class=&quot;headerlink&quot; title=&quot;hexo的安装步骤&quot;&gt;&lt;/a&gt;hexo的安装步骤&lt;/h1&gt;&lt;p&gt;参考官方文档：&lt;a href=&quot;https://hexo.io/zh-cn/docs/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo.io&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;注意事项&quot;&gt;&lt;a href=&quot;#注意事项&quot; class=&quot;headerlink&quot; title=&quot;注意事项&quot;&gt;&lt;/a&gt;注意事项&lt;/h1&gt;&lt;h2 id=&quot;Node-js版本&quot;&gt;&lt;a href=&quot;#Node-js版本&quot; class=&quot;headerlink&quot; title=&quot;Node.js版本&quot;&gt;&lt;/a&gt;Node.js版本&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;不使用最新版本的Node.js，使用官方文档建议的v4；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;disqus集成&quot;&gt;&lt;a href=&quot;#disqus集成&quot; class=&quot;headerlink&quot; title=&quot;disqus集成&quot;&gt;&lt;/a&gt;disqus集成&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;注册disqus；&lt;/li&gt;
+&lt;li&gt;将short_name添加到_config.yml；&lt;/li&gt;
+&lt;li&gt;注意修改disqus设置为中文；&lt;/li&gt;
+&lt;li&gt;不使用评论：&lt;br&gt;  在front-matter中添加一行  &lt;figure class=&quot;highlight groovy&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;comments:&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;maupassant主题&quot;&gt;&lt;a href=&quot;#maupassant主题&quot; class=&quot;headerlink&quot; title=&quot;maupassant主题&quot;&gt;&lt;/a&gt;maupassant主题&lt;/h2&gt;&lt;p&gt;使用&lt;a href=&quot;https://www.haomwei.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;屠城&lt;/a&gt;的主题，感谢！&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;添加关于(about)，历史（history），留言（guestbook）&lt;/p&gt;
+&lt;figure class=&quot;highlight vim&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;hexo &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; page abou&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hexo &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; page &lt;span class=&quot;keyword&quot;&gt;history&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hexo &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; page guestbook&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;_config.yml的menu中添加：&lt;/p&gt;
+&lt;figure class=&quot;highlight less&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;- &lt;span class=&quot;attribute&quot;&gt;page&lt;/span&gt;: about&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;directory&lt;/span&gt;: about/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;icon&lt;/span&gt;: fa-user&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;- &lt;span class=&quot;attribute&quot;&gt;page&lt;/span&gt;: history&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;directory&lt;/span&gt;: history/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;icon&lt;/span&gt;: fa-book&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;- &lt;span class=&quot;attribute&quot;&gt;page&lt;/span&gt;: guestbook&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;directory&lt;/span&gt;: guestbook/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attribute&quot;&gt;icon&lt;/span&gt;: fa-comments&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;添加时间轴&lt;/p&gt;
+&lt;figure class=&quot;highlight applescript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;---&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;title: 时间轴&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;date&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;2016&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;-04&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;-07&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;15&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;12&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;comments: &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;---&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;timeline&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;timeline-item active&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;year&quot;&lt;/span&gt;&amp;gt;&lt;span class=&quot;number&quot;&gt;2014&lt;/span&gt;&amp;lt;span &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;marker&quot;&lt;/span&gt;&amp;gt;&amp;lt;span &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;dot&quot;&lt;/span&gt;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;info&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			注册域名jackalope.cn&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;timeline-item active&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;year&quot;&lt;/span&gt;&amp;gt;&lt;span class=&quot;number&quot;&gt;2016&lt;/span&gt;&amp;lt;span &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;marker&quot;&lt;/span&gt;&amp;gt;&amp;lt;span &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;dot&quot;&lt;/span&gt;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;info&quot;&lt;/span&gt;&amp;gt;初试个人博客，使用hexo搭建，托管于Github&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/&lt;span class=&quot;keyword&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;配置文件&quot;&gt;&lt;a href=&quot;#配置文件&quot; class=&quot;headerlink&quot; title=&quot;配置文件&quot;&gt;&lt;/a&gt;配置文件&lt;/h2&gt;
+
+&lt;h1 id=&quot;Mou的使用&quot;&gt;&lt;a href=&quot;#Mou的使用&quot; class=&quot;headerlink&quot; title=&quot;Mou的使用&quot;&gt;&lt;/a&gt;Mou的使用&lt;/h1&gt;&lt;h2 id=&quot;标题&quot;&gt;&lt;a href=&quot;#标题&quot; class=&quot;headerlink&quot; title=&quot;标题&quot;&gt;&lt;/a&gt;标题&lt;/h2&gt;&lt;p&gt;将#号写在行首表示标题，标题1 - 标题6，数字对应#号个数&lt;/p&gt;
+&lt;h2 id=&quot;加粗&quot;&gt;&lt;a href=&quot;#加粗&quot; class=&quot;headerlink&quot; title=&quot;加粗&quot;&gt;&lt;/a&gt;加粗&lt;/h2&gt;&lt;p&gt;未加粗/&lt;strong&gt;加粗&lt;/strong&gt;（aaa/&lt;strong&gt;aaa&lt;/strong&gt;）(快捷链：Cmd + B)&lt;/p&gt;
+&lt;h2 id=&quot;倾斜&quot;&gt;&lt;a href=&quot;#倾斜&quot; class=&quot;headerlink&quot; title=&quot;倾斜&quot;&gt;&lt;/a&gt;倾斜&lt;/h2&gt;&lt;p&gt;未倾斜/&lt;em&gt;倾斜&lt;/em&gt;（aaa/&lt;em&gt;aaa&lt;/em&gt;）(快捷键：Cmd + I)&lt;/p&gt;
+&lt;h2 id=&quot;引用&quot;&gt;&lt;a href=&quot;#引用&quot; class=&quot;headerlink&quot; title=&quot;引用&quot;&gt;&lt;/a&gt;引用&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;把 &amp;gt; 写到开头，本质上是生成blockquote标签&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;链接&quot;&gt;&lt;a href=&quot;#链接&quot; class=&quot;headerlink&quot; title=&quot;链接&quot;&gt;&lt;/a&gt;链接&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://jackalope.cn&quot;&gt;jackalope&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;邮件&quot;&gt;&lt;a href=&quot;#邮件&quot; class=&quot;headerlink&quot; title=&quot;邮件&quot;&gt;&lt;/a&gt;邮件&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;&amp;#109;&amp;#x61;&amp;#x69;&amp;#108;&amp;#116;&amp;#x6f;&amp;#x3a;&amp;#122;&amp;#x6f;&amp;#119;&amp;#x69;&amp;#x65;&amp;#x5f;&amp;#x63;&amp;#104;&amp;#x65;&amp;#110;&amp;#64;&amp;#x31;&amp;#x36;&amp;#51;&amp;#x2e;&amp;#x63;&amp;#x6f;&amp;#109;&quot;&gt;&amp;#122;&amp;#x6f;&amp;#119;&amp;#x69;&amp;#x65;&amp;#x5f;&amp;#x63;&amp;#104;&amp;#x65;&amp;#110;&amp;#64;&amp;#x31;&amp;#x36;&amp;#51;&amp;#x2e;&amp;#x63;&amp;#x6f;&amp;#109;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;图片&quot;&gt;&lt;a href=&quot;#图片&quot; class=&quot;headerlink&quot; title=&quot;图片&quot;&gt;&lt;/a&gt;图片&lt;/h2&gt;&lt;p&gt;内嵌图片，直接写入具体图片地址&lt;br&gt;&lt;img src=&quot;http://25.io/smaller/favicon.ico&quot; alt=&quot;内嵌图片&quot; title=&quot;Title here&quot;&gt;&lt;/p&gt;
+&lt;p&gt;引用图片，先指定图片名称，之后再将图片名称映射到具体图片地址&lt;br&gt;&lt;img src=&quot;http://resizesafari.com/favicon.ico&quot; alt=&quot;引用图片&quot; title=&quot;Title&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;代码块&quot;&gt;&lt;a href=&quot;#代码块&quot; class=&quot;headerlink&quot; title=&quot;代码块&quot;&gt;&lt;/a&gt;代码块&lt;/h2&gt;&lt;p&gt;使用3个及以上着重符(`)开始并结束：&lt;br&gt;&lt;figure class=&quot;highlight less&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;System&lt;span class=&quot;selector-class&quot;&gt;.out&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.println&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;Hello world!&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&quot;有序列表&quot;&gt;&lt;a href=&quot;#有序列表&quot; class=&quot;headerlink&quot; title=&quot;有序列表&quot;&gt;&lt;/a&gt;有序列表&lt;/h2&gt;&lt;p&gt;使用”1.” + 空格&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;111&lt;/li&gt;
+&lt;li&gt;222&lt;/li&gt;
+&lt;li&gt;333&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;无序列表&quot;&gt;&lt;a href=&quot;#无序列表&quot; class=&quot;headerlink&quot; title=&quot;无序列表&quot;&gt;&lt;/a&gt;无序列表&lt;/h2&gt;&lt;p&gt;使用”*” + 空格&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;111&lt;/li&gt;
+&lt;li&gt;222&lt;/li&gt;
+&lt;li&gt;333&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;或者”-“ + 空格&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;111&lt;/li&gt;
+&lt;li&gt;222&lt;/li&gt;
+&lt;li&gt;333&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;换行符&quot;&gt;&lt;a href=&quot;#换行符&quot; class=&quot;headerlink&quot; title=&quot;换行符&quot;&gt;&lt;/a&gt;换行符&lt;/h2&gt;&lt;p&gt;两个及以上空格即可生成一个换行符&lt;code&gt;&amp;lt;br /&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&quot;水平分隔符&quot;&gt;&lt;a href=&quot;#水平分隔符&quot; class=&quot;headerlink&quot; title=&quot;水平分隔符&quot;&gt;&lt;/a&gt;水平分隔符&lt;/h2&gt;&lt;p&gt;三个及以上 “*” 或 “-“ 或 “- “，每行之前有空行&lt;/p&gt;
+&lt;hr&gt;
+&lt;hr&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;脚注&quot;&gt;&lt;a href=&quot;#脚注&quot; class=&quot;headerlink&quot; title=&quot;脚注&quot;&gt;&lt;/a&gt;脚注&lt;/h2&gt;&lt;p&gt;脚本，跳到标题&lt;a href=&quot;#标题&quot;&gt;^1&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;删除线&quot;&gt;&lt;a href=&quot;#删除线&quot; class=&quot;headerlink&quot; title=&quot;删除线&quot;&gt;&lt;/a&gt;删除线&lt;/h2&gt;&lt;p&gt;使用两个~开始并结束&lt;br&gt;&lt;del&gt;ZZZZZZzzzzzz&lt;/del&gt;&lt;/p&gt;
+&lt;h2 id=&quot;表格&quot;&gt;&lt;a href=&quot;#表格&quot; class=&quot;headerlink&quot; title=&quot;表格&quot;&gt;&lt;/a&gt;表格&lt;/h2&gt;&lt;p&gt;列使用|分开，头尾的|可加可不加；&lt;br&gt;列名与行使用多个-分开，:—-表示左对齐，:—-:表示两端对齐，—-:表示右对齐，&lt;code&gt;PS: 表格上方有一空行&lt;/code&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;列1&lt;/th&gt;
+&lt;th&gt;列2&lt;/th&gt;
+&lt;th&gt;列3&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;11&lt;/td&gt;
+&lt;td&gt;12&lt;/td&gt;
+&lt;td&gt;13&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;21&lt;/td&gt;
+&lt;td&gt;22&lt;/td&gt;
+&lt;td&gt;23&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;31&lt;/td&gt;
+&lt;td&gt;32&lt;/td&gt;
+&lt;td&gt;33&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;code&gt;列补齐&amp;quot;|&amp;quot;&lt;/code&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;列1&lt;/th&gt;
+&lt;th&gt;列2&lt;/th&gt;
+&lt;th&gt;列3&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;11&lt;/td&gt;
+&lt;td&gt;12&lt;/td&gt;
+&lt;td&gt;13&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;21&lt;/td&gt;
+&lt;td&gt;22&lt;/td&gt;
+&lt;td&gt;23&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;31&lt;/td&gt;
+&lt;td&gt;32&lt;/td&gt;
+&lt;td&gt;33&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;code&gt;左中右对齐&lt;/code&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;列1&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;列2&lt;/th&gt;
+&lt;th style=&quot;text-align:right&quot;&gt;列3&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;11&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;12&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;13&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;21&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;22&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;23&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;31&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;32&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;33&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&quot;快捷链&quot;&gt;&lt;a href=&quot;#快捷链&quot; class=&quot;headerlink&quot; title=&quot;快捷链&quot;&gt;&lt;/a&gt;快捷链&lt;/h2&gt;&lt;h3 id=&quot;视图&quot;&gt;&lt;a href=&quot;#视图&quot; class=&quot;headerlink&quot; title=&quot;视图&quot;&gt;&lt;/a&gt;视图&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;预览: Shift + Cmd + I&lt;/li&gt;
+&lt;li&gt;统计字数: Shift + Cmd + W&lt;/li&gt;
+&lt;li&gt;透明: Shift + Cmd + T&lt;/li&gt;
+&lt;li&gt;悬浮，永在最前: Shift + Cmd + F&lt;/li&gt;
+&lt;li&gt;左右窗口大小1/1: Cmd + 0&lt;/li&gt;
+&lt;li&gt;左右窗口大小3/1: Cmd + +&lt;/li&gt;
+&lt;li&gt;左右窗口大小1/3: Cmd + -&lt;/li&gt;
+&lt;li&gt;书写方向: Cmd + L&lt;/li&gt;
+&lt;li&gt;全屏/退出全屏: Control + Cmd + F&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;操作&quot;&gt;&lt;a href=&quot;#操作&quot; class=&quot;headerlink&quot; title=&quot;操作&quot;&gt;&lt;/a&gt;操作&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;拷贝html: Option + Cmd + C&lt;/li&gt;
+&lt;li&gt;加黑加粗: Select text, Cmd + B&lt;/li&gt;
+&lt;li&gt;倾斜: Select text, Cmd + I&lt;/li&gt;
+&lt;li&gt;Inline Code: Select text, Cmd + K&lt;/li&gt;
+&lt;li&gt;Strikethrough: Select text, Cmd + U&lt;/li&gt;
+&lt;li&gt;Link: Select text, Control + Shift + L&lt;/li&gt;
+&lt;li&gt;Image: Select text, Control + Shift + I&lt;/li&gt;
+&lt;li&gt;Select Word: Control + Option + W&lt;/li&gt;
+&lt;li&gt;Select Line: Shift + Cmd + L&lt;/li&gt;
+&lt;li&gt;Select All: Cmd + A&lt;/li&gt;
+&lt;li&gt;Deselect All: Cmd + D&lt;/li&gt;
+&lt;li&gt;Convert to Uppercase: Select text, Control + U&lt;/li&gt;
+&lt;li&gt;Convert to Lowercase: Select text, Control + Shift + U&lt;/li&gt;
+&lt;li&gt;Convert to Titlecase: Select text, Control + Option + U&lt;/li&gt;
+&lt;li&gt;Convert to List: Select lines, Control + L&lt;/li&gt;
+&lt;li&gt;Convert to Blockquote: Select lines, Control + Q&lt;/li&gt;
+&lt;li&gt;Convert to H1: Cmd + 1&lt;/li&gt;
+&lt;li&gt;Convert to H2: Cmd + 2&lt;/li&gt;
+&lt;li&gt;Convert to H3: Cmd + 3&lt;/li&gt;
+&lt;li&gt;Convert to H4: Cmd + 4&lt;/li&gt;
+&lt;li&gt;Convert to H5: Cmd + 5&lt;/li&gt;
+&lt;li&gt;Convert to H6: Cmd + 6&lt;/li&gt;
+&lt;li&gt;Convert Spaces to Tabs: Control + [&lt;/li&gt;
+&lt;li&gt;Convert Tabs to Spaces: Control + ]&lt;/li&gt;
+&lt;li&gt;Insert Current Date: Control + Shift + 1&lt;/li&gt;
+&lt;li&gt;Insert Current Time: Control + Shift + 2&lt;/li&gt;
+&lt;li&gt;Insert entity &amp;lt;: Control + Shift + ,&lt;/li&gt;
+&lt;li&gt;Insert entity &amp;gt;: Control + Shift + .&lt;/li&gt;
+&lt;li&gt;Insert entity &amp;amp;: Control + Shift + 7&lt;/li&gt;
+&lt;li&gt;Insert entity Space: Control + Shift + Space&lt;/li&gt;
+&lt;li&gt;Insert Scriptogr.am Header: Control + Shift + G&lt;/li&gt;
+&lt;li&gt;Shift Line Left: Select lines, Cmd + [&lt;/li&gt;
+&lt;li&gt;Shift Line Right: Select lines, Cmd + ]&lt;/li&gt;
+&lt;li&gt;New Line: Cmd + Return&lt;/li&gt;
+&lt;li&gt;Comment: Cmd + /&lt;/li&gt;
+&lt;li&gt;Hard Linebreak: Control + Return&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;编辑&quot;&gt;&lt;a href=&quot;#编辑&quot; class=&quot;headerlink&quot; title=&quot;编辑&quot;&gt;&lt;/a&gt;编辑&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Auto complete current word: Esc&lt;/li&gt;
+&lt;li&gt;Find: Cmd + F&lt;/li&gt;
+&lt;li&gt;Close find bar: Esc&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;Post&quot;&gt;&lt;a href=&quot;#Post&quot; class=&quot;headerlink&quot; title=&quot;Post&quot;&gt;&lt;/a&gt;Post&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Post on Scriptogr.am: Control + Shift + S&lt;/li&gt;
+&lt;li&gt;Post on Tumblr: Control + Shift + T&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;导出&quot;&gt;&lt;a href=&quot;#导出&quot; class=&quot;headerlink&quot; title=&quot;导出&quot;&gt;&lt;/a&gt;导出&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Export HTML: Option + Cmd + E&lt;/li&gt;
+&lt;li&gt;Export PDF:  Option + Cmd + P&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;And-more&quot;&gt;&lt;a href=&quot;#And-more&quot; class=&quot;headerlink&quot; title=&quot;And more?&quot;&gt;&lt;/a&gt;And more?&lt;/h3&gt;&lt;p&gt;Don’t forget to check Preferences, lots of useful options are there.&lt;/p&gt;
+&lt;p&gt;Follow &lt;a href=&quot;https://twitter.com/mou&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;@Mou&lt;/a&gt; on Twitter for the latest news.&lt;/p&gt;
+&lt;p&gt;For feedback, use the menu &lt;code&gt;Help&lt;/code&gt; - &lt;code&gt;Send Feedback&lt;/code&gt;&lt;/p&gt;
+&lt;h1 id=&quot;hello-world-md&quot;&gt;&lt;a href=&quot;#hello-world-md&quot; class=&quot;headerlink&quot; title=&quot;hello-world.md&quot;&gt;&lt;/a&gt;hello-world.md&lt;/h1&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;基于hexo搭好了个人博客，在这里记录并测试一下。&lt;/p&gt;
+&lt;h1 id=&quot;hexo的安装步骤&quot;&gt;&lt;a href=&quot;#hexo的安装步骤&quot; class=&quot;headerlink&quot; title=&quot;hexo的安装步骤&quot;&gt;&lt;/a&gt;hexo的安装步骤&lt;/h1&gt;&lt;p&gt;参考官方文档：&lt;a
+    
+    </summary>
+    
+      <category term="hexo" scheme="http://jackalope.cn/categories/hexo/"/>
+    
+    
+      <category term="hexo" scheme="http://jackalope.cn/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
     <title>hadoop-trouble-shooting</title>
     <link href="http://jackalope.cn/2015/02/14/hadoop-trouble-shooting/"/>
     <id>http://jackalope.cn/2015/02/14/hadoop-trouble-shooting/</id>
     <published>2015-02-14T07:58:18.000Z</published>
-    <updated>2016-08-14T07:34:46.000Z</updated>
+    <updated>2016-09-27T06:45:37.935Z</updated>
     
-    <content type="html">&lt;p&gt;此处记录工作过程中遇到的问题、原因及解决办法&lt;/p&gt;
+    <content type="html">&lt;p&gt;此处记录使用Hadoop过程中遇到的问题、原因及解决办法&lt;/p&gt;
 &lt;h1 id=&quot;hadoop集群中一节点在任务运行过程中负载非常高&quot;&gt;&lt;a href=&quot;#hadoop集群中一节点在任务运行过程中负载非常高&quot; class=&quot;headerlink&quot; title=&quot;hadoop集群中一节点在任务运行过程中负载非常高&quot;&gt;&lt;/a&gt;hadoop集群中一节点在任务运行过程中负载非常高&lt;/h1&gt;&lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h2&gt;&lt;p&gt;在执行HIVE进行查询时发现，有一个节点（12核、32G内存）的负载达到了60多，且在该节点上运行的Map和Reduce都非常慢，使用top命令看到其wa cpu占用达到50%以上，有时候甚至100%。&lt;/p&gt;
 &lt;h2 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h2&gt;&lt;p&gt;经一系列测试与观察发现，在该节点上进行读取的速度非常慢，而写入的速度与其他节点相差无几。&lt;br&gt;磁盘读写测试如下：&lt;/p&gt;
 &lt;p&gt;写：&lt;br&gt;&lt;figure class=&quot;highlight stylus&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;[hadoop@bis-newdatanode-s2b-&lt;span class=&quot;number&quot;&gt;78&lt;/span&gt; czw]$ &lt;span class=&quot;selector-tag&quot;&gt;time&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;dd&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;=/dev/zero of=/data/czw/test&lt;span class=&quot;selector-class&quot;&gt;.dbf&lt;/span&gt; bs=&lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;k count=&lt;span class=&quot;number&quot;&gt;300000&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;300000&lt;/span&gt;+&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt; records &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;300000&lt;/span&gt;+&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt; records out&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;2457600000&lt;/span&gt; bytes (&lt;span class=&quot;number&quot;&gt;2.5&lt;/span&gt; GB) copied, &lt;span class=&quot;number&quot;&gt;2.94392&lt;/span&gt; s, &lt;span class=&quot;number&quot;&gt;835&lt;/span&gt; MB/s&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;real    &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;m2.&lt;span class=&quot;number&quot;&gt;945s&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;user    &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;m0.&lt;span class=&quot;number&quot;&gt;040s&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sys     &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;m2.&lt;span class=&quot;number&quot;&gt;904s&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
@@ -2717,15 +2820,15 @@ char[] passwd = console.readPassword(&amp;quot;Password:&amp;quot;);
     
     <summary type="html">
     
-      &lt;p&gt;此处记录工作过程中遇到的问题、原因及解决办法&lt;/p&gt;
-&lt;h1 id=&quot;hadoop集群中一节点在任务运行过程中负载非常高&quot;&gt;&lt;a href=&quot;#hadoop集群中一节点在任务运行过程中负载非常高&quot; class=&quot;headerlink&quot; title=&quot;hadoop集群中一节点
+      &lt;p&gt;此处记录使用Hadoop过程中遇到的问题、原因及解决办法&lt;/p&gt;
+&lt;h1 id=&quot;hadoop集群中一节点在任务运行过程中负载非常高&quot;&gt;&lt;a href=&quot;#hadoop集群中一节点在任务运行过程中负载非常高&quot; class=&quot;headerlink&quot; title=&quot;hadoop
     
     </summary>
     
       <category term="hadoop" scheme="http://jackalope.cn/categories/hadoop/"/>
     
     
-      <category term="hadoop hive" scheme="http://jackalope.cn/tags/hadoop-hive/"/>
+      <category term="hadoop" scheme="http://jackalope.cn/tags/hadoop/"/>
     
   </entry>
   
