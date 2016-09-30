@@ -75,3 +75,75 @@ abstract public float sdot(int n, float[] sx, int incx, float[] sy, int incy);
 ```
 case Row(rating: Double, prediction: Float) =>
 ```
+
+# ALS模型评估
+为了评估各参数对ALS模型的准确性及其性能的影响，进行了100多次的训练和测试，计根据模型预测结果与真实结果比较，计算其标准差来作为判断准确性的依据。
+样本条数：100万。
+评估结果[(ALS评估.xlsx)](ALS评估.xlsx)如下：
+
+![](ALS评估.png)
+
+使用训练数据预测并计算RMSE：
+![](使用训练数据预测.png)
+
+使用测试数据预测并计算RMSE：
+![](使用测试数据预测.png)
+
+`结论：对于相同的数据集，其rank、iteration取值越大，RMSE越小，rank大于8、iteration大于12后，RMSE变化不再明显； 对于训练数据，其lambda值取0.0001时，有较小的RMSE，而对于测试数据，lambda取值0.1具有较小的RMSE；因此，取rank=8, iteration = 12, lambda = 0.1。`
+
+`注意：不同数据集需做不同的评估，以得出合适的参数值。`
+
+# scala list reduce与 spark rdd reduce比较
+
+有同事指出scala的List做减法其多次运行结果不一致，超出了我的认知范围，特做如下实验：
+
+List的reduce做减法，多次运行结果如下：
+
+```
+scala> val list=List(1,2,3)
+list: List[Int] = List(1, 2, 3)
+
+scala> list.reduce((a,b) => a - b)
+res27: Int = -4
+
+scala> list.reduce((a,b) => a - b)
+res28: Int = -4
+
+scala> list.reduce((a,b) => a - b)
+res29: Int = -4
+
+scala> list.reduce((a,b) => a - b)
+res30: Int = -4
+
+scala> list.reduce((a,b) => a - b)
+res31: Int = -4
+```
+
+RDD的reduce做减法：
+在一个分区的情况下，多次运行，其结果如下：
+
+```
+scala> val rdd = sc.parallelize(list, 1)
+scala> rdd.reduce((a,b) => a - b)
+
+res32: Int = -4
+res33: Int = -4
+res34: Int = -4
+res35: Int = -4
+```
+
+在多（3）个分区的情况下，多次运行，其结果如下：
+
+```
+scala> val rdd = sc.parallelize(list, 3)
+scala> rdd.reduce((a,b) => a - b)
+
+res36: Int = -4
+res37: Int = -2
+res38: Int = -2
+res39: Int = -4
+res40: Int = 0
+```
+
+`结论：scala下reduce做减法其结果是幂等，在spark下，当rdd的分区只有一个时，reduce的结果也是幂等的，而当rdd有多个分区时，reduce做减法其结果是不一致的。`
+
