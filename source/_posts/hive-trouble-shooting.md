@@ -8,7 +8,7 @@ categories:
 - hive
 ---
 
-此处记录使用Hive过程中遇到的问题、原因及解决办法。
+记录使用Hive过程中遇到的问题、原因及解决办法。
 
 # HiveServer提交任务时报出GC overhead limit exceeded
 

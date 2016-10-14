@@ -8,7 +8,7 @@ categories:
 - hadoop
 ---
 
-此处记录使用Hadoop过程中遇到的问题、原因及解决办法
+记录使用Hadoop过程中遇到的问题、原因及解决办法
 
 # hadoop集群中一节点在任务运行过程中负载非常高
 
@@ -100,3 +100,4 @@ mapreduce.reduce.shuffle.memory.limit.percent=0.25`(每个fetch取到的输出�
 
 ## 参考
 [hadoop Shuffle Error OOM错误分析和解决](http://brandnewuser.iteye.com/blog/2149176)
+

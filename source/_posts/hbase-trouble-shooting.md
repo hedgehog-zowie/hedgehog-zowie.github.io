@@ -8,7 +8,7 @@ categories:
 - HBase
 ---
 
-此处记录使用HBase过程中遇到的问题、原因及解决办法。
+记录使用HBase过程中遇到的问题、原因及解决办法。
 
 # HBase元数据修复
 HBase中出现好几张表都读取报错的情况，表现为提示如下错误：
@@ -106,3 +106,93 @@ Summary:
 0 inconsistencies detected.
 Status: OK
 ```
+
+# hbase regionserver异常退出
+部分hbase regionserver异常退出，摘取部分日志如下：
+```
+2016-10-11 18:57:36,917 WARN  [regionserver60020] util.Sleeper: We slept 38237ms instead of 3000ms, this is likely due to a long garbage collecting pause and it's usually bad, see http://hbase.apache.org/book.html#trouble.rs.runtime.zkexpired
+2016-10-11 18:57:36,914 WARN  [JvmPauseMonitor] util.JvmPauseMonitor: Detected pause in JVM or host machine (eg GC): pause of approximately 37257ms
+GC pool 'ParNew' had collection(s): count=1 time=37664ms
+...
+2016-10-11 18:57:36,913 WARN  [ResponseProcessor for block BP-45131683-16.6.10.141-1430914429099:blk_1286873659_213203810] hdfs.DFSClient: DFSOutputStream ResponseProcessor exce
+ption  for block BP-45131683-16.6.10.141-1430914429099:blk_1286873659_213203810
+java.io.EOFException: Premature EOF: no length prefix available
+        at org.apache.hadoop.hdfs.protocolPB.PBHelper.vintPrefixed(PBHelper.java:1492)
+        at org.apache.hadoop.hdfs.protocol.datatransfer.PipelineAck.readFields(PipelineAck.java:116)
+        at org.apache.hadoop.hdfs.DFSOutputStream$DataStreamer$ResponseProcessor.run(DFSOutputStream.java:721)
+2016-10-11 18:57:36,913 WARN  [regionserver60020.periodicFlusher] util.Sleeper: We slept 39267ms instead of 10000ms, this is likely due to a long garbage collecting pause and it
+'s usually bad, see http://hbase.apache.org/book.html#trouble.rs.runtime.zkexpired
+2016-10-11 18:57:36,925 WARN  [DataStreamer for file /hbase/WALs/bis-newdatanode-s2b-72,60020,1474425646831/bis-newdatanode-s2b-72%2C60020%2C1474425646831.1476182840215 block BP
+-45131683-16.6.10.141-1430914429099:blk_1286873659_213203810] hdfs.DFSClient: Error Recovery for block BP-45131683-16.6.10.141-1430914429099:blk_1286873659_213203810 in pipeline
+ 10.10.10.103:50010, 10.10.10.50:50010, 10.10.10.147:50010: bad datanode 10.10.10.103:50010
+2016-10-11 18:57:36,934 FATAL [regionserver60020] regionserver.HRegionServer: ABORTING region server bis-newdatanode-s2b-72,60020,1474425646831: org.apache.hadoop.hbase.YouAreDe
+adException: Server REPORT rejected; currently processing bis-newdatanode-s2b-72,60020,1474425646831 as dead server
+```
+同时在gc.log中可以看到：
+```
+2016-10-12T15:25:43.201+0800: 1774.137: [GC 1622131K->787661K(4089472K), 16.5654980 secs]
+2016-10-12T15:26:49.921+0800: 1840.857: [GC 1626573K->809761K(4089472K), 0.2250050 secs]
+2016-10-12T15:27:58.027+0800: 1908.963: [GC 1648673K->818686K(4089472K), 35.9152720 secs]
+```
+从第一部分日志和gc.log，可以看出是垃圾回收耗时太长引起regionserver与zookeeper连接超时，从而被认作是一个死节点，并中断（ABORTING）该regionserver。
+
+## 解决办法
+首先根据日志提示，查看http://hbase.apache.org/book.html#trouble.rs.runtime.zkexpired，其中的建议如下：
+* Make sure you give plenty of RAM (in hbase-env.sh), the default of 1GB won’t be able to sustain long running imports.
+* Make sure you don’t swap, the JVM never behaves well under swapping.
+* Make sure you are not CPU starving the RegionServer thread. For example, if you are running a MapReduce job using 6 CPU-intensive tasks on a machine with 4 cores, you are probably starving the RegionServer enough to create longer garbage collection pauses.
+* Increase the ZooKeeper session timeout
+
+简单翻译一下：
+* 确保有足够的内存
+* 禁用swap
+* 确保有足够的CPU可供regionserver使用
+* 增大zookeeper会话超时时间
+
+其中关于增大zookeeper会话超时时间，官网给出了如下配置：
+```
+If you wish to increase the session timeout, add the following to your hbase-site.xml to increase the timeout from the default of 60 seconds to 120 seconds.
+
+<property>
+  <name>zookeeper.session.timeout</name>
+  <value>1200000</value><!--这里应该是多写了一个0-->
+</property>
+<property>
+  <name>hbase.zookeeper.property.tickTime</name>
+  <value>6000</value>
+</property>
+```
+
+然而在hbase-site.xml中配置了该参数重启集群后，并未生效，查看日志：
+```
+2016-10-13 15:55:22,599 INFO  [SplitLogWorker-bis-newdatanode-s2b-60,60020,1476345314703-SendThread(bis-newdatanode-s2b-58:2181)] zookeeper.ClientCnxn: Opening socket connection
+ to server bis-newdatanode-s2b-58/10.10.10.73:2181. Will not attempt to authenticate using SASL (unknown error)
+2016-10-13 15:55:22,603 INFO  [SplitLogWorker-bis-newdatanode-s2b-60,60020,1476345314703-SendThread(bis-newdatanode-s2b-58:2181)] zookeeper.ClientCnxn: Socket connection establi
+shed to bis-newdatanode-s2b-58/10.10.10.73:2181, initiating session
+2016-10-13 15:55:22,605 INFO  [SplitLogWorker-bis-newdatanode-s2b-60,60020,1476345314703-SendThread(bis-newdatanode-s2b-58:2181)] zookeeper.ClientCnxn: Session establishment com
+plete on server bis-newdatanode-s2b-58/10.10.10.73:2181, sessionid = 0x757bc4782260012, negotiated timeout = 40000
+```
+显示其最大超时时间仍旧为40000ms，究其原因，是zookeeper服务端的启动时，会设置最大超时时间，其算法如下：
+```
+public int getMinSessionTimeout(){ 
+  return minSessionTimeout == -1 ? tickTime * 2 : minSessionTimeout; 
+} 
+public int getMaxSessionTimeout() {
+  return maxSessionTimeout == -1 ? tickTime * 20 : maxSessionTimeout; 
+}
+```
+默认情况，tickTime=2sec，那么minSessionTimeout 和 maxSessionTimeout 分别是4sec和40sec。
+
+在zoo.cfg中添加配置：
+```
+maxSessionTimeout = 300000
+```
+重启，查看zookeeper输出：
+```
+2016-10-14 09:30:50,963 [myid:1] - INFO  [main:QuorumPeer@959] - tickTime set to 2000
+2016-10-14 09:30:50,964 [myid:1] - INFO  [main:QuorumPeer@979] - minSessionTimeout set to -1
+2016-10-14 09:30:50,964 [myid:1] - INFO  [main:QuorumPeer@990] - maxSessionTimeout set to 300000
+```
+
+至此，问题解决（待继续观察）。
+
