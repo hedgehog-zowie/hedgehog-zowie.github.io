@@ -194,5 +194,19 @@ maxSessionTimeout = 300000
 2016-10-14 09:30:50,964 [myid:1] - INFO  [main:QuorumPeer@990] - maxSessionTimeout set to 300000
 ```
 
-至此，问题解决（待继续观察）。
+至此，问题解决。
+
+## 野蛮的解决办法
+
+所谓野蛮，即不去深究zk租约超期的具体原因，而是在遇到这种情况而导致regionserver中断时，直接重新启动regionserver。
+具体措施为在配置文件`hbase-site.xml`中添加配置如下：
+```
+<property>
+<name>hbase.regionserver.restart.on.zk.expire</name>
+<value>true</value>
+<description>
+Zookeeper session expired will force regionserver exit.
+Enable this will make the regionserver restart.
+</description>
+```
 
