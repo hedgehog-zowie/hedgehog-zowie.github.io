@@ -7,6 +7,7 @@ tags:
 categories:
 - spark
 ---
+
 记录使用spark的过程中一些技巧、方法、注意事项。
 
 # executor-cores/executor-memory对执行效率的影响
@@ -77,6 +78,7 @@ case Row(rating: Double, prediction: Float) =>
 ```
 
 # ALS模型评估
+
 为了评估各参数对ALS模型的准确性及其性能的影响，进行了100多次的训练和测试，计根据模型预测结果与真实结果比较，计算其标准差来作为判断准确性的依据。
 样本条数：100万。
 评估结果[(ALS评估.xlsx)](ALS评估.xlsx)如下：
@@ -84,10 +86,10 @@ case Row(rating: Double, prediction: Float) =>
 ![](ALS评估.png)
 
 使用训练数据预测并计算RMSE：
-![](使用训练数据预测.png)
+![](ALS评估_使用训练数据预测.png)
 
 使用测试数据预测并计算RMSE：
-![](使用测试数据预测.png)
+![](ALS评估_使用测试数据预测.png)
 
 `结论：对于相同的数据集，其rank、iteration取值越大，RMSE越小，rank大于8、iteration大于12后，RMSE变化不再明显； 对于训练数据，其lambda值取0.0001时，有较小的RMSE，而对于测试数据，lambda取值0.1具有较小的RMSE；因此，取rank=8, iteration = 12, lambda = 0.1。`
 
@@ -146,4 +148,18 @@ res40: Int = 0
 ```
 
 `结论：scala下reduce做减法其结果是幂等，在spark下，当rdd的分区只有一个时，reduce的结果也是幂等的，而当rdd有多个分区时，reduce做减法其结果是不一致的。`
+
+# KMeans评估
+
+为了评估聚类个数K和迭代次数iteration对KMeans的准确性及其性能的影响，进行了如下测试，使用各个点到其中心点的总距离cost评估其准确性。
+
+[评估结果](KMeansEvaluate.xlsx)
+
+K评估：
+![](KMeans_evaluate_k.png)
+
+iteration评估：
+![](KMeans_evaluate_iteration.png)
+
+`结论：对于此份数据，迭代次数对其影响较小。`
 

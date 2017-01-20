@@ -1,35 +1,49 @@
 ---
 title: mysql-tips
-date: 2016-08-09 18:31:24
+date: 2016-09-23 08:50:52
 toc: true
 tags:
 - mysql
 categories:
 - mysql
 ---
+
 记录使用mysql的过程中一些技巧、方法、注意事项。
 
-# on case when
-做关联查询时需要根据输入数据的值来判断关联条件。
-如有表t1(code, name)、t2(code,name)，当code为空时，使用name关联。
-在查询的时候，这种情况一般都使用case when来进行逻辑判断，因此突发奇想是否可以在表关联时使用case when, 即
+# 浅谈MySQL之 Handler_read_*参数 
+
+原文：[浅谈MySQL之 Handler_read_*参数 ](http://gfsunny.blog.51cto.com/990565/1558480)
+
+摘要：
+
+使用步骤如下：
 ```
-select * from t1 left join t2 on 
-case when t1.code is null then t1.name = t2.name 
-else t1.code = t2.code end
-```
-这种用法是错误的，尽管其在mysql下并不会报错，case when放在on后面，不会进行操作。
-正确的写法应该是：
-```
-select * from t1 left join t2 on
-(t1.code is null and t1.name = t2.name)
-or
-(t1.code = t2.code)
+1.FLUSH STATUS;
+2.SELECT ...;
+3.SHOW SESSION STATUS LIKE 'Handler_read%';
+4.EXPLAIN SELECT ...;
 ```
 
-# collate
-使用关联查询已经过滤掉了某表中不存在的记录，而在往该表中插入这些数据时，报出主键冲突，如下：
-select a.* from a left join b on a.id = b.id and b.id is null;
-经查，由于mysql中默认不区分大小写，而表a中id字段的校对集设置为`utf8_bin`(将字符串中的每一个字符用二进制数据存储，区分大小写)，而表b中的id校对集为默认的`utf8_general_ci`(ci为case insensitive的缩写，即大小写不敏感，ps:还有一个校对集`utf8_general_cs`——cs为case sensitive的缩写，即大小写敏感)，因此在关联的时候区分了大小写，而导致不相等，而在插入时又不区分大小写，导致主键冲突。
-`注意：子查询中的校对集与所查询的表中一致`
+```
+Handler_read_first: first key被读取的次数，如果该值很高，则说明做了很多全索引扫描，例如：SELECT col1 FROM foo, 假设列col1是索引列。
+
+Handler_read_key: 基于索引请求数据的次数，如果该值很高，则说明查询高效地使用了索引。
+
+Handler_read_last：last key被读取的次数，如果存在ORDER BY子句，服务器将会在几个next-key请求后发出一个first-key请求，然而在ORDER BY DESC子句下，服务器将会在几个previous-key后发出一个last-key请求，该变量在MySQL 5.6.1版本加入。
+
+Handler_read_next：按照索引从数据文件中取出数据的次数。
+
+Handler_read_prev：按照索引倒序从数据文件中取出数据的次数，一般就是ORDER BY ... DESC。注意Handler_read_next是ORDER BY ... ASC的方式取数据。
+
+Handler_read_rnd：基于混合位置请求数据的次数，如果该值很高，则说明做了很多要求结果排序的查询，可能查询要求全表扫描或join操作未正确使用key。
+
+Handler_read_rnd_next：在数据文件中读下一行的请求数。如果你正进行大量的表扫描，该值较高。通常说明你的表索引不正确或写入的查询没有利用索引。
+
+```
+
+
+# mysql索引失效的几种情况
+
+原文：[mysql索引失效的几种情况](http://www.jb51.net/article/50649.htm)
+
 
