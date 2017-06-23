@@ -51,6 +51,10 @@ I/O操作不仅包括了直接的文件、网络的读写，还包括数据库�
 
 [参考链接：使用httpclient必须知道的参数设置及代码写法、存在的风险](http://jinnianshilongnian.iteye.com/blog/2089792)
 
+[参考链接：HttpComponents之httpclient基本使用方法 ](https://my.oschina.net/xinxingegeya/blog/282683)
+
+[参考链接：What does setDefaultMaxPerRoute and setMaxTotal mean in HttpClient?](https://stackoverflow.com/questions/30689995/what-does-setdefaultmaxperroute-and-setmaxtotal-mean-in-httpclient)
+
 详细代码：
 
 ```
