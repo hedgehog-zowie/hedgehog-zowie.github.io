@@ -12,19 +12,19 @@ categories:
 
 常用命令示例：
 导入HDFS：
-`bin/sqoop import --connect jdbc:mysql://10.10.10.84:3306/test --table czw_test_distinct --username ---------- --password ---------- --target-dir /tmp/testSqoop --driver com.mysql.jdbc.Driver --split-by a`
+`bin/sqoop import --connect jdbc:mysql://${host}:${port}/${db_name} --table ${table_name} --username ${username} --password ${password} --target-dir ${target_path} --driver com.mysql.jdbc.Driver --split-by a`
 导入Hive:
-`bin/sqoop import --connect jdbc:mysql://10.10.10.84:3306/test --table czw_test_distinct --username ---------- --password ---------- --hive-import --driver com.mysql.jdbc.Driver --split-by a`
+`bin/sqoop import --connect jdbc:mysql://${host}:${port}/${db_name} --table ${table_name} --username ${username} --password ${password} --hive-import --driver com.mysql.jdbc.Driver --split-by a`
 
 导出(hive -> mysql):
-`bin/sqoop export --connect jdbc:mysql://10.10.10.84:3306/test --table czw_test_distinct --username ---------- --password ---------- --driver com.mysql.jdbc.Driver --export-dir /user/hive/warehouse/czw_test_distinct --input-fields-terminated-by '\001'`
+`bin/sqoop export --connect jdbc:mysql://${host}:${port}/${db_name} --table ${table_name} --username ${username} --password ${password} --driver com.mysql.jdbc.Driver --export-dir /user/hive/warehouse/${hive_table_name} --input-fields-terminated-by '\001'`
 或(hdfs -> mysql)：
-`bin/sqoop export --connect jdbc:mysql://10.10.10.84:3306/test --table czw_test_distinct --username ---------- --password ---------- --driver com.mysql.jdbc.Driver --export-dir /tmp/testSqoop --input-fields-terminated-by ','`
+`bin/sqoop export --connect jdbc:mysql://${host}:${port}/${db_name} --table ${table_name} --username ${username} --password ${password} --driver com.mysql.jdbc.Driver --export-dir ${hdfs_path} --input-fields-terminated-by ','`
 
 导入rcfile表
-`bin/sqoop import --connect jdbc:mysql://10.10.10.84:3306/test --table test_sqoop_rcfile_to_mysql --username ---------- --password ---------- --driver com.mysql.jdbc.Driver --hcatalog-table test_sqoop_rcfile_to_mysql --split-by app_id`
+`bin/sqoop import --connect jdbc:mysql://${host}:${port}/${db_name} --table ${mysql_table_name} --username ${username} --password ${password} --driver com.mysql.jdbc.Driver --hcatalog-table ${hive_rcfile_table_name} --split-by app_id`
 导出rcfile表
-`bin/sqoop export --connect jdbc:mysql://10.10.10.84:3306/test --table test_sqoop_rcfile_to_mysql --username ---------- --password ---------- --driver com.mysql.jdbc.Driver --hcatalog-table test_sqoop_rcfile_to_mysql`
+`bin/sqoop export --connect jdbc:mysql://${host}:${port}/${db_name} --table ${mysql_table_name} --username ${username} --password ${password} --driver com.mysql.jdbc.Driver --hcatalog-table ${hive_rcfile_table_name}`
 
 
 # No columns to generate for ClassWriter

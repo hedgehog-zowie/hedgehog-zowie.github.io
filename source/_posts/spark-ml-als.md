@@ -11,8 +11,10 @@ categories:
 # 阿基米德项目ALS矩阵分解算法应用案例
 
 原文地址：
+
 [阿基米德项目ALS矩阵分解算法应用案例](https://github.com/ceys/jdml/wiki/ALS)
-[格式比较好的](http://www.cnblogs.com/lengyue365/p/5689219.html)
+
+[格式比较好的版本](http://www.cnblogs.com/lengyue365/p/5689219.html)
 
 ## 算法描述
 

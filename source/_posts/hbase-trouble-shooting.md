@@ -210,3 +210,71 @@ Enable this will make the regionserver restart.
 </description>
 ```
 
+# HBase RIT
+
+RIT:regions in transition，表示region正在迁移，从而导致该region所属的表无法进行任何操作；
+
+## 第一种情况
+查看相应region server上的日志，发现大量如下错误：
+`Requested row out of range for row lock on HRegion`
+
+```
+2017-06-23 09:26:01,823 WARN  [RpcServer.handler=10,port=60020] regionserver.HRegion: Failed getting lock in batch put, row=a6e882268589da9f06b2480058fe99f5
+org.apache.hadoop.hbase.regionserver.WrongRegionException: Requested row out of range for row lock on HRegion dlv_imei_apps_detail,a7ffe310bbc3243dbee6a22e3b16ab05,1498057323249
+.38b51e6eb76fbe9a4d1435418e1dd0a0., startKey='a7ffe310bbc3243dbee6a22e3b16ab05', getEndKey()='a99748', row='a6e882268589da9f06b2480058fe99f5'
+        at org.apache.hadoop.hbase.regionserver.HRegion.checkRow(HRegion.java:3208)
+        at org.apache.hadoop.hbase.regionserver.HRegion.getRowLock(HRegion.java:3226)
+        at org.apache.hadoop.hbase.regionserver.HRegion.doMiniBatchMutation(HRegion.java:2161)
+        at org.apache.hadoop.hbase.regionserver.HRegion.batchMutate(HRegion.java:2028)
+        at org.apache.hadoop.hbase.regionserver.HRegionServer.doBatchOp(HRegionServer.java:4094)
+        at org.apache.hadoop.hbase.regionserver.HRegionServer.doNonAtomicRegionMutation(HRegionServer.java:3380)
+        at org.apache.hadoop.hbase.regionserver.HRegionServer.multi(HRegionServer.java:3284)
+        at org.apache.hadoop.hbase.protobuf.generated.ClientProtos$ClientService$2.callBlockingMethod(ClientProtos.java:26935)
+        at org.apache.hadoop.hbase.ipc.RpcServer.call(RpcServer.java:2185)
+        at org.apache.hadoop.hbase.ipc.RpcServer$Handler.run(RpcServer.java:1889)
+```
+master中存在如下日志：
+```
+2017-06-21 23:02:06,222 INFO  [AM.ZK.Worker-pool2-t185] master.AssignmentManager: Handled SPLIT event; parent=dlv_imei_apps_detail,a666665c,1487735023978.ef44aa46bf1f419487e5cf2
+a545c9408., daughter a=dlv_imei_apps_detail,a666665c,1498057323249.85319a6b7ef3bdc5b6455615c74cbb72., daughter b=dlv_imei_apps_detail,a7ffe310bbc3243dbee6a22e3b16ab05,1498057323
+249.38b51e6eb76fbe9a4d1435418e1dd0a0., on bis-hadoop-datanode-s2d-139,60020,1498012203653
+```
+由此可见，该region是由于split而产生的，但是在split之后，由于某种原因（没有找到相应日志，已经被满屏的`Requested row out of range for row lock on HRegion`日志刷过）而导致该region下线，但此时仍然存在需要使用该region的操作，从而导致大量的`Requested row out of range for row lock on HRegion`进而造成长时间的RIT（这里应该可以算作是HBase的一个BUG，当操作异常且满足一定重试次数后，应该不再对该region进行操作，甚至直接抛出异常且不进行这一次操作也比一直尝试要好）。
+
+## 解决办法
+
+0.96版本的HBase其默认的split策略是IncreasingToUpperBoundRegionSplitPolicy，由于我们的表都不大，所以暂时使用ConstantSizeRegionSplitPolicy来规避该问题。
+
+## 两篇很好的讲RIT的文章
+
+[HBase运维实践－聊聊RIT的那点事](http://hbasefly.com/2016/09/08/hbase-rit/)
+
+[Regions Stuck in RIT / Region Not Deployed on any RS](https://www.zybuluo.com/xtccc/note/191871)
+
+# hbase oldWALS过大
+
+hdfs上的oldWALS目录超过了10T，其中还有一些是2个月之前产生的，而默认策略下，HMaster每隔10分钟便会对oldWALS目录进行一次清理，查看HMaster上的日志，发现其中的如下日志提示：
+
+```
+A file cleanermaster:bis-hadoop-namenode-s-01:60000.oldLogCleaner is stopped, won't delete any more files in:hdfs://webcluster/hbase/oldWALs
+```
+
+日志显示，oldWALs没有清理成功，重启HMaster后问题解决。
+
+# TableNotEnabledException and TableNotDisabledException
+
+由于对region server的不恰当操作（当有region处于RIT状态时，对其进行了重启），导致了一张表无法进行操作，包括查询，disable, enable, drop；
+对其进行disable时提示TableNotEnabledException，而对其进行enable时则提示TableNotDisabledException，进行如下步骤尝试修复：
+1.使用hbase zkcli命令删除zookeeper上的/hbase/table/{tableName}节点；
+  进行该操作之后enable可以执行，且使用is_enabled语句查看该表，显示为true; 但是尝试对其进行disable时，依旧提示TableNotEnabledException；
+2.删除hdfs上该表的数据目录，然后使用hbck -repair命令进行元数据修复；
+  使用list语句查看表已不存在，disable和drop操作也提示表不存在，但是尝试重新创建该表时，提示表存在。
+3.重启HMaster；
+
+```
+一个惊喜的发现：之前几次使用hbck修复元数据后，依旧会提示 inconsistencies detected, 而重启HMaster之后，再次使用hbck对元数据进行修复：
+0 inconsistencies detected.
+Status: OK
+```
+
+

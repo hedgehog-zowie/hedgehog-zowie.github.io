@@ -163,3 +163,15 @@ iteration评估：
 
 `结论：对于此份数据，迭代次数对其影响较小。`
 
+# spark work目录清理
+
+Spark.worker.cleamup.enabled 它是在standalone模式下需要确定是否要哦定期清理Worker的应用程序工作的目录，在清理的时候不管Application是否在运行状态，`默认为false`
+
+Spark.worker.clieanuo.interval 清理worker本地过期的应用程序工作目录的时间间隔，`默认为 1800s`
+
+spark.worker.cleanup.appDataTtl 这个是worker保留应用程序工作鲁姆的有效时间。这个时间由磁盘空间、应用程序日志、jar文件以及提交频率来设定。默认值为7天
+
+# Spark-SQL之DataFrame操作大全
+
+[原文：Spark-SQL之DataFrame操作大全](http://blog.csdn.net/dabokele/article/details/52802150)
+
