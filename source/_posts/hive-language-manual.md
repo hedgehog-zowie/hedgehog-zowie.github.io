@@ -104,7 +104,7 @@ ALL和DISTINCT也可以在UNION子句中使用-见[Union](####Union)以获取更
 ```
 SELECT page_views.*
 FROM page_views
-WHERE page_views.date >= '2008-03-01' AND page_views.date <= '2008-03-31'
+WHERE page_views.date >= '2008-03-01' AND page_views.date &lt;= '2008-03-31'
 ```
 
 如果表page_views与表dim_users关联，可以像下面一样在on子句中指定分区范围。
@@ -112,7 +112,7 @@ WHERE page_views.date >= '2008-03-01' AND page_views.date <= '2008-03-31'
 ```
 SELECT page_views.*
 FROM page_views JOIN dim_users
-  ON (page_views.user_id = dim_users.id AND page_views.date >= '2008-03-01' AND page_views.date <= '2008-03-31')
+  ON (page_views.user_id = dim_users.id AND page_views.date >= '2008-03-01' AND page_views.date &lt;= '2008-03-31')
 ```
 
 另见[Group By](####Group By)。
@@ -589,8 +589,8 @@ AS (thing1 INT, thing2 INT)
 
 ```
 SHOW FUNCTIONS;
-DESCRIBE FUNCTION <function_name>;
-DESCRIBE FUNCTION EXTENDED <function_name>;
+DESCRIBE FUNCTION &lt;function_name>;
+DESCRIBE FUNCTION EXTENDED &lt;function_name>;
 ```
 
 ```
@@ -609,11 +609,11 @@ DESCRIBE FUNCTION EXTENDED <function_name>;
 --|--|--
 A = B|所有基本类型|如果表达式A与表达式B相等，则为TRUE，否则为FALSE。
 A == B|所有基本类型|同 = 
-A <=> B|所有基本类型|若操作数非空（non-none），则返回与=相同的结果；若存存空操作数，当两个都为空操作符时，返回TRUE，仅一个为空时，返回FALSE（截至版本[0.9.0](https://issues.apache.org/jira/browse/HIVE-2810)）；
-A <> B|所有基本类型|如果A或B为NULL，返回NULL；如果A不等于B，返回TRUE，否则返回FALSE
-A != B|所有基本类型|同 <> 
-A < B|所有基本类型|如果A或B为NULL，返回NULL；如果A小于B，返回TRUE，否则返回FALSE
-A <= B|所有基本类型|如果A或B为NULL，返回NULL；如果A小于等于B，返回TRUE，否则返回FALSE
+A &lt;=> B|所有基本类型|若操作数非空（non-none），则返回与=相同的结果；若存存空操作数，当两个都为空操作符时，返回TRUE，仅一个为空时，返回FALSE（截至版本[0.9.0](https://issues.apache.org/jira/browse/HIVE-2810)）；
+A &lt;> B|所有基本类型|如果A或B为NULL，返回NULL；如果A不等于B，返回TRUE，否则返回FALSE
+A != B|所有基本类型|同 &lt;> 
+A &lt; B|所有基本类型|如果A或B为NULL，返回NULL；如果A小于B，返回TRUE，否则返回FALSE
+A &lt;= B|所有基本类型|如果A或B为NULL，返回NULL；如果A小于等于B，返回TRUE，否则返回FALSE
 A > B|所有基本类型|如果A或B为NULL，返回NULL；如果A大于B，返回TRUE，否则返回FALSE
 A >= B|所有基本类型|如果A或B为NULL，返回NULL；如果A大于等于B，返回TRUE，否则返回FALSE
 A [NOT] BETWEEN B AND C|所有基本类型|如果A、B或C为NULL，返回NULL；如果A大于等于B并且A小于等于C，返回TRUE，否则返回FALSE。可以使用NOT关键字（（截至版本[0.9.0](https://issues.apache.org/jira/browse/HIVE-2810)。）
@@ -635,8 +635,9 @@ A * B|所有数据类型|返回A与B的乘积，结果类型是两个操作数�
 A / B|所有数据类型|返回A被B除的结果，大多数情况下其结果类型是double，当A和B均为整型时，若[hive.compat](https://cwiki.apache.org/confluence/display/Hive/Configuration+Properties#ConfigurationProperties-hive.compat)参数设置为『0.13』或『latest』,其结果强制转换为decimal类型，默认该值为『0.12』—— int / int = double，『0.13』—— int / int = decimal。
 A % B|所有数据类型|返回A与B取模，结果类型是两个操作数的公共父类型。
 A & B|所有数据类型|A和B二进制与，结果类型是两个操作数的公共父类型。
-A ^ B|所有数据类型|A和B二进制或，结果类型是两个操作数的公共父类型。
-~A||所有数据类型|A二进制非（取反），结果类型与A相同。
+A &#124; B|所有数据类型|A和B二进制或，结果类型是两个操作数的公共父类型。
+A ^ B|所有数据类型|A和B二进制异或，结果类型是两个操作数的公共父类型。
+~A|所有数据类型|A二进制非（取反），结果类型与A相同。
 
 ###### 逻辑运算符
 
@@ -647,7 +648,7 @@ A ^ B|所有数据类型|A和B二进制或，结果类型是两个操作数的�
 A AND B|boolean|A与B均为TRUE时为TRUE，否则为FALSE，若A或B为NULL，则返回NULL。
 A && B|boolean|同A AND B
 A OR B|boolean|A或B为TRUE时为TRUE，FALSE OR NULL 为 NULL, 否则为FALSE。
-A || B|boolean|同 A OR B
+A &#124;&#124; B|boolean|同 A OR B
 NOT A|boolean|A为FALSE时返回TRUE, A为NULL时返回NULL，否则返回FALSE
 !A|boolean|同 NOT A
 A IN (val1, val2, ...)|boolean|若A与values中的任意元素相同，返回TRUE，HIVE 0.13以上版本支持子查询。
@@ -673,7 +674,7 @@ create_union|(tag, val1, val2, ...)|创建一个指定值的union类型。
 操作符|操作数类型|描述
 -|-|-
 A[n]|A是一个数组，且n是一个int|返回数组A的第n个元素，第一个元素下标为0，例如果A是['foo','bar']，那么A[0]将返回'foo'，A[1]返回'bar'。
-M[key]|M是一个Map<K,V>，且key类型是K|返回map对应key的值，如果M是一个{'f'->'foo','b'->'bar','all'->'foobar'}的map，则M['all']返回'foobar'
+M[key]|M是一个Map&lt;K,V>，且key类型是K|返回map对应key的值，如果M是一个{'f'->'foo','b'->'bar','all'->'foobar'}的map，则M['all']返回'foobar'
 S.x|S是一个struct|返回S的x字段，例如struct foobar{int foo, int bar}，foobar.foo返回存储在foo字段的整型值。
 
 ##### 内置函数
@@ -701,13 +702,14 @@ DOUBLE|sqrt(DOUBLE a)  sqrt(DECIMAL a)|返回a的平方根。Decimal版本在[Hi
 STRING|bin(BIGINT a)|返回数值a的二进制格式（查看[更多信息:http://dev.mysql.com/doc/refman/5.0/en/string-functions.html#function_bin](http://dev.mysql.com/doc/refman/5.0/en/string-functions.html#function_bin)）
 STRING|hex(BIGINT a)  hex(STRING a)  hex(BINARY a)|当参数是一个INT型或binary时，hex返回16进制的字符串；当参数是STRING型时，它将每个字符都转换成16进制，并返回结果字符串。
 BINARAY|unhex(STRING a)|16进制的逆，将每对字符看作一个16进制的数，并转换为字节。
-STRING|conv(BIGINT num, INT from_base, INT to_base)  conv(STRING num, INT from_base, INT to_base)  DOUBLE|abs(DOUBLE a)|基于指定的基数，将一个数值转换为另一个，详情请参考[http://dev.mysql.com/doc/refman/5.0/en/mathematical-functions.html#function_conv](http://dev.mysql.com/doc/refman/5.0/en/mathematical-functions.html#function_conv)。
+STRING|conv(BIGINT num, INT from_base, INT to_base)  conv(STRING num, INT from_base, INT to_base)|进制转换，将数值num从from_base进制转化到to_base进制（[http://dev.mysql.com/doc/refman/5.0/en/mathematical-functions.html#function_conv](http://dev.mysql.com/doc/refman/5.0/en/mathematical-functions.html#function_conv))
+DOUBLE|abs(DOUBLE a)|基于指定的基数，将一个数值转换为另一个，详情请参考[http://dev.mysql.com/doc/refman/5.0/en/mathematical-functions.html#function_conv](http://dev.mysql.com/doc/refman/5.0/en/mathematical-functions.html#function_conv)。
 DOUBLE|abd(DOUBLE a)|返回a的绝对值。
 INT OR DOUBLE|pmod(INT a, INT b)  pmod(DOUBLE a, DOUBLE b)|正取余，返回正a对b取模的结果。
 DOUBLE|sin(DOUBLE a), sin(DECIMAL a)|正弦，Decima版本在[Hive 0.13.0](https://issues.apache.org/jira/browse/HIVE-6327)添加
-DOUBLE|asin(DOUBLE a), asin(DECIMAL a)|反正弦，若 -1 <=a <= 1时，返回a的反正弦值，否则返回NULL。Decimal版本在[Hive 0.13.0](https://issues.apache.org/jira/browse/HIVE-6327)添加
+DOUBLE|asin(DOUBLE a), asin(DECIMAL a)|反正弦，若 -1 &lt;=a &lt;= 1时，返回a的反正弦值，否则返回NULL。Decimal版本在[Hive 0.13.0](https://issues.apache.org/jira/browse/HIVE-6327)添加
 DOUBLE|cos(DOUBLE a), cos(DECIMAL a)|余弦，Decimal版本在[Hive 0.13.0](https://issues.apache.org/jira/browse/HIVE-6327)添加
-DOUBLE|acos(DOUBLE a), acos(DECIMAL a)|反余弦，若 -1 <=a <= 1时，返回a的反正弦值，否则返回NULL。Decimal版本在[Hive 0.13.0](https://issues.apache.org/jira/browse/HIVE-6327)添加
+DOUBLE|acos(DOUBLE a), acos(DECIMAL a)|反余弦，若 -1 &lt;=a &lt;= 1时，返回a的反正弦值，否则返回NULL。Decimal版本在[Hive 0.13.0](https://issues.apache.org/jira/browse/HIVE-6327)添加
 DOUBLE|tan(DOUBLE a), tan(DECIMAL a)|正切，Decimal版本在[Hive 0.13.0](https://issues.apache.org/jira/browse/HIVE-6327)添加
 DOUBLE|atan(DOUBLE a), atan(DECIMAL a)|反正切，Decimal版本在[Hive 0.13.0](https://issues.apache.org/jira/browse/HIVE-6327)添加
 DOUBLE|degrees(DOUBLE a), degrees(DECIMAL a)|弧度转换成角度
@@ -719,11 +721,11 @@ DOUBLE|e()|返回自然常数e的值，约为2.71828，就是公式为lim(1+1/x)
 DOUBLE|pi()|返回圆周率pi。
 BIGINT|factorial(INT a)|返回a的阶乘（[Hive 1.2.0](https://issues.apache.org/jira/browse/HIVE-9858)添加），a的有效取值范围是[0..20]。
 DOUBLT|cbrt(DOUBLE a)|返回a的立方根（[Hive 1.2.0](https://issues.apache.org/jira/browse/HIVE-9858)添加）。
-INT OR BIGINT|shiftleft(TINYINT|SMALLINT|INT a, INT b)  shiftleft(BIGINT a, INT b)|按位左移（[Hive 1.2.0](https://issues.apache.org/jira/browse/HIVE-9858)添加），将a左移b个位置，a为tinyint,smallint和int时，返回int型结果；a为bigint时返回bigint型结果。
-INT OR BIGINT|shiftright(TINYINT|SMALLINT|INT a, INT b)  shiftright(BIGINT a, INT b)|按位右移（[Hive 1.2.0](https://issues.apache.org/jira/browse/HIVE-9858)添加），将a右移b个位置，a为tinyint,smallint和int时，返回int型结果；a为bigint时返回bigint型结果。
-INT OR BIGINT|shiftrightunsigned(TINYINT|SMALLINT|INT a, INT b)  shiftrightunsigned(BIGINT a, INT b)|无符号右移（使用0填充最高位）（[Hive 1.2.0](https://issues.apache.org/jira/browse/HIVE-9858)添加），将a右移b个位置，a为tinyint,smallint和int时，返回int型结果；a为bigint时返回bigint型结果。
+INT OR BIGINT|shiftleft(TINYINT&#124;SMALLINT&#124;INT a, INT b)  shiftleft(BIGINT a, INT b)|按位左移（[Hive 1.2.0](https://issues.apache.org/jira/browse/HIVE-9858)添加），将a左移b个位置，a为tinyint,smallint和int时，返回int型结果；a为bigint时返回bigint型结果。
+INT OR BIGINT|shiftright(TINYINT&#124;SMALLINT&#124;INT a, INT b)  shiftright(BIGINT a, INT b)|按位右移（[Hive 1.2.0](https://issues.apache.org/jira/browse/HIVE-9858)添加），将a右移b个位置，a为tinyint,smallint和int时，返回int型结果；a为bigint时返回bigint型结果。
+INT OR BIGINT|shiftrightunsigned(TINYINT&#124;SMALLINT&#124;INT a, INT b)  shiftrightunsigned(BIGINT a, INT b)|无符号右移（使用0填充最高位）（[Hive 1.2.0](https://issues.apache.org/jira/browse/HIVE-9858)添加），将a右移b个位置，a为tinyint,smallint和int时，返回int型结果；a为bigint时返回bigint型结果。
 T|greatest(T v1, T v2, ...)|返回指定列表的最大值([Hive 1.1.0](https://issues.apache.org/jira/browse/HIVE-9402)版本添加)，于[Hive 2.0.0](https://issues.apache.org/jira/browse/HIVE-12082)版本修复『当存在一个或多个NULL时，返回NULL的问题，并放宽严格类型要求限制，与">"保持一致』。
-T|least(T v1, T v2, ...)|返回指定列表的最小值([Hive 1.1.0](https://issues.apache.org/jira/browse/HIVE-9402)版本添加)，于[Hive 2.0.0](https://issues.apache.org/jira/browse/HIVE-12082)版本修复『当存在一个或多个NULL时，返回NULL的问题，并放宽严格类型要求限制，与"<"保持一致』。
+T|least(T v1, T v2, ...)|返回指定列表的最小值([Hive 1.1.0](https://issues.apache.org/jira/browse/HIVE-9402)版本添加)，于[Hive 2.0.0](https://issues.apache.org/jira/browse/HIVE-12082)版本修复『当存在一个或多个NULL时，返回NULL的问题，并放宽严格类型要求限制，与"&lt;"保持一致』。
 
 ###### Decimal类型的数学函数和操作符
 
@@ -739,12 +741,12 @@ HIVE支持以下内置集合函数
 
 返回类型|名称|描述
 -|-|-
-int|size(Map<K.V>)|返回map集合的元素数量
-int|size(Array<T>)|返回array集合的元素数量
-array<K>|map_keys(Map<K.V>)|返回map中的keys的无序数组
-array<V>|map_values(Map<K.V>)|返回map中的value的无序数组
-boolean|array_contains(Array<T>, value)|如果array中包含值value，则返回true
-array<t>|sort_array(Array<T>)|将array按自然顺序排序（[Hive 0.9.0](https://issues.apache.org/jira/browse/HIVE-2279)版本添加）
+int|size(Map&lt;K.V>)|返回map集合的元素数量
+int|size(Array&lt;T>)|返回array集合的元素数量
+array&lt;K>|map_keys(Map&lt;K.V>)|返回map中的keys的无序数组
+array&lt;V>|map_values(Map&lt;K.V>)|返回map中的value的无序数组
+boolean|array_contains(Array&lt;T>, value)|如果array中包含值value，则返回true
+array&lt;t>|sort_array(Array&lt;T>)|将array按自然顺序排序（[Hive 0.9.0](https://issues.apache.org/jira/browse/HIVE-2279)版本添加）
 
 ###### 类型转换函数
 
@@ -752,8 +754,8 @@ HIVE支持以下类型转换函数
 
 返回类型|名称|描述
 -|-|-
-binary|binary(string|binary)|强制转换为二进制
-Expected "=" to follow "type"|cast(expr as <type>)|强制转换表达式expr为类型<type>，例如:cast('1' as BIGINT)将把字符串'1'转换为整型；若转换不成功，将返回null。case(expr as boolean)若expr为非空字符串时，将返回true。
+binary|binary(string&#124;binary)|强制转换为二进制
+Expected "=" to follow "type"|cast(expr as &lt;type>)|强制转换表达式expr为类型&lt;type>，例如:cast('1' as BIGINT)将把字符串'1'转换为整型；若转换不成功，将返回null。case(expr as boolean)若expr为非空字符串时，将返回true。
 
 ###### 日期函数
 
@@ -810,11 +812,11 @@ HIVE支持以下内置String函数
 -|-|-
 int|ascii(string str)|返回str第一个字符的数值。
 string|base64(binary bin)|转换二进制为base 64的字符串([Hive 0.12.0](https://issues.apache.org/jira/browse/HIVE-2482)版本添加)
-string|chr(bigint|double A)|返回A的ASCII码([Hive 1.3.0 和 Hive 2.1.0](https://issues.apache.org/jira/browse/HIVE-13063)版本添加)，如果A比256大，则结果与chr(A % 256)等价，例如：select chr(88); 返回"X"。
-string|concat(string|binary A, string|binary B...)|连接字符串，例如： concat('foo', 'bar') 结果是 'foobar'，注意这个函数可以接任意多个输入。
-array<struct<string,double>>|context_ngrams(array<array<string>>, array<string>, int K, int pf)|返回array<array<string>>中出现在array<string>后最频繁的top-k个词及其出现次数，详情请参考[StatisticsAndDataMining](https://cwiki.apache.org/confluence/display/Hive/StatisticsAndDataMining)。
+string|chr(bigint&#124;double A)|返回A的ASCII码([Hive 1.3.0 和 Hive 2.1.0](https://issues.apache.org/jira/browse/HIVE-13063)版本添加)，如果A比256大，则结果与chr(A % 256)等价，例如：select chr(88); 返回"X"。
+string|concat(string&#124;binary A, string&#124;binary B...)|连接字符串，例如： concat('foo', 'bar') 结果是 'foobar'，注意这个函数可以接任意多个输入。
+array&lt;struct&lt;string,double>>|context_ngrams(array&lt;array&lt;string>>, array&lt;string>, int K, int pf)|返回array&lt;array&lt;string>>中出现在array&lt;string>后最频繁的top-k个词及其出现次数，详情请参考[StatisticsAndDataMining](https://cwiki.apache.org/confluence/display/Hive/StatisticsAndDataMining)。
 string|concat_ws(string SEP, string A, string B...)|同concat类似，但是可以由用户指定分隔符SEP。
-string|concat_ws(string SEP, array<string>)同concat_ws，但是参数是一个string型的字符串。
+string|concat_ws(string SEP, array&lt;string>)|同concat_ws，但是参数是一个string型的字符串。
 string|decode(binary bin, string charset)|根据character（'US-ASCII', 'ISO-8859-1', 'UTF-8', 'UTF-16BE', 'UTF-16LE', 'UTF-16'其中之一）指定的编码方式进行解码，如果任一参数是null，结果为null.([Hive 0.12.0](https://issues.apache.org/jira/browse/HIVE-2482)版本添加)
 binary|encode(string src, string charset)|根据character（'US-ASCII', 'ISO-8859-1', 'UTF-8', 'UTF-16BE', 'UTF-16LE', 'UTF-16'其中之一）指定的编码方式进行编码，如果任一参数是null，结果为null.([Hive 0.12.0](https://issues.apache.org/jira/browse/HIVE-2482)版本添加)
 int|find_in_set(string str, string strList)|strList是一个逗号分隔的字符串，返回第一个str出现的位置。若任一参数为null，则返回null。若第一个参数包含任何逗号，则返回0.例如：find_in_set('ab', 'abc,b,ab,c,def') 返回 3.
@@ -827,25 +829,24 @@ int|locate(string substr, string str[, int pos])|返回position位置之后第�
 string|lower(string A) lcase(string A)|转换所有字符 为小写。如：lower('fOoBaR') 结果为 'foobar'。
 string|lpad(string str, int len, string pad)|左侧填充长度len的pad字符串
 string|ltrim(string A)|去除左侧空白字符，例如：ltrim(' foobar ') 结果为 'foobar '。
-array<struct<string,double>>|ngrams(array<array<string>>, int N, int K, int pf)|返回array<array<string>>中出现连续的N个字符最频繁的top-k个词及其出现次数，详情请参考[StatisticsAndDataMining](https://cwiki.apache.org/confluence/display/Hive/StatisticsAndDataMining)。
+array&lt;struct&lt;string,double>>|ngrams(array&lt;array&lt;string>>, int N, int K, int pf)|返回array&lt;array&lt;string>>中出现连续的N个字符最频繁的top-k个词及其出现次数，详情请参考[StatisticsAndDataMining](https://cwiki.apache.org/confluence/display/Hive/StatisticsAndDataMining)。
 string|parse_url(string urlString, string partToExtract [, string keyToExtract])|返回url的指定部分。有效的partToExtract包括：HOST, PATH, QUERY, REF, PROTOCOL, AUTHORITY, FILE 和 USERINFO。例如：parse_url('http://facebook.com/path1/p.php?k1=v1&k2=v2#Ref1', 'HOST') 返回 'facebook.com'。并且，关键字QUERY，可以提取第三个参数指定的参数值，例如：parse_url('http://facebook.com/path1/p.php?k1=v1&k2=v2#Ref1', 'QUERY', 'k1') 返回 'v1'。
 string|printf(String format, Obj... args)|返回输入格式对应的打印格式([Hive 0.9.0](https://issues.apache.org/jira/browse/HIVE-2695)版本添加)。
 string|regexp_extract(string subject, string pattern, int index)|返回使用pattern提取的字符串。例如：regexp_extract('foothebar', 'foo(.*?)(bar)', 1) 返回 'the'， regexp_extract('foothebar', 'foo(.*?)(bar)', 2) 返回 'bar'，regexp_extract('foothebar', 'foo(.*?)(bar)', 0) 返回 'foothebar', 注意一些情况下需要使用转义字符：使用'\s'作为第二个参数将匹配字母s；'\\s'匹配空白字符等。'index'参数是Java regex Maatcher group()方法的index。查看docs/api/java/util/regex/Matcher.html获取更多信息。
-string|regexp_replace(string INITIAL_STRING, string PATTERN, string REPLACEMENT)|用REPLACEMENT替换INITIAL_STRING中所有匹配PATTERN的字符串，例如：regexp_replace("foobar", "oo|ar", "") 返回 'fb'。注意一些情况下需要使用转义字符：使用'\s'作为第二个参数将匹配字母s；'\\s'匹配空白字符等。
+string|regexp_replace(string INITIAL_STRING, string PATTERN, string REPLACEMENT)|用REPLACEMENT替换INITIAL_STRING中所有匹配PATTERN的字符串，例如：regexp_replace("foobar", "oo&#124;ar", "") 返回 'fb'。注意一些情况下需要使用转义字符：使用'\s'作为第二个参数将匹配字母s；'\\s'匹配空白字符等。
 string|repeat(string str, int n)|重复str字符串n次。
 string|replace(string A, string OLD, string NEW)|使用NEW替换A中所有不重叠的OLD字符串（[Hive 1.3.0 和 Hive 2.1.0](https://issues.apache.org/jira/browse/HIVE-13063)版本添加）,例如：select replace("ababab", "abab", "Z"); 返回 "Zab".
 string|reverse(string A)|字符串反转。
 string|rpad(string str, int len, string pad)|右侧填充长度len的pad字符串
 string|rtrim(string A)|去除左侧空白字符，例如：ltrim(' foobar ') 结果为 ' foobar'。
-array<array<string>>|sentences(string str, string lang, string locale)|分隔自然语言文本为单词和句子，lang和locale参数可选，例如：sentences('Hello there! How are you?') 返回 ( ("Hello", "there"), ("How", "are", "you") )
+array&lt;array&lt;string>>|sentences(string str, string lang, string locale)|分隔自然语言文本为单词和句子，lang和locale参数可选，例如：sentences('Hello there! How are you?') 返回 ( ("Hello", "there"), ("How", "are", "you") )
 string|space(int n)|返回n个空格的字符串
 array|split(string str, string pat)|用pat分隔字符串，pat是一个普通的表达式。
-map<string,string>|str_to_map(text[, delimiter1, delimiter2])|用两个分隔符将字符串分割为key-value键值对，第一个分隔符delimiter1将字符串分隔为键值对字符串，第二个分隔符delimiter2将每一个键值对字符串分隔为键值对。
-string|substr(string|binary A, int start)  substring(string|binary A, int start)|从start位置开始，获取A的子串
-string|substr(string|binary A, int start, int len)
-substring(string|binary A, int start, int len)|从start位置开始获取长度为len的A的子串
+map&lt;string,string>|str_to_map(text[, delimiter1, delimiter2])|用两个分隔符将字符串分割为key-value键值对，第一个分隔符delimiter1将字符串分隔为键值对字符串，第二个分隔符delimiter2将每一个键值对字符串分隔为键值对。
+string|substr(string&#124;binary A, int start)  substring(string&#124;binary A, int start)|从start位置开始，获取A的子串
+string|substr(string&#124;binary A, int start, int len)  substring(string&#124;binary A, int start, int len)|从start位置开始获取长度为len的A的子串
 string|substring_index(string A, string delim, int count)|返回A中由delim分隔的count位置的字符串。如果count为正数，返回从左到最后一个分隔符（从左往右数）的字符串，如果count为负数，返回从右到最后一个分隔符（从右往左数）的字符串。例如：substring_index('www.apache.org', '.', 2) = 'www.apache'.
-string|translate(string|char|varchar input, string|char|varchar from, string|char|varchar to)|将input中出现在from中的字符替换为to中的字符串，同PostgreSQL中的translate函数，如果任何参数为null，结果为null。（[Hive 0.10.0](https://issues.apache.org/jira/browse/HIVE-2418)以上版本可用，支持string类型）,[Hive 0.14.0](https://issues.apache.org/jira/browse/HIVE-6622)以上版本支持Char/varchar类型
+string|translate(string&#124;char&#124;varchar input, string&#124;char&#124;varchar from, string&#124;char&#124;varchar to)|将input中出现在from中的字符替换为to中的字符串，同PostgreSQL中的translate函数，如果任何参数为null，结果为null。（[Hive 0.10.0](https://issues.apache.org/jira/browse/HIVE-2418)以上版本可用，支持string类型）,[Hive 0.14.0](https://issues.apache.org/jira/browse/HIVE-6622)以上版本支持Char/varchar类型
 string|trim(string A)|去除两侧空白字符，例如：trim(' foobar ') 结果 是 'foobar'
 binary|unbase64(string str)|转换base 64字符串为二进制（[Hive 0.12.0](https://issues.apache.org/jira/browse/HIVE-2482)版本添加）
 string|upper(string A) ucase(string A)|所有字符大写，例如：upper('fOoBaR') 结果为 'FOOBAR'。
@@ -864,7 +865,7 @@ string|mask_first_n(string str[, int n])|掩饰数字串str的头n个字符，�
 string|mask_last_n(string str[, int n])|掩饰数字串str的最后n个字符，例如：mask_last_n("1234-5678-8765-4321", 4) results in 1234-5678-8765-nnnn。（[Hive 2.1.0](https://issues.apache.org/jira/browse/HIVE-13568)添加）
 string|mask_show_first_n(string str[, int n])|仅显示头n个字符，其他字符都做掩饰，例如：mask_show_first_n("1234-5678-8765-4321", 4) results in 1234-nnnn-nnnn-nnnn。（[Hive 2.1.0](https://issues.apache.org/jira/browse/HIVE-13568)添加）
 string|mask_show_last_n(string str[, int n])|显示最后n个字符，其他字符都做掩饰，例如：mask_show_last_n("1234-5678-8765-4321", 4) results in nnnn-nnnn-nnnn-4321。（[Hive 2.1.0](https://issues.apache.org/jira/browse/HIVE-13568)添加）
-string|mask_hash(string|char|varchar str)|返回str的hash值，该hash值是唯一的，并且可以用于表与表之间的关联。若str字符串为空字符串，该函数返回null。（[Hive 2.1.0](https://issues.apache.org/jira/browse/HIVE-13568)添加）
+string|mask_hash(string&#124;char&#124;varchar str)|返回str的hash值，该hash值是唯一的，并且可以用于表与表之间的关联。若str字符串为空字符串，该函数返回null。（[Hive 2.1.0](https://issues.apache.org/jira/browse/HIVE-13568)添加）
 
 ###### 混合函数
 
@@ -955,10 +956,10 @@ DOUBLE|covar_pop(col1, col2)|组内两个数值列的总体协方差。
 DOUBLE|covar_samp(col1, col2)|组内两个数值列的样本协方差。
 DOUBLE|corr(col1, col2)|组内两个数值列的皮尔逊相关系数。
 DOUBLE|percentile(BIGINT col, p)|组内一个列精确到p位的百分数，p必须在0和1之间。
-array<double>|percentile(BIGINT col, array(p1 [, p2]...))|组内一个列精确的第p1,p2,...位百分数，p必须在0和1之间。
+array&lt;double>|percentile(BIGINT col, array(p1 [, p2]...))|组内一个列精确的第p1,p2,...位百分数，p必须在0和1之间。
 DOUBLE|percentile_approx(DOUBLE col, p [, B])|组内一个数值列的第p位百分数（包括浮点数），参数B控制近似的精确度，B值越大，近似度越高，默认值为10000。当列中非重复值的数量小于B时，返回精确的百分数
-array<double>|percentile_approx(DOUBLE col, array(p1 [, p2]...) [, B])|同上，但接受并返回百分数数组
-array<struct {'x','y'}>|histogram_numeric(col, b)|使用b个非均匀间隔的箱子计算组内数字列的柱状图（直方图），输出的数组大小为b，double类型的(x,y)表示直方图的中心和高度
+array&lt;double>|percentile_approx(DOUBLE col, array(p1 [, p2]...) [, B])|同上，但接受并返回百分数数组
+array&lt;struct {'x','y'}>|histogram_numeric(col, b)|使用b个非均匀间隔的箱子计算组内数字列的柱状图（直方图），输出的数组大小为b，double类型的(x,y)表示直方图的中心和高度
 array|collect_set(col)|返回消除了重复元素的数组
 array|collect_list(col)|返回允许重复元素的数组
 INTEGER|ntile(INTEGER x)|该函数将已经排序的分区分到x个桶中，并为每行分配一个桶号。这可以容易的计算三分位，四分位，十分位，百分位和其它通用的概要统计
@@ -971,10 +972,10 @@ INTEGER|ntile(INTEGER x)|该函数将已经排序的分区分到x个桶中，并
 -|-|-
 N rows|explode(ARRAY)|将数组数据中的每个元素做为一行返回
 N rows|explode(MAP)|将输入map中的每个键值对转换为两列，一列为key，另一列为value，然后返回新行（[Hive 0.8.0](https://issues.apache.org/jira/browse/HIVE-1735)版本支持）
-|inline(ARRAY<STRUCT[,STRUCT]>)|分解struct数组到表中（[Hive 0.10(https://issues.apache.org/jira/browse/HIVE-3238)]）
-Array Type|explode(array<TYPE> a)|对于数组a中的每个元素，产生包含该元素的行
+|inline(ARRAY&lt;STRUCT[,STRUCT]>)|分解struct数组到表中（[Hive 0.10(https://issues.apache.org/jira/browse/HIVE-3238)]）
+Array Type|explode(array&lt;TYPE> a)|对于数组a中的每个元素，产生包含该元素的行
 tuple|json_tuple(jsonStr, k1, k2, ...)|参数为一组键k1，k2……和JSON字符串，返回值的元组。该方法比 get_json_object 高效，因为可以在一次调用中输入多个键
-tuple|parse_url_tuple(url, p1, p2, ...)|该方法同parse_url() 相似，但可以一次性提取URL的多个部分，有效的参数名称为： HOST, PATH, QUERY, REF, PROTOCOL, AUTHORITY, FILE, USERINFO, QUERY:<KEY>
+tuple|parse_url_tuple(url, p1, p2, ...)|该方法同parse_url() 相似，但可以一次性提取URL的多个部分，有效的参数名称为： HOST, PATH, QUERY, REF, PROTOCOL, AUTHORITY, FILE, USERINFO, QUERY:&lt;KEY>
 N rows|posexplode(ARRAY)|行为与参数为数组的explode方法相似，但包含项在原始数组中的位置，返回(pos,value)的二元组。([Hive 0.13.0](https://issues.apache.org/jira/browse/HIVE-4943))
 N rows|stack(INT n, v_1, v_2, ..., v_k)|将v_1, ..., v_k 分为n行，每行包含k/n列，n必须为常数
 
@@ -997,7 +998,7 @@ explode()将一个array(或一个map)作为输入，然后将每个元素作为�
 
 SELECT中使用explode()表达式列表的例子，有一个表myTable有一个列myCol和两行数据如下：
 
-Array<int> myCol|
+Array&lt;int> myCol|
 -|
 [100,200,300]|
 [400,500,600]|
@@ -1035,7 +1036,7 @@ posexplode()与explode类似，但是它不仅仅返回元素，还会返回元�
 
 SELECT中使用posexplode()表达式列表的例子，有一个表myTable有一个列myCol和两行数据如下：
 
-Array<int> myCol|
+Array&lt;int> myCol|
 -|
 [100,200,300]|
 [400,500,600]|
@@ -1150,7 +1151,7 @@ xpath UDFs家族封装了JDK提供的javax.xml.xpath库，该库基于XPath 1.0�
 例如：
 
 ```
-> select xpath ('<a><b id="1"><c/></b><b id="2"><c/></b></a>','/descendant::c/ancestor::b/@id') from t1 limit 1 ;
+> select xpath ('&lt;a>&lt;b id="1">&lt;c/>&lt;/b>&lt;b id="2">&lt;c/>&lt;/b>&lt;/a>','/descendant::c/ancestor::b/@id') from t1 limit 1 ;
 [1","2]
 ```
 
@@ -1165,7 +1166,7 @@ xpath UDFs家族封装了JDK提供的javax.xml.xpath库，该库基于XPath 1.0�
 * xpath_float返回floating point number.
 * xpath_double,xpath_number返回double-precision floating point number (xpath_number是xpath_double的别名).
 
-错误的xml格式（如：<a><b>1</b></aa>）将会引起运行时异常。
+错误的xml格式（如：&lt;a>&lt;b>1&lt;/b>&lt;/aa>）将会引起运行时异常。
 
 下面说明不同的xpath UDF变种。
 
@@ -1176,25 +1177,25 @@ xpath()函数总是返回string数组，如果表达式结果是非文本的值�
 示列：
 匹配到空：
 ```
-> select xpath('<a><b>b1</b><b>b2</b></a>','a/*') from src limit 1 ;
+> select xpath('&lt;a>&lt;b>b1&lt;/b>&lt;b>b2&lt;/b>&lt;/a>','a/*') from src limit 1 ;
 []
 ```
 
 获得一个节点列表：
 ```
-> select xpath('<a><b>b1</b><b>b2</b></a>','a/*/text()') from src limit 1 ;
+> select xpath('&lt;a>&lt;b>b1&lt;/b>&lt;b>b2&lt;/b>&lt;/a>','a/*/text()') from src limit 1 ;
 [b1","b2]
 ```
 
 获得id属性值的列表：
 ```
-> select xpath('<a><b id="foo">b1</b><b id="bar">b2</b></a>','//@id') from src limit 1 ;
+> select xpath('&lt;a>&lt;b id="foo">b1&lt;/b>&lt;b id="bar">b2&lt;/b>&lt;/a>','//@id') from src limit 1 ;
 [foo","bar]
 ```
 
 获取class属性为'bb'的节点列表：
 ```
-> SELECT xpath ('<a><b class="bb">b1</b><b>b2</b><b>b3</b><c class="bb">c1</c><c>c2</c></a>', 'a/*[@class="bb"]/text()') FROM src LIMIT 1 ;
+> SELECT xpath ('&lt;a>&lt;b class="bb">b1&lt;/b>&lt;b>b2&lt;/b>&lt;b>b3&lt;/b>&lt;c class="bb">c1&lt;/c>&lt;c>c2&lt;/c>&lt;/a>', 'a/*[@class="bb"]/text()') FROM src LIMIT 1 ;
 [b1","c1]
 ```
 
@@ -1204,36 +1205,36 @@ xpath_string()函数返回每一个匹配的节点：
 
 获得节点'a/b':
 ```
-> SELECT xpath_string ('<a><b>bb</b><c>cc</c></a>', 'a/b') FROM src LIMIT 1 ;
+> SELECT xpath_string ('&lt;a>&lt;b>bb&lt;/b>&lt;c>cc&lt;/c>&lt;/a>', 'a/b') FROM src LIMIT 1 ;
 bb
 ```
 
 获得节点a，由于节点a存在子节点，结果合成子节点的文本：
 ```
-> SELECT xpath_string ('<a><b>bb</b><c>cc</c></a>', 'a') FROM src LIMIT 1 ;
+> SELECT xpath_string ('&lt;a>&lt;b>bb&lt;/b>&lt;c>cc&lt;/c>&lt;/a>', 'a') FROM src LIMIT 1 ;
 bbcc
 ```
 
 不匹配时返回空字符串：
 ```
-> SELECT xpath_string ('<a><b>bb</b><c>cc</c></a>', 'a/d') FROM src LIMIT 1 ;
+> SELECT xpath_string ('&lt;a>&lt;b>bb&lt;/b>&lt;c>cc&lt;/c>&lt;/a>', 'a/d') FROM src LIMIT 1 ;
 ```
 
 返回匹配'//b'的第一个节点：
 ```
-> SELECT xpath_string ('<a><b>b1</b><b>b2</b></a>', '//b') FROM src LIMIT 1 ;
+> SELECT xpath_string ('&lt;a>&lt;b>b1&lt;/b>&lt;b>b2&lt;/b>&lt;/a>', '//b') FROM src LIMIT 1 ;
 b1
 ```
 
 获取第二个节点：
 ```
-> SELECT xpath_string ('<a><b>b1</b><b>b2</b></a>', 'a/b[2]') FROM src LIMIT 1 ;
+> SELECT xpath_string ('&lt;a>&lt;b>b1&lt;/b>&lt;b>b2&lt;/b>&lt;/a>', 'a/b[2]') FROM src LIMIT 1 ;
 b2
 ```
 
 获取第一个拥有属性id且值为b_2的节点文本：
 ```
-> SELECT xpath_string ('<a><b>b1</b><b id="b_2">b2</b></a>', 'a/b[@id="b_2"]') FROM src LIMIT 1 ;
+> SELECT xpath_string ('&lt;a>&lt;b>b1&lt;/b>&lt;b id="b_2">b2&lt;/b>&lt;/a>', 'a/b[@id="b_2"]') FROM src LIMIT 1 ;
 b2
 ```
 
@@ -1243,25 +1244,25 @@ b2
 
 匹配节点：
 ```
-> SELECT xpath_boolean ('<a><b>b</b></a>', 'a/b') FROM src LIMIT 1 ;
+> SELECT xpath_boolean ('&lt;a>&lt;b>b&lt;/b>&lt;/a>', 'a/b') FROM src LIMIT 1 ;
 true
 ```
 
 不匹配节点：
 ```
-> SELECT xpath_boolean ('<a><b>b</b></a>', 'a/c') FROM src LIMIT 1 ;
+> SELECT xpath_boolean ('&lt;a>&lt;b>b&lt;/b>&lt;/a>', 'a/c') FROM src LIMIT 1 ;
 false
 ```
 
 匹配表达式：
 ```
-> SELECT xpath_boolean ('<a><b>b</b></a>', 'a/b = "b"') FROM src LIMIT 1 ;
+> SELECT xpath_boolean ('&lt;a>&lt;b>b&lt;/b>&lt;/a>', 'a/b = "b"') FROM src LIMIT 1 ;
 true
 ```
 
 不匹配表达式：
 ```
-> SELECT xpath_boolean ('<a><b>10</b></a>', 'a/b < 10') FROM src LIMIT 1 ;
+> SELECT xpath_boolean ('&lt;a>&lt;b>10&lt;/b>&lt;/a>', 'a/b &lt; 10') FROM src LIMIT 1 ;
 false
 ```
 
@@ -1271,31 +1272,31 @@ false
 
 不匹配：
 ```
-> SELECT xpath_int ('<a>b</a>', 'a = 10') FROM src LIMIT 1 ;
+> SELECT xpath_int ('&lt;a>b&lt;/a>', 'a = 10') FROM src LIMIT 1 ;
 0
 ```
 
 非数值：
 ```
-> SELECT xpath_int ('<a>this is not a number</a>', 'a') FROM src LIMIT 1 ;
+> SELECT xpath_int ('&lt;a>this is not a number&lt;/a>', 'a') FROM src LIMIT 1 ;
 0
-> SELECT xpath_int ('<a>this 2 is not a number</a>', 'a') FROM src LIMIT 1 ;
+> SELECT xpath_int ('&lt;a>this 2 is not a number&lt;/a>', 'a') FROM src LIMIT 1 ;
 0
 ```
 
 增加值：
 ```
-> SELECT xpath_int ('<a><b class="odd">1</b><b class="even">2</b><b class="odd">4</b><c>8</c></a>', 'sum(a/*)') FROM src LIMIT 1 ;
+> SELECT xpath_int ('&lt;a>&lt;b class="odd">1&lt;/b>&lt;b class="even">2&lt;/b>&lt;b class="odd">4&lt;/b>&lt;c>8&lt;/c>&lt;/a>', 'sum(a/*)') FROM src LIMIT 1 ;
 15
-> SELECT xpath_int ('<a><b class="odd">1</b><b class="even">2</b><b class="odd">4</b><c>8</c></a>', 'sum(a/b)') FROM src LIMIT 1 ;
+> SELECT xpath_int ('&lt;a>&lt;b class="odd">1&lt;/b>&lt;b class="even">2&lt;/b>&lt;b class="odd">4&lt;/b>&lt;c>8&lt;/c>&lt;/a>', 'sum(a/b)') FROM src LIMIT 1 ;
 7
-> SELECT xpath_int ('<a><b class="odd">1</b><b class="even">2</b><b class="odd">4</b><c>8</c></a>', 'sum(a/b[@class="odd"])') FROM src LIMIT 1 ;
+> SELECT xpath_int ('&lt;a>&lt;b class="odd">1&lt;/b>&lt;b class="even">2&lt;/b>&lt;b class="odd">4&lt;/b>&lt;c>8&lt;/c>&lt;/a>', 'sum(a/b[@class="odd"])') FROM src LIMIT 1 ;
 5
 ```
 
 数据溢出：
 ```
-> SELECT xpath_int ('<a><b>2000000000</b><c>40000000000</c></a>', 'a/b * a/c') FROM src LIMIT 1 ;
+> SELECT xpath_int ('&lt;a>&lt;b>2000000000&lt;/b>&lt;c>40000000000&lt;/c>&lt;/a>', 'a/b * a/c') FROM src LIMIT 1 ;
 2147483647
 ```
 
@@ -1305,19 +1306,19 @@ false
 
 不匹配：
 ```
-> SELECT xpath_double ('<a>b</a>', 'a = 10') FROM src LIMIT 1 ;
+> SELECT xpath_double ('&lt;a>b&lt;/a>', 'a = 10') FROM src LIMIT 1 ;
 0.0
 ```
 
 非数值：
 ```
-> SELECT xpath_double ('<a>this is not a number</a>', 'a') FROM src LIMIT 1 ;
+> SELECT xpath_double ('&lt;a>this is not a number&lt;/a>', 'a') FROM src LIMIT 1 ;
 NaN
 ```
 
 一个非常大的数：
 ```
-SELECT xpath_double ('<a><b>2000000000</b><c>40000000000</c></a>', 'a/b * a/c') FROM src LIMIT 1 ;
+SELECT xpath_double ('&lt;a>&lt;b>2000000000&lt;/b>&lt;c>40000000000&lt;/c>&lt;/a>', 'a/b * a/c') FROM src LIMIT 1 ;
 8.0E19
 ```
 
@@ -1387,7 +1388,7 @@ SELECT a.* FROM a JOIN b ON (a.id = b.id AND a.department = b.department)
 ```
 都是有效的join，然而：
 ```
-SELECT a.* FROM a JOIN b ON (a.id <> b.id)
+SELECT a.* FROM a JOIN b ON (a.id &lt;> b.id)
 ```
 是不允许的。
 
