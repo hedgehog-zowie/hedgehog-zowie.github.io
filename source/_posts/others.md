@@ -20,11 +20,14 @@ categories:
 
 react + redux + spring on github
 
-https://github.com/Johnson-hd/maven_ssm
-https://github.com/jikechenhao/springmvc-shiro-react-redux-restful-example
-https://github.com/illichso/courses
+[maven_ssm](https://github.com/Johnson-hd/maven_ssm)
+[springmvc-shiro-react-redux-restful-example](https://github.com/jikechenhao/springmvc-shiro-react-redux-restful-example)
+[courses](https://github.com/illichso/courses)
 
 # 漫谈千亿级数据优化实践：数据倾斜（纯干货）
 
 [漫谈千亿级数据优化实践：数据倾斜（纯干货）](http://dantezhao.com/2017/04/23/data-skew/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)
 
+# mathjax公式
+
+[Mathjax与LaTex公式简介](http://mlworks.cn/posts/introduction-to-mathjax-and-latex-expression/)
