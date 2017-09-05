@@ -248,3 +248,26 @@ spark action的所有序列化结果的总大限制默认为1024M，若超出该
 
 [参考资料：Spark配置参数](http://www.tuicool.com/articles/zIvayyf) 
 
+# spark程序编译异常
+
+使用maven打包spark程序编译异常，报出如下错误：
+
+```
+[ERROR] Failed to execute goal org.scala-tools:maven-scala-plugin:2.15.2:compile (scala-compile-firs
+t) on project ad-ctr-api: wrap: org.apache.commons.exec.ExecuteException: Process exited with an err
+or: 1(Exit value: 1) -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following arti
+cles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+```
+
+同时有另一项目，pom.xml文件中指定了不同版本的参数，直接使用命令`mvn clean package`，其使用的scala版本是2.11，可以打包；但使用命令`mvn -Dscala-2.10 clean package`（scala-2.10是自定义的参数），打包失败，也报出上述相同错误。
+
+解决办法：
+`综上，可以确定是由于scala版本引起的原因，pom.xml中指定使用2.10版本的scala，开发时也是使用的2.10版本，而本机环境变量中配置的scala版本却为2.11，将其配置成2.10即可。`
+
+`java版本不一致也会引起上述问题。`

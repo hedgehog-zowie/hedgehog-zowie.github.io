@@ -101,3 +101,13 @@ mapreduce.reduce.shuffle.memory.limit.percent=0.25`(每个fetch取到的输出�
 ## 参考
 [hadoop Shuffle Error OOM错误分析和解决](http://brandnewuser.iteye.com/blog/2149176)
 
+# 查找mapreduce job出错文件步骤
+
+1. 通过web界面找出该job的日志，根据关键字“Task Transitioned from RUNNING to FAILED”从日志中找到出错map taskId；
+2. 根据map taskId找出attemptId，例如：taskId为task_1494123834504_173971_m_003057，则attemptId为attempt_1494123834504_173971_m_003057_0,attempt_1494123834504_173971_m_003057_1,attempt_1494123834504_173971_m_003057_2,attempt_1494123834504_173971_m_003057_3，最末的数字为重试次数;
+3. 根据attemptId找出该任务分配的container id；
+4. 根据container id找出该容器分配的NM；
+5. 到该NM上找到日志目录：${HADOOP_HOME}/logs/userlogs/${jobId}/${containerId}/
+6. 查看syslog日志，根据关键字“Processing file”查找具体文件；
+
+
