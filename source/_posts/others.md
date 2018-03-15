@@ -34,3 +34,6 @@ react + redux + spring on github
 
 # markdown-basics
 [markdown-basics](https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/markdown-basics)
+
+# hive2.0 函数大全
+[hive2.0 函数大全 来源](http://www.cnblogs.com/MOBIN/p/5618747.html)
