@@ -1,11 +1,11 @@
 ---
-title: storm-started-notes
-date: 2017-06-26 00:00:00
+title: dlbook-notes
+date: 2018-03-16 00:00:00
 toc: true
 tags:
-- storm
+- DeepLearning
 categories:
-- storm
+- ML
 ---
 
 deeplearningbook读书笔记，原文网址：[www.deeplearningbook.org](www.deeplearningbook.org)，[中文翻译](https://github.com/exacity/deeplearningbook-chinese)。
